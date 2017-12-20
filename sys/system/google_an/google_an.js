@@ -1,41 +1,82 @@
+var t //---- 延遲 ----
 
 //-------------- ALL 全部分析Function ------------------
-function google_an_all(view_id) {
-	var all_an=new Array();
+function google_an_all(view_id, case_id) {
 	//---- 每周使用人數 ----
-	var an_week={'week': queryReports_e(view_id, '7daysAgo', 'today', 'ga:sessions')};
+	queryReports_e(view_id, '7daysAgo', 'today', 'ga:sessions', 'week_user');
 	//---- 每月使用人數 ----
-	var an_month={'month': queryReports_e(view_id, '30daysAgo', 'today', 'ga:sessions')} ;
+	queryReports_e(view_id, '30daysAgo', 'today', 'ga:sessions', 'month_user') ;
 	//---- 總使用人數 ----
-	var an_total={'total': queryReports_e(view_id, '2016-04-01', 'today', 'ga:sessions')} ;
+	queryReports_e(view_id, '2016-04-01', 'today', 'ga:sessions', 'total_user') ;
 	//---- 性別 ----
-	var an_sex={'sex': queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:userGender')} ;
+	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:userGender', 'sex') ;
 	//---- 年齡 ----
-	var an_years={'years': queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:userAgeBracket')} ;
+	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:userAgeBracket', 'years') ;
 	//---- 媒體 ----
-	var an_media={'media': queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:deviceCategory')} ;
+	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:deviceCategory', 'media');
 	//---- 熱門事件點擊 ----
-	var an_event={'event': queryReports(view_id, '2016-04-01', 'today', 'ga:uniqueEvents', 'ga:eventCategory')} ;
+	queryReports(view_id, '2016-04-01', 'today', 'ga:uniqueEvents', 'ga:eventCategory', 'event') ;
 	//---- 流量來源 ----
-	var an_source={'source':queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:sourceMedium')};
+	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:sourceMedium', 'src');
 	//---- 地區 ----
-	var an_city={'city': queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:city')} ;
+	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:city', 'city');
 	//---- 網站停留時間-年齡層 ----
-	var an_timeOut={'timeOut': queryReports(view_id, '2016-04-01', 'today', 'ga:avgTimeOnPage', 'ga:userAgeBracket')} ;
+	queryReports(view_id, '2016-04-01', 'today', 'ga:avgTimeOnPage', 'ga:userAgeBracket', 'timeOnSite_years') ;
 	//---- 每日瀏覽人數 ----
-	var an_date={'date': queryReports(view_id, '30daysAgo', 'today', 'ga:sessions', 'ga:date')} ;
-	//all_an.concat(an_week, an_month, an_total, an_sex, an_years, an_media, an_event, an_source, an_city, an_timeOut, an_date);
-	console.log(an_week);
-	console.log(an_sex);
-	console.log(an_date);
+	queryReports(view_id, '30daysAgo', 'today', 'ga:sessions', 'ga:date', 'user_date');
+
+   //---------------- 監測分析數值有無全部輸入 --------------
+	t=setTimeout(function an_ajax() {
+            
+			var is_data_num=0;
+				$.each($('#an_data').find('input'), function(index, val) {
+					 
+					 if ($(this).val()!='') {
+					 	console.log('無空直');
+					 	is_data_num++;
+					 }
+				});
+
+			t=setTimeout(an_ajax, 100);
+            
+            //---------- 全都有值 --------
+			if (is_data_num==$('#an_data').find('input').length) {
+
+		           $.ajax({
+		           	url: 'google_an_ajax.php',
+		           	type: 'POST',
+		           	data: {
+		           		  Tb_index: case_id,
+		           		 week_user: $('[name="week_user"]').val(),
+		           		month_user: $('[name="month_user"]').val(),
+		           		total_user: $('[name="total_user"]').val(),
+		           		       sex: $('[name="sex"]').val(),
+		           		     years: $('[name="years"]').val(),
+		           		     media: $('[name="media"]').val(),
+		           		     event: $('[name="event"]').val(),
+		           		       src: $('[name="src"]').val(),
+		           		      city: $('[name="city"]').val(),
+		             timeOnSite_years: $('[name="timeOnSite_years"]').val(),
+		           		 user_date: $('[name="user_date"]').val()
+		           	},
+		           	success:function (data) {
+		           		$('#an_data').find('input').val('');
+		           	}
+		           });
+		           clearTimeout(t);
+				}
+
+	}, 100);
+	
 }
+
 
 	  // Replace with your view ID.
 		//var VIEW_ID = '149822707';
 
 		// Query the API and print the results to the page.
 		//--------------------- 指標+維度 ---------------------
-		function queryReports(view_id, startDate, endDate, expression, dimensions) {
+		function queryReports(view_id, startDate, endDate, expression, dimensions, type) {
 		  gapi.client.request({
 		    path: '/v4/reports:batchGet',
 		    root: 'https://analyticsreporting.googleapis.com/',
@@ -59,11 +100,25 @@ function google_an_all(view_id) {
 		        }
 		      ]
 		    }
-		  }).then(displayResults, console.error.bind(console));
+		  }).then(function (response) {
+
+		  	var an_row=response.result.reports[0].data.rows;
+            var an_name='';
+            var an_num='';
+		  	for (var i = 0; i < an_row.length; i++) {
+
+		  		an_name+=an_row[i].dimensions[0]+',';
+		  		an_num+=an_row[i].metrics[0].values[0]+',';
+		  	}
+		  	an_name=an_name.slice(0,-1);
+		  	an_num=an_num.slice(0,-1);
+
+		  	$('[name="'+type+'"]').val(an_name+'|'+an_num);
+		  });
 		}
 
         //--------------------- 指標 ---------------------
-		function queryReports_e(view_id, startDate, endDate, expression) {
+		function queryReports_e(view_id, startDate, endDate, expression, type) {
 		  gapi.client.request({
 		    path: '/v4/reports:batchGet',
 		    root: 'https://analyticsreporting.googleapis.com/',
@@ -84,15 +139,11 @@ function google_an_all(view_id) {
 		        }
 		      ]
 		    }
-		  }).then(displayResults, console.error.bind(console));
-		}
+		  }).then(function (response) {
 
-	function displayResults(response) {
-		  //var formattedJson = JSON.stringify(response.result, null, 2);
-		  //document.getElementById('query-output').value = formattedJson;
-		  //console.log(  response.result.reports[0].data.rows );
-		  // console.log(response.result.reports[0].data.rows[0].dimensions[0]);
-		  // console.log(response.result.reports[0].data.rows[0].metrics[0].values[0]);
+		  	 var an_row=response.result.reports[0].data.rows;
           
-          return response.result.reports[0].data.rows;
+		  	 $('[name="'+type+'"]').val(an_row[0].metrics[0].values[0]);
+		  });
+
 		}

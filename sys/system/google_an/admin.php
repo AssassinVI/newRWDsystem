@@ -47,10 +47,8 @@
         <!-- <button id="sort_btn" type="button" class="btn btn-default">
         <i class="fa fa-sort-amount-desc"></i> 更新排序</button> -->
 
-	    <a href="manager.php">
-        <button type="button" class="btn btn-default">
-        <i class="fa fa-plus" aria-hidden="true"></i> 全部更新</button>
-        </a>
+        <button id="an_ajax_all" type="button" class="btn btn-default"> <i class="fa fa-plus" aria-hidden="true"></i> 全部更新</button>
+        
 	  </div>
 	</div>
 	<div class="row">
@@ -82,7 +80,7 @@
 								
 
 								<td class="text-right">
-							 	  <button type="button" onclick="google_an_all('<?php echo $row['google_view_code'];?>')" class="btn btn-info ">更新</button>
+							 	  <button type="button" onclick="google_an_all('<?php echo $row['google_view_code'];?>','<?php echo $row['Tb_index'];?>')" class="btn btn-info ">更新</button>
 								</td>
 							</tr>
 						<?php $i++; }?>
@@ -95,7 +93,19 @@
 </div>
 
 <!-- google 分析資料暫存 -->
-<input type="hidden" name="week_user">
+<div id="an_data">
+  <input type="hidden" name="week_user">
+  <input type="hidden" name="month_user">
+  <input type="hidden" name="total_user">
+  <input type="hidden" name="sex">
+  <input type="hidden" name="years">
+  <input type="hidden" name="media">
+  <input type="hidden" name="event">
+  <input type="hidden" name="src">
+  <input type="hidden" name="city">
+  <input type="hidden" name="timeOnSite_years">
+  <input type="hidden" name="user_date">
+</div>
 
 </div><!-- /#page-content -->
 <?php  include("../../core/page/footer01.php");//載入頁面footer01.php?>
@@ -103,16 +113,18 @@
 <!-- Load the JavaScript API client and Sign-in library. -->
 <script src="https://apis.google.com/js/client:platform.js"></script>
 
-<!-- 撈取分析資料 -->
-<script type="text/javascript" src="google_an.js"></script>
 
+<!-- 撈取分析資料+匯入資料 -->
+<!-- 撈取分析資料+匯入資料 -->
+<!-- 撈取分析資料+匯入資料 -->
+<script type="text/javascript" src="google_an.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
 		
 	});
-
-
-
 </script>
+
+
+
 <?php  include("../../core/page/footer02.php");//載入頁面footer02.php?>
