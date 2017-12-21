@@ -3,6 +3,11 @@
 <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
 <style type="text/css">
 	.sortable-list{ padding: 0px;  }
+	.sk-spinner-rotating-plane.sk-spinner{ display: inline-block; width: 20px; height: 20px; background-color: #008578; }
+	.loading{ opacity:0 ; }
+	.google_signin{ width: 100%; height: 84vh; position: absolute; background: rgba(255, 255, 255, 0.85); z-index: 1; left: 0px; }
+	.google_signin .g-signin2{display: none; width: 120px; height: 40px; margin: auto; top: 0; bottom: 0; left: 0; right: 0; position: absolute; }
+	.google_signin .an_loading{ position: absolute; margin: auto; width: 100px; height: 30px; top: 0; bottom: 0; left: 0; right: 0; z-index: 2; }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -31,11 +36,12 @@
 ?>
 
 <!-- The Sign-in button. This will run `queryReports()` on success. -->
-<p class="g-signin2"></p>
-
-<!-- The API response will be printed here. -->
-<textarea cols="80" rows="20" id="query-output"></textarea>
-
+<div class="google_signin">
+	 <div class="an_loading">
+	 	<div class="sk-spinner sk-spinner-rotating-plane "></div>讀取中...
+	 </div>
+	 <p class="g-signin2" data-onsuccess="gn_signIn"></p>
+</div>
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -46,7 +52,6 @@
 
         <!-- <button id="sort_btn" type="button" class="btn btn-default">
         <i class="fa fa-sort-amount-desc"></i> 更新排序</button> -->
-
         <button id="an_ajax_all" type="button" class="btn btn-default"> <i class="fa fa-plus" aria-hidden="true"></i> 全部更新</button>
         
 	  </div>
@@ -63,6 +68,7 @@
 								<th>專案ID</th>
 								<th>專案名稱</th>
 								<th>更新日期</th>
+								<th></th>
 								<th class="text-right">管理</th>
 
 							</tr>
@@ -76,14 +82,20 @@
 								<td><?php echo $i?></td>
 								<td><?php echo $row['Tb_index'] ?></td>
 								<td><?php echo $row['aTitle'] ?></td>
-								<td><?php echo $row_update['set_time']?></td>
+								<td id="time_<?php echo $row['Tb_index'];?>"><?php echo $row_update['set_time']?></td>
+								<td id="<?php echo $row['Tb_index'];?>" class="loading"><div class="sk-spinner sk-spinner-rotating-plane "></div> Update...</td>
 								
 
 								<td class="text-right">
 							 	  <button type="button" onclick="google_an_all('<?php echo $row['google_view_code'];?>','<?php echo $row['Tb_index'];?>')" class="btn btn-info ">更新</button>
 								</td>
+
+								<input type="hidden" class="case_id_one" value="<?php echo $row['Tb_index'];?>">
+								<input type="hidden" class="view_code_one" value="<?php echo $row['google_view_code'];?>">
 							</tr>
 						<?php $i++; }?>
+
+						       <input type="hidden" id="timeOut_num" ><!-- 讀取+匯入延遲時間次數 (1次100毫秒) -->
 						</tbody>
 					</table>
 				</div>
@@ -121,8 +133,36 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+
+		$('#an_ajax_all').click(function(event) {
+
+			var an_t;
+			var x=0;//-- 初始延遲 --
+
+			$.each($('.case_id_one'), function() {
+				
+                an_t=setTimeout(" google_an_all('"+$(this).next().val()+"', '"+$(this).val()+"')",2000*x);
+
+                x++;
+				
+			});
+		});
 		
 	});
+
+	function test(data1, data2) {
+		console.log(data1);
+	    console.log(data2);
+	}
+
+	$(window).load(function() {
+		 $('.an_loading').css('display', 'none');
+		 $('.google_signin .g-signin2').css('display', 'block');
+	});
+
+	function gn_signIn() {
+		$('.google_signin').css('display', 'none');
+	}
 </script>
 
 

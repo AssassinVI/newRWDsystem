@@ -2,6 +2,7 @@ var t //---- 延遲 ----
 
 //-------------- ALL 全部分析Function ------------------
 function google_an_all(view_id, case_id) {
+	$('#'+case_id).css('opacity', '1');
 	//---- 每周使用人數 ----
 	queryReports_e(view_id, '7daysAgo', 'today', 'ga:sessions', 'week_user');
 	//---- 每月使用人數 ----
@@ -26,6 +27,7 @@ function google_an_all(view_id, case_id) {
 	queryReports(view_id, '30daysAgo', 'today', 'ga:sessions', 'ga:date', 'user_date');
 
    //---------------- 監測分析數值有無全部輸入 --------------
+    var timeOut_num=0; //-- 時間記數 --
 	t=setTimeout(function an_ajax() {
             
 			var is_data_num=0;
@@ -38,6 +40,13 @@ function google_an_all(view_id, case_id) {
 				});
 
 			t=setTimeout(an_ajax, 100);
+
+			timeOut_num++;
+
+			//---- 超過10秒重新整理 ----
+			if (timeOut_num>100) {
+				window.location.reload();
+			}
             
             //---------- 全都有值 --------
 			if (is_data_num==$('#an_data').find('input').length) {
@@ -61,10 +70,18 @@ function google_an_all(view_id, case_id) {
 		           	},
 		           	success:function (data) {
 		           		$('#an_data').find('input').val('');
+		           		$('#'+case_id).css('opacity', '0');
+		           		$('#timeOut_num').val(timeOut_num);
+
+		           		var Today=new Date();
+
+		           		$('#time_'+case_id).html(Today.getFullYear()+'-'+(Today.getMonth()+1)+'-'+Today.getDate()+' '+Today.getHours()+':'+Today.getMinutes()+':'+Today.getSeconds());
 		           	}
 		           });
+
 		           clearTimeout(t);
 				}
+
 
 	}, 100);
 	

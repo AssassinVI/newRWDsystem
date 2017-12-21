@@ -30,6 +30,7 @@ if ($_POST) {
 	else{
 
 		$param=[
+             'set_time'=>date('Y-m-d H:i:s'),
              'week_user'=>$_POST['week_user'],
              'month_user'=>$_POST['month_user'],
              'total_user'=>$_POST['total_user'],
