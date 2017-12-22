@@ -135,15 +135,16 @@ if ($_GET) {
             },
             success:function (data) {
               //-- 功能區塊 --
-              var funbox=sel_FunBox($('#sel_fun').val());
-              var txt='<li class="'+funbox['btn_type']+'" id="'+data+'">'
-                           + '<i class="fa '+funbox['btn_icon']+'"></i> '+funbox['box_name']
+              // var funbox=sel_FunBox($('#sel_fun').val());
+              // var txt='<li class="'+funbox['btn_type']+'" id="'+data+'">'
+              //              + '<i class="fa '+funbox['btn_icon']+'"></i> '+funbox['box_name']
                                                   
-                           + '<a href="#" class="pull-right btn btn-xs btn-danger del_funbox">刪除</a>'
-                           + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index=" class="pull-right btn btn-xs btn-primary">編輯</a>'
-                           + '<a style="margin-right:5px;" href="#" class="pull-right btn btn-xs btn-white">檢視</a>'
-                       + '</li>';
-              $('.sortable-list').append(txt);
+              //              + '<a href="#" class="pull-right btn btn-xs btn-danger del_funbox">刪除</a>'
+              //              + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index=" class="pull-right btn btn-xs btn-primary">編輯</a>'
+              //              + '<a style="margin-right:5px;" href="#" class="pull-right btn btn-xs btn-white">檢視</a>'
+              //          + '</li>';
+              // $('.sortable-list').append(txt);
+              funbox_all();
             }
           });
       }
@@ -253,7 +254,7 @@ if ($_GET) {
                           + '<i class="fa '+funbox['btn_icon']+'"></i> '+funbox['box_name']
                                                  
                           + '<a href="#" title="'+funbox['box_name']+'" class="pull-right btn btn-xs btn-danger del_funbox">刪除</a>'
-                          + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index='+this['case_id']+'&fun_id='+this['fun_id']+'" class="pull-right btn btn-xs btn-primary iframe_box">編輯</a>'
+                          + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index='+this['case_id']+'&fun_id='+this['fun_id']+'&rel_id='+this['Tb_index']+'" class="pull-right btn btn-xs btn-primary iframe_box">編輯</a>'
                           + '<a style="margin-right:5px;" href="#" class="pull-right btn btn-xs btn-white">檢視</a>'
                       + '</li>';
              $('.sortable-list').append(txt);

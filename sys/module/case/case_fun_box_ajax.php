@@ -53,7 +53,9 @@
        pdo_delete('Related_tb', ['Tb_index'=>$_POST['related_id']]);
     }
     else{
+       pdo_delete('Related_tb', ['Tb_index'=>$_POST['related_id']]);
 
+       //-- (未完) --
     }
   }
  }

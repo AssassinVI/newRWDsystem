@@ -12,22 +12,22 @@
 
 if($_POST){
 
-    // ======================== 刪除(未完) ===========================
+    // ======================== 刪除 ===========================
     if (!empty($_POST['type']) && $_POST['type']=='delete') { 
     
         //----------------------- 多檔刪除 -------------------------------
-        $sel_where=['Tb_index'=>$_POST['Tb_index']];
+        $sel_where=['Tb_index'=>$_POST['fun_id']];
         $otr_file=pdo_select('SELECT show_img FROM slideshow_tb WHERE Tb_index=:Tb_index', $sel_where);
         $otr_file=explode(',', $otr_file['show_img']);
         for ($i=0; $i <count($otr_file)-1 ; $i++) { //比對 
            if ($otr_file[$i]!=$_POST['show_img']) {
             $new_file.=$otr_file[$i].',';
            }else{
-             unlink('../../../product_html/'.$_POST['Tb_index'].'/img/'.$_POST['show_img']);
+             unlink('../../../product_html/'.$_POST['case_id'].'/img/'.$_POST['show_img']);
            }
         }
         $param=['show_img'=>$new_file];
-            $where=['Tb_index'=>$_POST['Tb_index']];
+            $where=['Tb_index'=>$_POST['fun_id']];
             pdo_update('slideshow_tb', $param, $where);
       
        exit();
@@ -51,14 +51,14 @@ if($_POST){
                more_fire_upload('show_img', $i, $Tb_index.'_slider_'.$i.'.'.$type[1], $_GET['Tb_index']);
              }
              else{
-               location_up('admin.php?MT_id='.$_POST['mt_id'],'檔案錯誤!請上傳正確檔案');
+               location_up('iframe_show.php?Tb_index='.$_GET['Tb_index'].'&fun_id='.$_GET['fun_id'].'&rel_id='.$_GET['rel_id'],'檔案錯誤!請上傳正確檔案');
                exit();
              }
           }
         }
 
     //---- 更新關聯資料表 -----
-    pdo_update('Related_tb', ['fun_id'=>$Tb_index], ['case_id'=>$_GET['Tb_index']]);
+    pdo_update('Related_tb', ['fun_id'=>$Tb_index], ['Tb_index'=>$_GET['rel_id']]);
     
     $param=[
        'Tb_index'=>$Tb_index,
@@ -100,7 +100,7 @@ if($_POST){
            }
            else{
 
-            location_up('admin.php?MT_id='.$_POST['mt_id'],'檔案錯誤!請上傳正確檔案');
+            location_up('iframe_show.php?Tb_index='.$_GET['Tb_index'].'&fun_id='.$Tb_index,'檔案錯誤!請上傳正確檔案');
             exit();
            }
         }
@@ -113,10 +113,10 @@ if($_POST){
       }
 
     //-------------- 圖檔修改-END ------------------
-
+      $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0:1;
       $param=[
        'play_speed'=>$_POST['play_speed'],
-       'show_img'=>$show_img
+       'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('slideshow_tb', $param, ['Tb_index'=>$Tb_index]);
     location_up('iframe_show.php?Tb_index='.$_GET['Tb_index'].'&fun_id='.$Tb_index, '功能已更新');
@@ -187,6 +187,14 @@ if($_POST){
                   </div>
 
             </div>
+
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="OnLineOrNot">是否上線</label>
+              <div class="col-sm-10">
+                <input style="width: 20px; height: 20px;" id="OnLineOrNot" name="OnLineOrNot" type="checkbox" value="1" <?php echo $check=!isset($row['OnLineOrNot']) || $row['OnLineOrNot']==1 ? 'checked' : ''; ?>  />
+              </div>
+            </div>
             
          
 				</form>
@@ -210,7 +218,8 @@ if($_POST){
           $(".one_del_file").click(function(event) { 
       if (confirm('是否要刪除檔案?')) {
        var data={
-                Tb_index: '<?php echo $_GET['fun_id'];?>',
+                      case_id:'<?php echo $_GET['Tb_index'];?>',
+                      fun_id: '<?php echo $_GET['fun_id'];?>',
                        show_img: $(this).next().next().val(),
                             type: 'delete'
                 };  
