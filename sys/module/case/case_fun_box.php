@@ -204,7 +204,11 @@ if ($_GET) {
     
     $(".iframe_box").fancybox({
        'padding'               :'0',
-       'type'                  : 'iframe'
+       'type'                  : 'iframe',
+       afterClose: function () {
+         funbox_all();
+         return;
+       }
     });
      
 	});
@@ -249,7 +253,7 @@ if ($_GET) {
                           + '<i class="fa '+funbox['btn_icon']+'"></i> '+funbox['box_name']
                                                  
                           + '<a href="#" title="'+funbox['box_name']+'" class="pull-right btn btn-xs btn-danger del_funbox">刪除</a>'
-                          + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index=" class="pull-right btn btn-xs btn-primary">編輯</a>'
+                          + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index='+this['case_id']+'&fun_id='+this['fun_id']+'" class="pull-right btn btn-xs btn-primary iframe_box">編輯</a>'
                           + '<a style="margin-right:5px;" href="#" class="pull-right btn btn-xs btn-white">檢視</a>'
                       + '</li>';
              $('.sortable-list').append(txt);

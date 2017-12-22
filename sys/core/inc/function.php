@@ -133,9 +133,9 @@
  }
 
   /* ----------------------- 多檔案上傳 --------------------------- */
-  function more_fire_upload($file_id, $i, $file_name)
+  function more_fire_upload($file_id, $i, $file_name, $case_id)
  {
-    move_uploaded_file($_FILES[$file_id]['tmp_name'][$i], '../../img/'.$file_name);
+    move_uploaded_file($_FILES[$file_id]['tmp_name'][$i], '../../../product_html/'.$case_id.'/img/'.$file_name);
  }
 
 

@@ -137,11 +137,11 @@
 		$('#an_ajax_all').click(function(event) {
 
 			var an_t;
-			var x=0;//-- 初始延遲 --
+			var x=0.5;//-- 初始延遲 --
 
 			$.each($('.case_id_one'), function() {
 				
-                an_t=setTimeout(" google_an_all('"+$(this).next().val()+"', '"+$(this).val()+"')",2000*x);
+                an_t=setTimeout(" google_an_all('"+$(this).next().val()+"', '"+$(this).val()+"')",2500*x);
 
                 x++;
 				

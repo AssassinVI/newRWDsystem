@@ -137,9 +137,8 @@ if ($('#ckeditor').length>0) {
                     var result='../../img/other_file_img/file.svg';
                   }
 
-           var html_txt='<div id="img_div" >';
-           html_txt=html_txt+'  <img id="one_img" src="'+result+'" alt="請上傳代表圖檔">';
-           html_txt=html_txt+'</div>';
+           var html_txt='<img id="one_img" src="'+result+'" alt="請上傳代表圖檔">';
+
 
               $(html_id).append(html_txt);
              }
