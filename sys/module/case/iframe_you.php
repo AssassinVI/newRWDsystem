@@ -23,9 +23,9 @@ if($_POST){
         $param=['video_file'=>''];
             $where=['Tb_index'=>$_POST['fun_id']];
             pdo_update('youtube_tb', $param, $where);
-            unlink('../../../'.$_POST['case_id'].'/video/'.$_POST['video_file']);
+            unlink('../../../product_html/'.$_POST['case_id'].'/video/'.$_POST['video_file']);
       
-       exit();
+      // exit();
     }
   
   //----------------- 新增 ----------------------------------------------
@@ -187,8 +187,8 @@ if($_POST){
                  <div id="img_div" >
                   <p>目前影片</p>
                  <button type="button" id="one_del_file"> X </button>
-                  <span class="img_check"><i class="fa fa-check"></i></span>
                   <video src="../../../product_html/<?php echo $_GET['Tb_index'];?>/video/<?php echo $row['video_file'];?>" controls>無影片或不支援</video>
+                  <input type="hidden" value="<?php echo $row['video_file'];?>">
                 </div>
               </div>
             <?php }?> 
@@ -220,7 +220,7 @@ if($_POST){
       });
 
       //------------------------------ 刪圖檔 ---------------------------------
-          $(".one_del_file").click(function(event) { 
+          $("#one_del_file").click(function(event) { 
       if (confirm('是否要刪除影片?')) {
        var data={
                 case_id:'<?php echo $_GET['Tb_index'];?>',

@@ -50,11 +50,36 @@
     $row=pdo_select("SELECT fun_id, funbox_id FROM Related_tb WHERE Tb_index=:Tb_index", ['Tb_index'=>$_POST['related_id']]);
 
     if(empty($row['fun_id'])){
+       //-- 刪除關聯 --
        pdo_delete('Related_tb', ['Tb_index'=>$_POST['related_id']]);
     }
     else{
-       pdo_delete('Related_tb', ['Tb_index'=>$_POST['related_id']]);
+       
+       //-- 功能資料表 --
+       $funBox_row=pdo_select("SELECT fun_tb FROM FunBox WHERE Tb_index=:Tb_index", ['Tb_index'=>$row['funbox_id']]);
 
+
+       //----------- 刪除功能區塊所有檔案 -------------
+
+       if($funBox_row['fun_tb'=='slideshow_tb']){
+
+          $show_row=pdo_select("SELECT show_img, case_id FROM slideshow_tb WHERE Tb_index=:Tb_index", ['Tb_index'=>$row['fun_id']]);
+          $show_img=explode(',', $show_row['show_img']);
+          for ($i=0; $i <count($show_img)-1 ; $i++) { 
+            unlink('../../../product_html/'.$show_row['case_id'].'/img/'.$show_img[$i]);
+          }
+       }
+       elseif($funBox_row['fun_tb'=='youtube_tb']){
+
+         $you_row=pdo_select("SELECT video_file, case_id FROM youtube_tb WHERE Tb_index=:Tb_index", ['Tb_index'=>$row['fun_id']]);
+         unlink('../../../product_html/'.$you_row['case_id'].'/video/'.$you_row['video_file']);
+
+       }
+
+       //-- 刪除關聯 --
+       pdo_delete('Related_tb', ['Tb_index'=>$_POST['related_id']]);
+       //-- 刪除功能區塊 --
+       pdo_delete($funBox_row['fun_tb'], ['Tb_index'=>$row['fun_id']]);
        //-- (未完) --
     }
   }

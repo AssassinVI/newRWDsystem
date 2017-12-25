@@ -21,14 +21,6 @@ if ($_POST) {
 
 if ($_GET) {
 
-   if (!empty($_GET['Tb_index'])) {//刪除
-    
-    $param=['OnLineOrNot'=>'0'];
-    $where=['Tb_index'=>$_GET['Tb_index']];
-
-   	 pdo_update('build_case', $param, $where);
-   }
-
    $case_id=empty($_GET['Tb_index']) ? '':$_GET['Tb_index'];
 
    $sql=$pdo->prepare("SELECT * FROM Related_tb WHERE case_id = :com_id ORDER BY OrderBy DESC");
