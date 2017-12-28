@@ -43,7 +43,11 @@
 <script type="text/javascript">
 
 if ($('#ckeditor').length>0) {
-  	CKEDITOR.replace('ckeditor',{filebrowserUploadUrl:'../../js/plugins/ckeditor/php/upload.php',filebrowserImageUploadUrl : '../../js/plugins/ckeditor/php/upload_img.php', height:500});
+  	CKEDITOR.replace('ckeditor',{filebrowserUploadUrl:'../../js/plugins/ckeditor/php/upload.php',filebrowserImageUploadUrl : '../../js/plugins/ckeditor/php/upload_img.php', height:300});
+  }
+
+if ($('#ckeditor1').length>0) {
+    CKEDITOR.replace('ckeditor1',{filebrowserUploadUrl:'../../js/plugins/ckeditor/php/upload.php',filebrowserImageUploadUrl : '../../js/plugins/ckeditor/php/upload_img.php', height:300});
   }
 
 	/* ==================== 基本AJAX 新增，修改，刪除 ======================= */
