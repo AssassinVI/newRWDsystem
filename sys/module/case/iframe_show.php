@@ -1,6 +1,6 @@
 <?php include("../../core/page/header01.php");//載入頁面heaer01 ?>
 <style type="text/css">
-	.md-skin .navbar-static-side, .border-bottom{display: none;}
+	.md-skin .navbar-static-side, .border-bottom, body.fixed-sidebar .navbar-static-side, body.canvas-menu .navbar-static-side{display: none;}
 	#page-wrapper{ margin:0px;  }
 
 	.ibox-tools a{ color: #626262; }
