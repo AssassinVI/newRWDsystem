@@ -167,9 +167,5 @@ function clean_all() {
 /* ===================== 燈箱 =================== */
 $(".fancybox").fancybox();
 
-$(".iframe_box").fancybox({
-      'padding'               :'0',
-            'type'                  : 'iframe'
-     });
 
 </script>

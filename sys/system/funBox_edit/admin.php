@@ -55,6 +55,8 @@
 								<th>#</th>
 								<th>功能名稱</th>
 								<th>按鈕樣式</th>
+								<th>擴充功能</th>
+								<th>狀態</th>
 								<th>建立日期</th>
 								<th class="text-right">管理</th>
 
@@ -62,7 +64,11 @@
 						</thead>
 						<tbody>
 
-						<?php $i=1; while ($row=$sql->fetch(PDO::FETCH_ASSOC)) {?>
+						<?php $i=1; while ($row=$sql->fetch(PDO::FETCH_ASSOC)) {
+
+                               $expansion=$row['expansion']==1? "擴充功能":"";
+                               $OnLineOrNot=$row['OnLineOrNot']==1 ? "使用中":"關閉";
+							?>
 							<tr>
 								<td><?php echo $i?></td>
 								<td><?php echo $row['box_name'] ?></td>
@@ -73,6 +79,8 @@
 								   	<li class="<?php echo $row['btn_type'];?>"><i class="fa <?php echo $row['btn_icon'];?>"></i> <?php echo $row['box_name'];?></li>
 								   </ul>
 								</td>
+								<td><?php echo $expansion;?></td>
+								<td><?php echo $OnLineOrNot;?></td>
 								<td><?php echo $row['StartDate']?></td>
 								
 

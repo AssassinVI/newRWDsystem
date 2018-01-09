@@ -50,7 +50,7 @@ if ($_GET) {
 			 		        <select id="sel_fun">
 			 		        	<option value="">-- 請選擇 --</option>
 			 		        	<?php
-                                   $sql_fun=$pdo->prepare("SELECT * FROM FunBox ORDER BY Tb_index ASC");
+                                   $sql_fun=$pdo->prepare("SELECT * FROM FunBox WHERE OnLineOrNot='1' ORDER BY Tb_index ASC");
                                    $sql_fun->execute();
                                    while ($row_fun=$sql_fun->fetch(PDO::FETCH_ASSOC)) {
                                    	echo '<option value="'.$row_fun['Tb_index'].'">'.$row_fun['box_name'].'</option>';
@@ -198,6 +198,7 @@ if ($_GET) {
     $(".iframe_box").fancybox({
        'padding'               :'0',
        'type'                  : 'iframe',
+       'width'           :'1280',
        afterClose: function () {
          funbox_all();
          return;

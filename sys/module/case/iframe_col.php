@@ -211,7 +211,7 @@ if($_POST){
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="col-lg-12">
-		<h2 class="text-primary"><?php echo $row_case['aTitle'];?>-基本圖文</h2>
+		<h2 class="text-primary"><?php echo $row_case['aTitle'];?>-多段圖文</h2>
       
 	</div>
 	<div class="row">
@@ -226,27 +226,60 @@ if($_POST){
 			<div class="ibox-content">
 				<form id="fun_form" action="#" method="POST" class="form-horizontal" enctype='multipart/form-data'>
 				   <div class="form-group">
-              <label class="col-sm-2 control-label" for="play_speed">主標</label>
+              <label class="col-sm-2 control-label" for="aTitle">主標</label>
               <div class="col-sm-10">
-                <textarea id="play_speed" name="aTitle" class="form-control"><?php echo $row['aTitle'];?></textarea>
+                <input type="text" id="aTitle" name="aTitle[]" class="form-control" value="<?php echo $row['aTitle'];?>">
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="Title_two">副標</label>
               <div class="col-sm-10">
-                <textarea id="ckeditor" name="Title_two" class="form-control"><?php echo $row['Title_two'];?></textarea>
+                <input type="text" id="Title_two" name="Title_two[]" class="form-control" value="<?php echo $row['Title_two'];?>">
               </div>
             </div>
+
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="aPic">圖片上傳</label>
+              <div class="col-sm-10">
+                <input type="file" class="form-control" id="aPic[]" name="aPic" onchange="file_viewer_load_new(this,'#back_box')">
+              </div>
+            </div>
+
+            <div class="form-group">
+               <label class="col-md-2 control-label" ></label>
+               <div id="back_box" class="col-md-4">
+                
+              </div>
+            <?php if(!empty($row['aPic'])){
+               $aPic_url='../../../product_html/'.$_GET['Tb_index'].'/img/'.$row['aPic'];
+              ?>
+              <div  class="col-md-4">
+                 <div id="img_div" >
+                  <p>目前圖檔</p>
+                 <button type="button" id="one_del_img"> X </button>
+                  <img id="one_img" src="<?php echo $aPic_url;?>" alt="請上傳代表圖檔">
+                  <input type="hidden" value="<?php echo $row['aPic'];?>">
+                </div>
+              </div>
+            <?php }?>   
+            </div>
+
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="content">內容</label>
               <div class="col-sm-10">
-                <textarea id="ckeditor1" name="content" class="form-control"><?php echo $row['content'];?></textarea>
+                <textarea id="ckeditor1" name="content[]" class="form-control"><?php echo $row['content'];?></textarea>
               </div>
             </div>
 
-            <div class="form-group">
+
+
+            <!-- 關閉欄位 -->
+            <!-- 關閉欄位 -->
+            <!-- 關閉欄位 -->
+            <div style="display: none;" class="form-group">
               <label class="col-sm-2 control-label" for="base_img">圖片</label>
               <div class="col-sm-10">
                 <input type="file" class="form-control" id="base_img" name="base_img[]" multiple onchange="file_viewer_load_new(this,'#img_box')">
@@ -280,39 +313,15 @@ if($_POST){
             </div>
 
 
-            <div class="form-group">
-              <label class="col-sm-2 control-label" for="back_img">背景圖片</label>
-              <div class="col-sm-10">
-                <input type="file" class="form-control" id="back_img" name="back_img" onchange="file_viewer_load_new(this,'#back_box')">
-              </div>
-            </div>
-
-            <div class="form-group">
-               <label class="col-md-2 control-label" ></label>
-               <div id="back_box" class="col-md-4">
-                
-              </div>
-            <?php if(!empty($row['back_img'])){
-               $back_img_url='../../../product_html/'.$_GET['Tb_index'].'/img/'.$row['back_img'];
-              ?>
-              <div  class="col-md-4">
-                 <div id="img_div" >
-                  <p>目前圖檔</p>
-                 <button type="button" id="one_del_img"> X </button>
-                  <img id="one_img" src="<?php echo $back_img_url;?>" alt="請上傳代表圖檔">
-                  <input type="hidden" value="<?php echo $row['back_img'];?>">
-                </div>
-              </div>
-            <?php }?>   
-            </div>
+           
 
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="">圖文動畫效果</label>
               <div class="col-sm-3">
-                <input type="checkbox" id="txt_fadein" name="txt_fadein" value="1"> <label for="txt_fadein">文字特效</label><br>
+                <input type="checkbox" id="txt_fadein" name="txt_fadein[]" value="1"> <label for="txt_fadein">文字特效</label><br>
                 特效:
-                <select id="txt_fadein_type" name="txt_fadein_type" onchange="animate_select('txt_fadein_type')">
+                <select id="txt_fadein_type" name="txt_fadein_type[]" onchange="animate_select('txt_fadein_type')">
                                      <optgroup label="跳入系列">
                                      <option value="bounceIn">跳入</option>
                                      <option value="bounceInDown">跳入(下)</option>
@@ -349,9 +358,9 @@ if($_POST){
                                    </select>
               </div>
               <div class="col-sm-3">
-                <input type="checkbox" id="img_fadein" name="img_fadein" value="1"> <label for="img_fadein">圖片特效</label><br>
+                <input type="checkbox" id="img_fadein" name="img_fadein[]" value="1"> <label for="img_fadein">圖片特效</label><br>
                 特效:
-                <select id="img_fadein_type" name="img_fadein_type" onchange="animate_select('img_fadein_type')">
+                <select id="img_fadein_type" name="img_fadein_type[]" onchange="animate_select('img_fadein_type')">
                                    <optgroup label="跳入系列">
                                      <option value="bounceIn">跳入</option>
                                      <option value="bounceInDown">跳入(下)</option>
@@ -394,12 +403,7 @@ if($_POST){
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="col-sm-2 control-label" for="line_show">是否顯示分割線</label>
-              <div class="col-sm-10">
-                <input style="width: 20px; height: 20px;" id="line_show" name="line_show" type="checkbox" value="1" <?php echo $check=!isset($row['line_show']) || $row['line_show']==1 ? 'checked' : ''; ?>  />
-              </div>
-            </div>
+            
 
 
             <div class="form-group">
