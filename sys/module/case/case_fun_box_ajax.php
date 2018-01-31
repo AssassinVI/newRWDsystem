@@ -83,5 +83,10 @@
        //-- (未完) --
     }
   }
+  // ------------ 錨點名稱 -------------
+  elseif($_POST['type']=='anchor_name'){
+    $an_name=pdo_select("SELECT anchor_name FROM anchor_tb WHERE Tb_index=:Tb_index", ['Tb_index'=>$_POST['fun_id']]);
+    echo $an_name['anchor_name'];
+  }
  }
 ?>

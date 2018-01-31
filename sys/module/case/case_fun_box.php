@@ -242,9 +242,18 @@ if ($_GET) {
            $.each(data, function() {
               //-- 功能區塊 --
               var funbox=sel_FunBox(this['funbox_id']);
+              
+              // -- 錨點名稱 --
+              if (this['fun_id'].substr(0,2)=='an' ) { 
+                an_name= '：'+anchor_name(this['fun_id']); 
+              }
+              else{
+                an_name='';
+                
+              }
 
               var txt='<li class="'+funbox['btn_type']+'" id="'+this['Tb_index']+'">'
-                          + '<i class="fa '+funbox['btn_icon']+'"></i> '+funbox['box_name']
+                          + '<i class="fa '+funbox['btn_icon']+'"></i> '+funbox['box_name']+an_name
                                                  
                           + '<a href="#" title="'+funbox['box_name']+'" class="pull-right btn btn-xs btn-danger del_funbox">刪除</a>'
                           + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index='+this['case_id']+'&fun_id='+this['fun_id']+'&rel_id='+this['Tb_index']+'" class="pull-right btn btn-xs btn-primary iframe_box">編輯</a>'
@@ -265,7 +274,25 @@ if ($_GET) {
 
 
  
- 
+ // ------------ 錨點名稱 ------------
+ function anchor_name(fun_id) {
+   var name='';
+   $.ajax({
+     url: 'case_fun_box_ajax.php',
+     async: false,
+     type: 'POST',
+     data: {
+      type: 'anchor_name',
+      fun_id: fun_id
+    },
+     success:function (data) {
+       name=data;
+
+     }
+   });
+
+   return name;
+ }
 
 </script>
 <?php  include("../../core/page/footer02.php");//載入頁面footer02.php?>

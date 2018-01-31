@@ -4,7 +4,7 @@
  require_once '../../../../core/inc/security.php';
  $img_type=explode('.', $_FILES['upload']['name']); 
  $img_name='img'.date('YmdHis').rand(0,99).'.'.$img_type[1];
- $save_url='../../../../img/ckeditor/'.iconv("utf-8", "big5",$img_name );
+ $save_url='../../../../../product_html/'.$_GET['case_id'].'/img/'.iconv("utf-8", "big5",$img_name );
 
 $type=preg_replace('/^.*\.([^.]+)$/D', '$1', $_FILES['upload']['name']);
 
@@ -26,7 +26,7 @@ $type=preg_replace('/^.*\.([^.]+)$/D', '$1', $_FILES['upload']['name']);
  if (empty($_FILES['upload']['error'])) {
 
  	$CKEditorFuncNum = isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : 2;
-    $img_url='http://'.$_SERVER['HTTP_HOST'].'/newsite/sys/img/ckeditor/'.$img_name;
+    $img_url='http://'.$_SERVER['HTTP_HOST'].'/product_html/'.$_GET['case_id'].'/img/'.$img_name;
     echo "window.parent.CKEDITOR.tools.callFunction(". $CKEditorFuncNum .",'" . $img_url . "','');";
  }
  else{
