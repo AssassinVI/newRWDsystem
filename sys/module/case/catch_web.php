@@ -135,7 +135,11 @@
 			 <div class="ibox-title">
 			 	
 			 	<div class="ibox-tools">
-			 		      
+			 	    <form style="display: inline-block;" action="qr_code_excel.php" method="POST">
+			 	    	<button type="submit" class="btn btn-primary">下載Word檔</button>
+			 	       <input type="hidden" name="case_id" value="<?php echo $_GET['Tb_index'];?>">
+			 	       <input type="hidden" name="case_name" value="<?php echo $row_case['aTitle'];?>">
+			 	    </form>  
 			 	</div>
 			 </div>
 			<div class="ibox-content">

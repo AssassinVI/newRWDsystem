@@ -226,29 +226,29 @@ if($_POST){
 			<div class="ibox-content">
 				<form id="fun_form" action="#" method="POST" class="form-horizontal" enctype='multipart/form-data'>
 				   <div class="form-group">
-              <label class="col-sm-2 control-label" for="play_speed">主標</label>
-              <div class="col-sm-10">
+              <label class="col-sm-1 control-label" for="play_speed">主標</label>
+              <div class="col-sm-11">
                 <textarea id="play_speed" name="aTitle" class="form-control"><?php echo $row['aTitle'];?></textarea>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="col-sm-2 control-label" for="Title_two">副標</label>
-              <div class="col-sm-10">
+              <label class="col-sm-1 control-label" for="Title_two">副標</label>
+              <div class="col-sm-11">
                 <textarea id="ckeditor" name="Title_two" class="form-control"><?php echo $row['Title_two'];?></textarea>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="col-sm-2 control-label" for="content">內容</label>
-              <div class="col-sm-10">
+              <label class="col-sm-1 control-label" for="content">內容</label>
+              <div class="col-sm-11">
                 <textarea id="ckeditor1" name="content" class="form-control"><?php echo $row['content'];?></textarea>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="col-sm-2 control-label" for="base_img">圖片</label>
-              <div class="col-sm-10">
+              <label class="col-sm-1 control-label" for="base_img">圖片</label>
+              <div class="col-sm-11">
                 <input type="file" class="form-control" id="base_img" name="base_img[]" multiple onchange="file_viewer_load_new(this,'#img_box')">
               </div>
               

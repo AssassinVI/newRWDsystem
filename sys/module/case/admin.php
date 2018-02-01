@@ -118,7 +118,7 @@ if ($_GET) {
                                 
                                 <a class="btn btn-default btn-sm iframe_box" href="catch_web.php?Tb_index=<?php echo $row['Tb_index'];?>"><i class="fa fa-globe"></i> 網址</a>
                                 
-                                <a class="btn btn-default btn-sm" href="#"><i class="fa fa-line-chart"></i> 分析</a>
+                                <a class="btn btn-default btn-sm" href="analytics.php?MT_id=<?php echo $_GET['MT_id']?>&Tb_index=<?php echo $row['Tb_index'];?>"><i class="fa fa-line-chart"></i> 分析</a>
                                 
 								<a class="none_420 btn btn-default btn-sm" href="manager.php?MT_id=<?php echo $_GET['MT_id']?>&Tb_index=<?php echo $row['Tb_index'];?>" ><i class="fa fa-pencil-square" aria-hidden="true"></i>編輯</a>
 								
