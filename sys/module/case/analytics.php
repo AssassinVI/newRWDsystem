@@ -12,12 +12,22 @@
 if ($_GET) {
  	$where=['Tb_index'=>$_GET['Tb_index']];
  	$row=pdo_select('SELECT * FROM google_analytics WHERE Tb_index=:Tb_index', $where);	
+
+  $row_name=pdo_select("SELECT aTitle FROM build_case WHERE Tb_index=:Tb_index", $where);
 }
 ?>
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
+    <div class="col-lg-12">
+      <h2 class="text-primary">GOOGLE分析 列表 - <?php echo $row_name['aTitle'];?></h2>
+      <p>本頁面列出各建案常用分析圖表</p>
+       <div class="new_div">
+
+          
+      </div>
+    </div>
 		<div class="col-lg-4">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">

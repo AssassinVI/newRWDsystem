@@ -35,7 +35,7 @@ if ($_GET) {
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="col-lg-12">
-		<h2 class="text-primary">功能區塊列表</h2>
+		<h2 class="text-primary">功能區塊列表 - <?php echo $row_name['aTitle'];?></h2>
 		<p class="text-danger">選擇一個功能區塊，開始編輯</p>
 	   <div class="new_div">
 
@@ -45,7 +45,6 @@ if ($_GET) {
 		<div class="col-md-5">
 			<div class="ibox float-e-margins">
 			 <div class="ibox-title">
-			 	<h5> <?php echo $row_name['aTitle'];?> </h5>
 			 	<div class="ibox-tools">
 			 		        <select id="sel_fun">
 			 		        	<option value="">-- 請選擇 --</option>

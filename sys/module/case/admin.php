@@ -206,11 +206,11 @@ if ($_GET) {
 						txt+=' <td>'+OnLineOrNot+'</td>';
 						txt+=' <td>'+version+'</td>';
 						txt+=' <td class="text-right">';
-						txt+='    <a class="btn btn-info btn-sm" href="case_fun_box.php?Tb_index='+this['Tb_index']+'"><i class="fa fa-cubes"></i> 功能區塊</a>｜';
-						txt+='    <a class="btn btn-default btn-sm iframe_box" href="catch_web.php?Tb_index='+this['Tb_index']+'"><i class="fa fa-globe"></i> 網址</a>｜';
-						txt+='    <a class="btn btn-default btn-sm" href="#"><i class="fa fa-line-chart"></i> 分析</a>｜';
-						txt+='    <a class="btn btn-default btn-sm" href="manager.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'" ><i class="fa fa-pencil-square" aria-hidden="true"></i>編輯</a>｜';
-						txt+='    <a class="btn btn-danger btn-sm" href="admin.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'" onclick="if (!confirm(\'確定要刪除 ['+this['aTitle']+'] ?\')) {return false;}"><i class="fa fa-trash" aria-hidden="true"></i>刪除</a>｜';
+						txt+='    <a class="btn btn-info btn-sm" href="case_fun_box.php?Tb_index='+this['Tb_index']+'"><i class="fa fa-cubes"></i> 功能區塊</a>';
+						txt+='    <a class="btn btn-default btn-sm iframe_box" href="catch_web.php?Tb_index='+this['Tb_index']+'"><i class="fa fa-globe"></i> 網址</a>';
+						txt+='    <a class="btn btn-default btn-sm" href="analytics.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'"><i class="fa fa-line-chart"></i> 分析</a>';
+						txt+='    <a class="btn btn-default btn-sm" href="manager.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'" ><i class="fa fa-pencil-square" aria-hidden="true"></i>編輯</a>';
+						txt+='    <a class="btn btn-danger btn-sm" href="admin.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'" onclick="if (!confirm(\'確定要刪除 ['+this['aTitle']+'] ?\')) {return false;}"><i class="fa fa-trash" aria-hidden="true"></i>刪除</a>';
 						txt+=' </td>';
 						txt+='</tr>';
 				       x++;
