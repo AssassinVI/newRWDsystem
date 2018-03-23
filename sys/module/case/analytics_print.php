@@ -5,11 +5,9 @@
 	.c3 svg{ font: 15px Microsoft JhengHei; }
     .c3-legend-item{ font-size: 16px; }
     #com_tb, #title_tb{ font-size: 18px; }
-  @media print{
-    .border-bottom, .new_div{ display: none; }
-    .col-lg-4{ width: 33.33333%; float: left; }
-    .col-lg-6{ width: 600px; }
-  }
+    body.fixed-sidebar .navbar-static-side, body.canvas-menu .navbar-static-side, .border-bottom{ display: none; }
+    #page-wrapper{ margin:0 !important;   }
+
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -25,15 +23,14 @@ if ($_GET) {
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-xs-12">
       <h2 class="text-primary">GOOGLE分析 列表 - <?php echo $row_name['aTitle'];?></h2>
       <p>本頁面列出各建案常用分析圖表</p>
        <div class="new_div">
-         <a href="analytics_print.php?MT_id=<?php echo $_GET['MT_id'];?>&Tb_index=<?php echo $_GET['Tb_index'];?>" class="btn btn-default"><i class="fa fa-print"></i> 列印報表</a>
           
       </div>
     </div>
-		<div class="col-lg-4">
+		<div class="col-lg-4 col-xs-4">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>一周瀏覽人數
@@ -46,7 +43,7 @@ if ($_GET) {
                     </div>
 
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-4 col-xs-4">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>一個月瀏覽人數
@@ -59,7 +56,7 @@ if ($_GET) {
                     </div>
 
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-4 col-xs-4">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>總瀏覽人數
@@ -72,7 +69,7 @@ if ($_GET) {
                     </div>
 
 		</div>
-		<div class="col-lg-6">
+		<div class="col-lg-6 col-xs-6">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用者性別
@@ -86,7 +83,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6">
+		<div class="col-lg-6 col-xs-6">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用者年齡
@@ -100,7 +97,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6">
+		<div class="col-lg-6 col-xs-6">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用的媒體
@@ -114,7 +111,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6">
+		<div class="col-lg-6 col-xs-6">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用的功能鈕
@@ -130,7 +127,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6">
+		<div class="col-lg-6 col-xs-6">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>流量來源
@@ -146,7 +143,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6">
+		<div class="col-lg-6 col-xs-6">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>地區使用人數
@@ -172,7 +169,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-12">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>各年齡層平均停留網站時間
@@ -188,7 +185,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-12">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>每日使用人數

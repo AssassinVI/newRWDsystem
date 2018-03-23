@@ -35,7 +35,7 @@ $company = pdo_select("SELECT * FROM company_base WHERE webLang='tw'", 'no');
      <style type="text/css">
         body, div, h1, h2, h3, h4, h5, p, a, li, span{ font-family: Microsoft JhengHei; }
      	.close_btn{ position: absolute; bottom: 0px; right: 15px; border: 0px; }
-        .new_div{ position: absolute; right: 0px; bottom: 0px; }
+        .new_div{ position: absolute; right: 15px; bottom: 0px; }
         .twzipcode{ display: inline-block; }
         .twzipcode input, .twzipcode select ,.adds{ font-size: 14px; padding: 5px; border: 1px solid #d6d6d6; }
         .adds{ width: 300px; }

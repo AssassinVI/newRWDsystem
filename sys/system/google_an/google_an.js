@@ -20,7 +20,7 @@ function google_an_all(view_id, case_id) {
 	//---- 流量來源 ----
 	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:sourceMedium', 'src');
 	//---- 地區 ----
-	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:city', 'city');
+	queryReports(view_id, '2016-04-01', 'today', 'ga:sessions', 'ga:region', 'city');
 	//---- 網站停留時間-年齡層 ----
 	queryReports(view_id, '2016-04-01', 'today', 'ga:avgTimeOnPage', 'ga:userAgeBracket', 'timeOnSite_years') ;
 	//---- 每日瀏覽人數 ----

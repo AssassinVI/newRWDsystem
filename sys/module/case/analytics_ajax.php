@@ -60,7 +60,7 @@
 
  	    $tw_name=explode(' ', $city_name[$i]); 
  	  	
- 	  	$taiwan_name=pdo_select("SELECT tw_name FROM taiwan_area WHERE en_name=:en_name LIMIT 0,1", ['en_name'=>$tw_name[0]]);
+ 	  	$taiwan_name=pdo_select("SELECT tw_name FROM taiwan_area WHERE en_name LIKE :en_name LIMIT 0,1", ['en_name'=>'%'.$tw_name[0].'%']);
  	  	if (!empty($taiwan_name['tw_name']) && $city_num[$i]>5) {
  	  		$city_name[$i]=$taiwan_name['tw_name'];
  	  	}
