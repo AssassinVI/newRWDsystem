@@ -62,13 +62,13 @@ if ($_GET) {
 			 		        	?>
 
 			 		        </select>
-			 		        <button id="sort_btn" type="button" class="btn btn-default">
+			 		       <!--  <button id="sort_btn" type="button" class="btn btn-default">
 			 		        <i class="fa fa-sort-amount-desc"></i> 更新排序</button>
 
-			 			    <a href="manager.php?MT_id=<?php echo $_GET['MT_id'];?>">
+			 			    <a href="manager.php?MT_id=<?php //echo $_GET['MT_id'];?>">
 			 		        <button type="button" class="btn btn-success">
 			 		        <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
-			 		        </a>
+			 		        </a> -->
 			 	</div>
 			 </div>
 			<div class="ibox-content">
@@ -114,12 +114,8 @@ if ($_GET) {
 
 								<td class="text-right">
                                 
-								<a class="none_420 btn btn-default btn-sm" href="manager.php?MT_id=<?php echo $_GET['MT_id']?>&Tb_index=<?php echo $row['Tb_index'];?>" ><i class="fa fa-pencil-square" aria-hidden="true"></i>編輯</a>
-								
-								<a class="none_420 btn btn-danger btn-sm" href="admin.php?MT_id=<?php echo $_GET['MT_id']?>&Tb_index=<?php echo $row['Tb_index'];?>" 
-								   onclick="if (!confirm('確定要刪除 [<?php echo $row['aTitle']?>] ?')) {return false;}"><i class="fa fa-trash" aria-hidden="true"></i>刪除</a>
-
-					
+                                <a class="btn btn-default btn-sm iframe_box" href="catch_web.php?Tb_index=<?php echo $row['Tb_index'];?>"><i class="fa fa-globe"></i> 網址</a>
+                                
 								</td>
 							</tr>
 						<?php $i++; }?>
@@ -200,8 +196,7 @@ if ($_GET) {
 						txt+=' <td>'+OnLineOrNot+'</td>';
 						txt+=' <td>'+version+'</td>';
 						txt+=' <td class="text-right">';
-						txt+='    <a class="btn btn-default btn-sm" href="manager.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'" ><i class="fa fa-pencil-square" aria-hidden="true"></i>編輯</a>';
-						txt+='    <a class="btn btn-danger btn-sm" href="admin.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'" onclick="if (!confirm(\'確定要刪除 ['+this['aTitle']+'] ?\')) {return false;}"><i class="fa fa-trash" aria-hidden="true"></i>刪除</a>';
+						txt+='    <a class="btn btn-default btn-sm iframe_box" href="catch_web.php?Tb_index='+this['Tb_index']+'"><i class="fa fa-globe"></i> 網址</a>';
 						txt+=' </td>';
 						txt+='</tr>';
 				       x++;
