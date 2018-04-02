@@ -130,15 +130,14 @@ function bar_tree_tb($Tb_index, $Mod_code, $MT_Name, $is_data) {
 }
 ?>
 
+
+                         <?php if ($_SESSION['admin_per'] == 'admin') {?>
                             <li class="landing_link">
                                 <a href="../../system/contact/admin.php">
                                     <i class="fa fa-info-circle"></i>
                                     <span class="nav-label">公司基本資料設定</span>
                                 </a>
                             </li>
-
-
-                         <?php if ($_SESSION['admin_per'] == 'admin') {?>
                             <li class="special_link">
                                 <a href="#">
                                     <i class="fa fa-cog"></i>
@@ -196,6 +195,17 @@ function bar_tree_tb($Tb_index, $Mod_code, $MT_Name, $is_data) {
 // echo '</ul>';
 ?>
 
+                    </li>
+                    <li>
+                        <?php 
+                          if($_SESSION['admin_per']=='admin'){
+                            echo '<b>管理者</b>';
+                          }
+                          else{
+                            echo "<b>使用者：".$_SESSION['mem_name']."</b>";
+                          }
+                        ?>
+                        
                     </li>
                     <li>
                         <a href="../../login.php?login=out" onclick="if (!confirm('是否要登出?')) {return false;}">

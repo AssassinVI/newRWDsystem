@@ -57,7 +57,9 @@ if ($_GET) {
                                    $sql_com=$pdo->prepare("SELECT * FROM company ORDER BY Tb_index ASC");
                                    $sql_com->execute();
                                    while ($row_com=$sql_com->fetch(PDO::FETCH_ASSOC)) {
-                                   	echo '<option value="'.$row_com['Tb_index'].'">'.$row_com['com_name'].'</option>';
+                                   	if ($_SESSION['admin_per']=='admin' || in_array($row_com['Tb_index'], $_SESSION['group_com'])) {
+                                   		echo '<option value="'.$row_com['Tb_index'].'">'.$row_com['com_name'].'</option>';
+                                   	}
                                    }
 			 		        	?>
 
@@ -90,6 +92,8 @@ if ($_GET) {
 
 						<?php $i=1; while ($row=$sql->fetch(PDO::FETCH_ASSOC)) {
 
+							if($_SESSION['admin_per']=='admin' || in_array($row['Tb_index'], $_SESSION['group_case'])){
+
                               $OnLineOrNot=$row['OnLineOrNot']=='1' ? '啟用' : '停用';
 
                               switch ($row['version']) {
@@ -119,7 +123,12 @@ if ($_GET) {
 					
 								</td>
 							</tr>
-						<?php $i++; }?>
+						<?php 
+ 
+						    $i++; 
+                          }
+					    }
+					     ?>
 						</tbody>
 					</table>
 				</div>

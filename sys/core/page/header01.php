@@ -5,6 +5,16 @@ include "../../core/inc/security.php"; //載入安全設定
 ?>
 <?php
 $company = pdo_select("SELECT * FROM company_base WHERE webLang='tw'", 'no');
+
+$protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
+$URL = $protocol.'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+//-- 阻擋無權限進入 --
+if ($_SESSION['admin_per']!='admin') {
+   if (strpos($URL, 'Dashboard')===false && !in_array($_GET['MT_id'], $_SESSION['group'])) {
+       location_up('back', '抱歉，您無使用權限!!');
+   }
+}
 ?>
 <!DOCTYPE html>
 <html>

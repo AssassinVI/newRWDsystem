@@ -59,15 +59,18 @@ if ($_POST) {
            
             
 			$group_where=array("Tb_index"=>$admin['admin_per']);
-			$group=pdo_select("SELECT Permissions FROM sysAdminGroup WHERE Tb_index=:Tb_index", $group_where);
+			$group=pdo_select("SELECT * FROM sysAdminGroup WHERE Tb_index=:Tb_index", $group_where);
 			$group_array=explode(',', $group['Permissions']);
 
 			location_up('module/Dashboard/index.php', '歡迎' . $admin['name'] . '登入');
 			//登入密鑰
 			login_key($admin['Tb_index']);
 			$_SESSION['admin_index'] = $admin['Tb_index'];
+            $_SESSION['mem_name'] = $admin['name'];
 			$_SESSION['admin_per'] = $admin['admin_per'];
 			$_SESSION['group']=$group_array;
+            $_SESSION['group_com']=explode(',', $group['company_id']);
+            $_SESSION['group_case']=explode(',', $group['case_id']);
 		}
 	}
 }

@@ -50,7 +50,10 @@ if ($_GET) {
                                      $sql=$pdo->prepare("SELECT Tb_index, aTitle FROM build_case WHERE OnLineOrNot='1' AND google_view_code!='' ORDER BY OrderBy DESC, Tb_index DESC");
                                      $sql->execute();
                                      while ($row=$sql->fetch(PDO::FETCH_ASSOC)) {
+
+                                      if ($_SESSION['admin_per']=='admin' || in_array($row['Tb_index'], $_SESSION['group_case'])){
                                         echo ' <option value="'.$row['Tb_index'].'">'.$row['aTitle'].'</option>';
+                                      }
                                      }
 
                                     ?>
