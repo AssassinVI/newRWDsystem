@@ -4,26 +4,32 @@
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
+
 if ($_GET) {
+
+     $case_name=pdo_select("SELECT aTitle FROM build_case WHERE Tb_index=:Tb_index", ['Tb_index'=>$_GET['case_id']]);
+
  	$where=array('Tb_index'=>$_GET['Tb_index']);
- 	$row=pdo_select('SELECT * FROM appContacts WHERE Tb_index=:Tb_index', $where);
- 	$backMsg_readyonly=$row['process']=='0' ? '' : 'readonly';
+ 	$row=pdo_select('SELECT * FROM call_record_tb WHERE Tb_index=:Tb_index', $where);
+ 	$backMsg_readyonly=$row['is_process']=='0' ? '' : 'readonly';
 }
 
 if ($_POST) {
-	$process=empty($_POST['process']) ? '0' : '1';
-	$param=array('process'=>$process, 'backMsg'=>$_POST['backMsg']);
+    $case_name=pdo_select("SELECT aTitle FROM build_case WHERE Tb_index=:Tb_index", ['Tb_index'=>$_POST['case_id']]);
+
+	$is_process=empty($_POST['is_process']) ? '0' : '1';
+	$param=array('is_process'=>$is_process, 'reply'=>$_POST['reply']);
     $where=array('Tb_index'=>$_POST['Tb_index']);
-    pdo_update('appContacts', $param, $where);
+    pdo_update('call_record_tb', $param, $where);
     
-    if ($process=='1') {
-    	    $name_data=array($_POST['UserName']);
-            $adds_data=array($_POST['UserMail']);
-            send_Mail('福敏企業有限公司客服', 'server@fmtoto.com.tw', '福敏企業有限公司Q&A', $_POST['backMsg'], $name_data, $adds_data);
+    if ($is_process=='1') {
+    	    $name_data=array($_POST['use_name']);
+            $adds_data=array($_POST['use_mail']);
+            send_Mail($case_name['aTitle'].'系統', 'server@srl.tw', $case_name['aTitle'].'-客服回信', $_POST['reply'], $name_data, $adds_data);
     }
 
 
-    location_up('admin.php?MT_id='.$_POST['mt_id'],'成功更新');
+    location_up('mail_admin.php?case_id='.$_POST['case_id'],'成功更新');
 }
 
 
@@ -35,7 +41,7 @@ if ($_POST) {
 		<div class="col-lg-9">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<header>Q&A表單
+					<header><?php echo $case_name['aTitle'];?>回信表單
 					</header>
 				</div><!-- /.panel-heading -->
 				<div class="panel-body">
@@ -46,30 +52,38 @@ if ($_POST) {
 								<input type="text" readonly class="form-control" id="Tb_index" name="Tb_index" value="<?php echo $row['Tb_index'];?>">
 							</div>
 
-							<label class="col-md-2 control-label" for="UserName">姓名:</label>
+							<label class="col-md-2 control-label" for="use_name">姓名:</label>
 							<div class="col-md-4">
-								<input type="text" readonly class="form-control" id="UserName" name="UserName" value="<?php echo $row['UserName'];?>">
+								<input type="text" readonly class="form-control" id="use_name" name="use_name" value="<?php echo $row['use_name'];?>">
 							</div>
 						</div>
 						<div class="form-group">
 						
-							<label class="col-md-2 control-label" for="UserMail">E-mail:</label>
+							<label class="col-md-2 control-label" for="use_mail">E-mail:</label>
 							<div class="col-md-4">
-								<input type="text" readonly class="form-control" id="UserMail" name="UserMail" value="<?php echo $row['UserMail'];?>">
+								<input type="text" readonly class="form-control" id="use_mail" name="use_mail" value="<?php echo $row['use_mail'];?>">
 							</div>
 
-							<label class="col-md-2 control-label" for="UserPhone">手機號碼:</label>
+							<label class="col-md-2 control-label" for="phone">聯絡電話:</label>
 							<div class="col-md-4">
-								<input type="text" disabled class="form-control" id="UserPhone" name="UserPhone" value="<?php echo $row['UserPhone'];?>">
+								<input type="text" disabled class="form-control" id="phone" name="phone" value="<?php echo $row['phone'];?>">
+							</div>
+						</div>
+
+						<div class="form-group">
+						
+							<label class="col-md-2 control-label" for="call_title">主旨:</label>
+							<div class="col-md-10">
+								<input type="text" disabled class="form-control" id="call_title" name="call_title" value="<?php echo $row['call_title'];?>">
 							</div>
 						</div>
 
 
 					
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="UserMsg">訊息:</label>
+							<label class="col-md-2 control-label" for="call_content">訊息:</label>
 							<div class="col-md-10">
-								<textarea class="form-control" disabled id="UserMsg" name="UserMsg"><?php echo $row['UserMsg'];?></textarea>
+								<textarea class="form-control" disabled id="call_content" name="call_content" style="height: 150px;"><?php echo $row['call_content'];?></textarea>
 							</div>
 						</div>
 
@@ -77,20 +91,21 @@ if ($_POST) {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="ckeditor">回信:</label>
 							<div class="col-md-10">
-								<textarea class="form-control"  <?php echo $backMsg_readyonly;?> id="ckeditor" name="backMsg"><?php echo $row['backMsg']?></textarea>
+								<textarea class="form-control"  <?php echo $backMsg_readyonly;?> id="ckeditor" name="reply"><?php echo $row['reply']?></textarea>
 								<span>如需重新回信，請更新處理狀態為"未處理"</span>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="process">是否處理</label>
+							<label class="col-md-2 control-label" for="is_process">是否處理</label>
 							<div class="col-md-10">
-								<input style="width: 20px; height: 20px;" id="process" name="process" type="checkbox" value="1" <?php echo $check=!isset($row['process']) || $row['process']==1 ? 'checked' : ''; ?>  />
+								<input style="width: 20px; height: 20px;" id="is_process" name="is_process" type="checkbox" value="1" <?php echo $check=!isset($row['is_process']) || $row['is_process']==1 ? 'checked' : ''; ?>  />
 								<span>(打勾後更新，會隨即發送回信)</span>
 							</div>
 						</div>
                         
-						<input type="hidden" id="mt_id" name="mt_id" value="<?php echo $_GET['MT_id'];?>">
+						<input type="hidden" id="case_id" name="case_id" value="<?php echo $_GET['case_id'];?>">
+						<input type="hidden" id="Tb_index" name="Tb_index" value="<?php echo $_GET['Tb_index'];?>">
 					</form>
 				</div><!-- /.panel-body -->
 			</div><!-- /.panel -->

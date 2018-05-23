@@ -2,6 +2,7 @@
   <style type="text/css">
   	.panel-body a { padding: 10px; display: block; }
     i.fa { display: block; font-size: 25px;}
+    body.fixed-sidebar .navbar-static-side, body.canvas-menu .navbar-static-side{display: none;}
     .md-skin .navbar-static-side, .border-bottom{display: none;}
     #page-wrapper{ margin:0px;  }
   </style>

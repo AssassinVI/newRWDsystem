@@ -157,7 +157,7 @@ if($_POST){
               <label class="col-sm-2 control-label" for="img_file">多圖檔</label>
               <div class="col-sm-6">
                 <input type="file" class="form-control" id="img_file" name="img_file[]" multiple onchange="file_viewer_load_new(this,'#img_box')">
-                <span class="text-danger">可批次上傳，以10張為單位</span>
+                <span class="text-danger">可批次上傳，以8張為單位</span>
               </div>
               
             </div>

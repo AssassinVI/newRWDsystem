@@ -152,6 +152,7 @@ if($_POST){
               <label class="col-sm-2 control-label" for="play_speed">延遲時間</label>
               <div class="col-sm-6">
                 <input type="text" class="form-control" id="play_speed" name="play_speed" value="<?php echo $row['play_speed'];?>">
+                <span >單位：毫秒</span>
               </div>
               
             </div>

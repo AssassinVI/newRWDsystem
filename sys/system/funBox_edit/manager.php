@@ -104,7 +104,7 @@ if ($_GET) {
 								<input type="text" class="form-control" name="btn_icon" value="<?php echo $row['btn_icon'];?>">
 							</div>
 							<div class="col-md-1">
-								<a href="icon.php" id="show-icon" class="btn btn-info iframe_box">圖示</a>
+								<a href="icon.php" id="show-icon" data-fancybox-type="iframe" class="btn btn-info iframe_box fancybox">圖示</a>
 							</div>
 						</div>
 
@@ -184,6 +184,8 @@ if ($_GET) {
           $('[name="btn_icon"]').change(function(event) {
           	$('#show_btn i').attr('class', 'fa '+$(this).val());
           });
+
+          
        
       });
 </script>

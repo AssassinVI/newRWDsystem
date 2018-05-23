@@ -8,7 +8,7 @@
 
   #txt_fadein_type{ display: none; }
   #img_fadein_type{ display: none; }
-	
+	#Animate_txt{ display: inline-block; }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
