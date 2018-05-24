@@ -6,19 +6,40 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 	//------------ 基本圖文 --------------
 	if ($fun_type=='bs') {
 		$base_row=pdo_select("SELECT * FROM base_word WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+
+    //-- 判斷是否啟用 --
+    if (empty($base_row['Tb_index'])) { continue; }
+
 		$base_img=explode(',', $base_row['base_img']);
+    $base_img_ph=explode(',', $base_row['base_img_ph']);
 		$txt_fadein=empty($base_row['txt_fadein']) ? '': 'wow '.$base_row['txt_fadein'];
 		$img_fadein=empty($base_row['img_fadein']) ? '': 'wow '.$base_row['img_fadein'];
-		for ($j=0; $j <count($base_img)-1 ; $j++) { 
-			echo '
-			 <div class="col-md-12 '.$img_fadein.'">
-    			<img src="img/'.$base_img[$j].'" alt="">
-    		</div>';
-		}
+  
+   echo '<div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 no-gutters">';
+
+    if (wp_is_mobile() && !empty($base_row['base_img_ph'])) {
+      for ($j=0; $j <count($base_img_ph)-1 ; $j++) { 
+      echo '
+       <div class="col-md-12 '.$img_fadein.'">
+          <img src="img/'.$base_img_ph[$j].'" alt="">
+        </div>';
+     }
+    }
+    else{
+      for ($j=0; $j <count($base_img)-1 ; $j++) { 
+      echo '
+       <div class="col-md-12 '.$img_fadein.'">
+          <img src="img/'.$base_img[$j].'" alt="">
+        </div>';
+     }
+    }
+		
 
 		if (!empty($base_row['aTitle']) || !empty($base_row['Title_two']) || !empty($base_row['content'])) {
+
+      $back_img=empty($base_row['back_img']) ? '':'style="background: url(img/'.$base_row['back_img'].');"';
 			echo '
-		    <div class="col-md-12 con_txt">
+		    <div class="col-md-12 con_txt" '.$back_img.'>
     			<h1 class="'.$txt_fadein.'">'.$base_row['aTitle'].'</h1>
     			<h2 class="'.$txt_fadein.'">'.$base_row['Title_two'].'</h2>
     			<div>
@@ -26,12 +47,18 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
     			</div>
     		</div>';
 		}
+
+  echo '</div>';
 		
 	}
 
 	//----------- 幻燈片 -----------
 	elseif($fun_type=='ss'){
       $show_row=pdo_select("SELECT * FROM slideshow_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+
+      //-- 判斷是否啟用 --
+      if (empty($show_row['Tb_index'])) { continue; }
+
       $show_img=explode(',', $show_row['show_img']);
       $show_img_num=count($show_img)-1;
 
@@ -99,6 +126,9 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 	elseif($fun_type=='yu'){
        $youtube_row=pdo_select("SELECT * FROM youtube_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
        
+       //-- 判斷是否啟用 --
+       if (empty($youtube_row['Tb_index'])) { continue; }
+       
        if ($youtube_row['video_type']=='0') {
        	    $you_adds=explode('v=', $youtube_row['you_adds']);
          	echo '
@@ -120,6 +150,9 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 	//-------------- 圖片牆 ----------------
 	elseif($fun_type=='iw'){
        $img_wall_row=pdo_select("SELECT * FROM img_wall_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+
+       //-- 判斷是否啟用 --
+      if (empty($img_wall_row['Tb_index'])) { continue; }
 
        $img_file=explode(',', $img_wall_row['img_file']);
        $img_file_num=count($img_file)-1;
@@ -179,6 +212,9 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 	elseif($fun_type=='gm'){
        $gm_row=pdo_select("SELECT * FROM googlemap_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
 
+       //-- 判斷是否啟用 --
+      if (empty($gm_row['Tb_index'])) { continue; }
+
        echo '
        <div class="col-md-12 googleMap_div">';
 
@@ -198,6 +234,9 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 	//-------------- 聯絡我們 ----------------
 	elseif($fun_type=='ca'){
       $call_row=pdo_select("SELECT * FROM call_us_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+
+      //-- 判斷是否啟用 --
+      if (empty($call_row['Tb_index'])) { continue; }
 
       $send_name=explode(',', $call_row['re_name']);
       $send_mail=explode(',', $call_row['re_mail']);
@@ -373,6 +412,9 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
   elseif($fun_type=='an'){
      
      $anchor_row=pdo_select("SELECT * FROM anchor_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+     //-- 判斷是否啟用 --
+     if (empty($anchor_row['Tb_index'])) { continue; }
+     
      echo '<span id="'.$anchor_row['Tb_index'].'" class="anchor"></span>';
   }
 
@@ -381,6 +423,10 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
   elseif($fun_type=='ot'){
     
      $other_row=pdo_select("SELECT * FROM other_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+
+     //-- 判斷是否啟用 --
+     if (empty($other_row['Tb_index'])) { continue; }
+
      echo '<div class="col-md-12">';
      echo $other_row['content'];
      echo '</div>';

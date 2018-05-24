@@ -49,7 +49,7 @@ if ($_SESSION['admin_per']!='admin') {
         .twzipcode{ display: inline-block; }
         .twzipcode input, .twzipcode select ,.adds{ font-size: 14px; padding: 5px; border: 1px solid #d6d6d6; }
         .adds{ width: 300px; }
-            #one_img{ width: 150px; border:1px solid #d6d6d6; padding: 3px;}
+            #one_img{ height: 130px; border:1px solid #d6d6d6; padding: 3px;}
             #one_del_img, .one_del_img, #one_del_file,.one_del_file,#one_del_video, .one_del{ position: absolute; border: 0px; background-color: #ff243b; color: #fff; box-shadow: 1px 1px 2px rgba(0,0,0,0.5); z-index: 1;}
         .img_check{ position: absolute; top: 40px; left: 75px; background: rgba(26,179,148,1); padding: 7px 10px; border-radius: 50px; font-size: 15px; color: #ffffff; display:none; }
         .sort_in{ padding: 3px 5px; width: 40px; border-radius: 3px; border: 1px solid #b6b6b6; }
@@ -69,6 +69,15 @@ if ($_SESSION['admin_per']!='admin') {
         .agile-list li.success-element{ background: #d6fff3; }
         .agile-list li.info-element{ background: #ddeffd; }
         .agile-list li.danger-element{ background: #fce3ec; }
+        
+
+        /*多圖檔*/
+        .oneFile_div{ float: left; position: relative; margin: 5px; border: 1px solid #ccc; }
+        .one_del_div{ position: absolute; top: 0; right: 0; }
+        .other_div{ float: left; }
+        .old_file{ width: 200px;  height: 130px; float: left;}
+        .old_file p{ text-align: center; background: #ccc; }
+        .mark_num{ position: absolute; top: 0; left: 0; padding: 1px 5px; background: #fff; border: 1px solid #e5e5e5; }
 
         audio{ height: 52px; }
 

@@ -325,6 +325,47 @@ function GOOGLE_recaptcha($secretKey, $recaptcha_response, $location)
 
 
 
+//--------------------- 手機判斷 -------------------
+function check_mobile(){
+    $regex_match="/(nokia|iphone|android|motorola|^mot\-|softbank|foma|docomo|kddi|up\.browser|up\.link|";
+    $regex_match.="htc|dopod|blazer|netfront|helio|hosin|huawei|novarra|CoolPad|webos|techfaith|palmsource|";
+    $regex_match.="blackberry|alcatel|amoi|ktouch|nexian|samsung|^sam\-|s[cg]h|^lge|ericsson|philips|sagem|wellcom|bunjalloo|maui|";
+    $regex_match.="symbian|smartphone|midp|wap|phone|windows ce|iemobile|^spice|^bird|^zte\-|longcos|pantech|gionee|^sie\-|portalmmm|";   
+    $regex_match.="jig\s browser|hiptop|^ucweb|^benq|haier|^lct|opera\s*mobi|opera\*mini|320x320|240x320|176x220";
+    $regex_match.=")/i";
+    return preg_match($regex_match, strtolower($_SERVER['HTTP_USER_AGENT']));
+}
+
+
+
+//--------------------- 平板手機判斷 -------------------
+function wp_is_mobile() {
+  static $is_mobile = null;
+ 
+  if ( isset( $is_mobile ) ) {
+    return $is_mobile;
+  }
+ 
+  if ( empty($_SERVER['HTTP_USER_AGENT']) ) {
+    $is_mobile = false;
+  } elseif ( strpos($_SERVER['HTTP_USER_AGENT'], 'Mobile') !== false // many mobile devices (all iPhone, iPad, etc.)
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'Android') !== false
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'Silk/') !== false
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'Kindle') !== false
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'BlackBerry') !== false
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mini') !== false
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mobi') !== false ) {
+      $is_mobile = true;
+  } else {
+    $is_mobile = false;
+  }
+ 
+  return $is_mobile;
+}
+
+
+
+
 //-------------------------------- 驗證 input 排除特殊符號 ---------------------------------------------
 function test_input($GET)
 {

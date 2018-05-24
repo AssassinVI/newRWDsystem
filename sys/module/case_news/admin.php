@@ -118,7 +118,7 @@ if ($_GET) {
 
 								<td class="text-right">
                                 
-                                <a class="btn btn-default btn-sm" href="mail_admin.php?case_id=<?php echo $row['Tb_index'];?>"><i class="fa fa-envelope-o"></i> 信件</a>
+                                <a class="btn btn-info btn-sm" href="news_admin.php?case_id=<?php echo $row['Tb_index'];?>"><i class="fa fa-newspaper-o"></i> 新聞</a>
                                 
 								</td>
 							</tr>
@@ -200,7 +200,7 @@ if ($_GET) {
 						txt+=' <td>'+OnLineOrNot+'</td>';
 						txt+=' <td>'+version+'</td>';
 						txt+=' <td class="text-right">';
-						txt+='    <a class="btn btn-default btn-sm iframe_box" href="mail_admin.php?case_id='+this['Tb_index']+'"><i class="fa fa-envelope-o"></i> 信件</a>';
+						txt+='    <a class="btn btn-info btn-sm iframe_box" href="news_admin.php?case_id='+this['Tb_index']+'"><i class="fa fa-newspaper-o"></i> 新聞</a>';
 						txt+=' </td>';
 						txt+='</tr>';
 				       x++;

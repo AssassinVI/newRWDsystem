@@ -51,9 +51,11 @@ if($_POST){
         $video_file='';
       }
 
+    $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
+
     //---- 更新關聯資料表 -----
-    pdo_update('Related_tb', ['fun_id'=>$Tb_index], ['Tb_index'=>$_GET['rel_id']]);
-    
+    pdo_update('Related_tb', ['fun_id'=>$Tb_index, 'OnLineOrNot'=>$OnLineOrNot], ['Tb_index'=>$_GET['rel_id']]);
+
     $you_adds=empty($_POST['you_adds'])? '':$_POST['you_adds'];
     $autoPlay=empty($_POST['autoPlay'])? 0:1;
     $param=[
@@ -64,7 +66,8 @@ if($_POST){
        'you_adds'=>$you_adds,
        'video_file'=>$video_file,
        'autoPlay'=>$autoPlay,
-       'StartDate'=>date('Y-m-d H:i:s')
+       'StartDate'=>date('Y-m-d H:i:s'),
+       'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_insert('youtube_tb', $param);
     location_up('iframe_you.php?Tb_index='.$_GET['Tb_index'].'&fun_id='.$Tb_index, '功能已成功新增');
@@ -112,6 +115,9 @@ if($_POST){
       
     ];
     pdo_update('youtube_tb', $param, ['Tb_index'=>$Tb_index]);
+
+    //---- 更新關聯資料表 -----
+    pdo_update('Related_tb', ['OnLineOrNot'=>$OnLineOrNot], ['fun_id'=>$Tb_index]);
     location_up('iframe_you.php?Tb_index='.$_GET['Tb_index'].'&fun_id='.$Tb_index, '功能已更新');
   }
   

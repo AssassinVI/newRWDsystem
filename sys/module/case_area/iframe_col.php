@@ -68,10 +68,11 @@ if($_POST){
     //     }
     // }
 
-    //---- 更新關聯資料表 -----
-    pdo_update('Related_tb', ['fun_id'=>$Tb_index], ['Tb_index'=>$_GET['rel_id']]);
 
     $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
+
+    //---- 更新關聯資料表 -----
+    pdo_update('Related_tb', ['fun_id'=>$Tb_index, 'OnLineOrNot'=>$OnLineOrNot], ['Tb_index'=>$_GET['rel_id']]);
     
     $param=[
        'Tb_index'=>$Tb_index,
@@ -129,6 +130,9 @@ if($_POST){
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('col_word', $param, ['Tb_index'=>$Tb_index]);
+
+    //---- 更新關聯資料表 -----
+    pdo_update('Related_tb', ['OnLineOrNot'=>$OnLineOrNot], ['fun_id'=>$Tb_index]);
     location_up('iframe_col.php?Tb_index='.$_GET['Tb_index'].'&fun_id='.$Tb_index, '功能已更新');
   }
   
