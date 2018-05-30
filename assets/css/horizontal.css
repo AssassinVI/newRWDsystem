@@ -95,11 +95,14 @@
         #gm_work_btn{ border-right: 1px solid #ccc; }
         #gm_school_btn{ border-right: 1px solid #ccc; }
         #gm_fun_btn{  }
+        
+        .fancybox-slide--iframe{ padding: 0px; }
+        .fancybox-slide--iframe .fancybox-content{ width: 100%; height : 100%; }
 
 
         /*----------- Footer ----------*/
         .footer_div{ text-align: center; padding: 20px; color: #fff; background: #4b4b4b; font-size: 1.4rem; }
-        .footer_adv{ margin: 0; margin-top: 15px; }
+        .footer_adv{ margin: 0; margin-top: 15px; display: block !important; }
         .footer_adv a{ font-size: 30px; color: #5cbaba; }
         .footer_adv a img{ width: 40px; }
       
@@ -152,10 +155,11 @@
          .txt_big_btn a{ display: inline-block; padding: 3px 6px; font-size: 19px; color: #3c3c3c; }
 
          /*bottom 工具欄*/
-         .bottom_tool{ position: fixed; bottom: 0; left: 0; z-index: 10; background: #fff; width: 100%;  padding: 7px 0px 3px 0px; display: flex; align-items: center; justify-content: space-around; }
+         .bottom_tool{ position: fixed; bottom: 0; left: 0; z-index: 101; background: #fff; width: 100%;  padding: 7px 0px 5px 0px; display: flex; align-items: center; justify-content: space-around; }
          .bottom_tool a{ text-align: center;  color: #000;}
          .bottom_tool a span{ display: inline-block; width: 25px; height: 24px; background-color: #fff; border-radius: 4px; background-repeat: no-repeat; background-position: center;}
-         .more_tool_btn { position: absolute; right: 5vw; bottom: 8vh; display: none;}
+         .more_tool_div{ position: absolute; width: 100%; top: -60px; left: 0; height: 60px; padding: 8px; background-color: #ececec; text-align: right; display: none;}
+         .more_tool_btn { position: relative; display: inline-block; margin: 0px 8px;}
 
 
          /*內容*/
@@ -168,7 +172,7 @@
          .con_txt p{ font-size: 1.2rem; line-height: 1.8em; text-align: justify; }
 
          /*新聞內容*/
-         #news_div{ position: fixed; height: 100%; overflow: auto; top: 0; background: #fff; box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.3);}
+         #news_div{ position: fixed; height: 100%; overflow: auto; top: 0; background: #fff; box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);}
          .news_list ul{ list-style: none; padding: 20px;  }
          .news_list ul li{ margin-bottom: 25px; border-bottom: 1px solid #ccc; }
          .news_list ul li span{ text-align: center; display: inline-block; padding: 4px; box-shadow: 4px 4px 0px #e8e8e8;}
@@ -228,6 +232,11 @@
           .footer_div span{ font-size: 1rem; display: block; margin-bottom: 5px; }
 
         }
+
+        /*Iphone X*/
+        @media (max-width: 420px) and (min-height: 800px ){
+          .bottom_tool{ padding: 7px 0px 20px 0px; }
+        }
         
         /*直式*/
         @media screen and (orientation: portrait) and (max-width: 768px){
@@ -237,7 +246,7 @@
         /*橫式*/
         @media screen and (orientation: landscape) and (max-width: 768px){
             body{ overflow: hidden; }
-            .landscape_div{ display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 100; color: #fff;}
+            .landscape_div{ display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 1000; color: #fff;}
             .landscape_div div{text-align: center; margin: auto; height: 135px; width: 100%; position: absolute; top: 0; bottom: 0; }
             .landscape_div div .landscape{ font-size: 80px; transform: rotate(270deg); margin-right: 20px; vertical-align: middle; }
             .landscape_div div .portrait{ font-size: 80px; }

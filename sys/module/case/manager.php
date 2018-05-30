@@ -1,6 +1,8 @@
 <?php include("../../core/page/header01.php");//載入頁面heaer01 ?>
 <style type="text/css">
 	.fb_fans{ display: none; }
+	#ph_tool_type_exp img{ width: 100%; height: 750px; }
+
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -81,6 +83,7 @@ if ($_POST) {
 	$param=  [          'Tb_index'=>$Tb_index,
 			              'com_id'=>$_POST['com_id'],
 			              'aTitle'=>$_POST['aTitle'],
+			        'ph_tool_type'=>$_POST['ph_tool_type'],
 			             'version'=>$_POST['version'],
 			              'format'=>$_POST['format'],
 			            'line_txt'=>$_POST['line_txt'],
@@ -165,6 +168,7 @@ if ($_POST) {
     $param=[  
 			              'com_id'=>$_POST['com_id'],
 			              'aTitle'=>$_POST['aTitle'],
+			        'ph_tool_type'=>$_POST['ph_tool_type'],
 			             'version'=>$_POST['version'],
 			              'format'=>$_POST['format'],
 			            'line_txt'=>$_POST['line_txt'],
@@ -254,6 +258,72 @@ if ($_GET) {
 								</select>
 							</div>
 						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="ph_tool_type">手機功能欄樣式</label>
+							<div class="col-md-4">
+								<select name="ph_tool_type" id="ph_tool_type" class="form-control">
+									<option value="hor1">橫式造型1</option>
+									<option value="hor2">橫式造型2</option>
+									<option value="hor3">橫式造型3</option>
+									<option value="hor4">橫式造型4</option>
+									<option value="ver1">直式造型1</option>
+									<option value="ver2">直式造型2</option>
+									<option value="ver3">直式造型3</option>
+									<option value="ver4">直式造型4</option>
+									<option value="ver5">直式造型5</option>
+									<option value="ver6">直式造型6</option>
+								</select>
+							</div>
+							<label class="col-md-2 control-label" for="ad_making">造型參考</label>
+							<div class="col-md-4">
+								 <a href="#ph_tool_type_exp" class="btn btn-info fancybox">參考圖示</a>
+
+								 <div style="display: none; " id="ph_tool_type_exp" class="row no-gutters">
+								 	<div class="col-md-3">
+								 		<h3>橫式造型1</h3>
+								 		<img src="../../img/phToolType/hor1.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>橫式造型2</h3>
+								 		<img src="../../img/phToolType/hor2.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>橫式造型3</h3>
+								 		<img src="../../img/phToolType/hor3.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>橫式造型4</h3>
+								 		<img src="../../img/phToolType/hor4.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>直式造型1</h3>
+								 		<img src="../../img/phToolType/ver1.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>直式造型2</h3>
+								 		<img src="../../img/phToolType/ver2.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>直式造型3</h3>
+								 		<img src="../../img/phToolType/ver3.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>直式造型4</h3>
+								 		<img src="../../img/phToolType/ver4.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>直式造型5</h3>
+								 		<img src="../../img/phToolType/ver5.JPG" alt="">
+								 	</div>
+								 	<div class="col-md-3">
+								 		<h3>直式造型6</h3>
+								 		<img src="../../img/phToolType/ver6.JPG" alt="">
+								 	</div>
+								 </div>
+							</div>
+						</div>
+
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="aPic">專案LOGO</label>
 							<div class="col-md-10">
@@ -453,6 +523,15 @@ if ($_GET) {
 <?php  include("../../core/page/footer01.php");//載入頁面footer02.php?>
 <script type="text/javascript">
 	$(document).ready(function() {
+
+    <?php 
+     if (!empty($row['ph_tool_type'])) {
+       echo "$('#ph_tool_type [value=\"".$row['ph_tool_type']."\"]').prop('selected', true);";
+     }
+    ?>
+
+
+
           $("#submit_btn").click(function(event) {
 
           	 if ($('[name="aPic"]').val()!='' && $('[name="aPic"]').val().search(/(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/i)==-1) {

@@ -40,7 +40,7 @@
   <link rel="stylesheet" type="text/css" href="../assets/js/plugins/fancybox/jquery.fancybox.min.css">
 	<style type="text/css">
     body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; }
-		#map{ width: 100%;height: 500px; margin-top: 45px; }
+		#map{ width: 100%;height: 800px; margin-top: 45px; }
     #detial{ width: 98%; margin: auto; }
     #title{ text-align: center; background-color: #373737; padding: 10px 0px; font-size: 20px; color: #fff; position: fixed; top: 0px; width: 100%; z-index: 1000;  box-shadow: 0px 2px 10px rgba(0,0,0,0.67);}
 

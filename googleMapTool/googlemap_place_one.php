@@ -103,7 +103,8 @@ $row=$sql_q->fetch(PDO::FETCH_ASSOC);
     right: 0px;
     z-index: 1000;
     font-size: 20px;
-    margin: 33px 20px; }
+    margin: 33px 20px; 
+    }
 
     .footer_btn a{     
     color: #483c37;
@@ -163,7 +164,7 @@ $row=$sql_q->fetch(PDO::FETCH_ASSOC);
     font-weight: 400;
     font-size: 25px;
    }
-   .footer_btn{ position: absolute; bottom: 0px; width: 100%; }
+   .footer_btn{ position: absolute; bottom: 0px; width: 100%; z-index: 100; }
    .footer_btn a img{ width: 25px; height: 20px; }
 
    .photo_div{ height: 45vh; }

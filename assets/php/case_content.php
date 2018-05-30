@@ -58,7 +58,10 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
       //-- 判斷是否啟用 --
       if (empty($show_row['Tb_index'])) { continue; }
-
+      //-- 手機圖 --
+      $show_img_ph=explode(',', $show_row['show_img_ph']);
+      $show_img_ph_num=count($show_img_ph)-1;
+      //-- 電腦圖 --
       $show_img=explode(',', $show_row['show_img']);
       $show_img_num=count($show_img)-1;
 
@@ -67,9 +70,18 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
           <div id="'.$fun_block_id[$i]['fun_id'].'" class="swiper-container">
               <div class="swiper-wrapper">';
 
-             for ($j=0; $j < $show_img_num; $j++) { 
-             	echo '<div class="swiper-slide"><img src="img/'.$show_img[$j].'" alt=""></div>';
-             } 
+             if (wp_is_mobile() && !empty($show_row['show_img_ph'])){
+               for ($j=0; $j < $show_img_ph_num; $j++) { 
+                echo '<div class="swiper-slide"><img src="img/'.$show_img_ph[$j].'" alt=""></div>';
+               } 
+             }
+             else{
+               for ($j=0; $j < $show_img_num; $j++) { 
+                echo '<div class="swiper-slide"><img src="img/'.$show_img[$j].'" alt=""></div>';
+               } 
+             }
+
+             
              
        echo   '</div>
               
@@ -178,28 +190,28 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
       <div class="col-md-12">
         <div id="google_life" class="life_div row">
           <div id="gm_food_btn" class="col-4">
-            <a href="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=food&keyword=餐廳&radius=1000&zoom=14&case_name='.$case['aTitle'].'">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=food&keyword=餐廳&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
               <img src="../../img/svg/mapTool/food_black.svg" alt=""><p>食</p>
             </a>
           </div>
           <div id="gm_hos_btn" class="col-4">
-            <a href="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=doctor&radius=1000&zoom=14&case_name='.$case['aTitle'].'">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=doctor&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
               <img src="../../img/svg/mapTool/hospital_black.svg" alt=""><p>醫</p>
             </a>
           </div>
           <div id="gm_home_btn" class="col-4"><a href="https://www.google.com/maps/dir//'.$map_txt.'/@ '.$map_txt.',17z/?hl=zh-TW"><img src="../../img/svg/mapTool/home_black.svg" alt=""><p>住</p></a></div>
           <div id="gm_work_btn" class="col-4">
-             <a href="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=bus_station&radius=500&zoom=16&case_name='.$case['aTitle'].'">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=bus_station&radius=500&zoom=16&case_name='.$case['aTitle'].'" href="javascript:;">
                <img src="../../img/svg/mapTool/bus_black.svg" alt=""><p>行</p>
              </a>
           </div>
           <div id="gm_school_btn" class="col-4">
-             <a href="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=school&radius=1000&zoom=14&case_name='.$case['aTitle'].'">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=school&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
                <img src="../../img/svg/mapTool/school_black.svg" alt=""><p>育</p>
              </a>
           </div>
           <div id="gm_fun_btn" class="col-4">
-            <a href="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=shopping_mall&keyword=&radius=2000&zoom=14&case_name='.$case['aTitle'].'">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=shopping_mall&keyword=&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
              <img src="../../img/svg/mapTool/shop_black.svg" alt=""><p>樂</p>
             </a>
            </div>

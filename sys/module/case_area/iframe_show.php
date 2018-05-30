@@ -15,22 +15,46 @@ if($_POST){
     // ======================== 刪除 ===========================
     if (!empty($_POST['type']) && $_POST['type']=='delete') { 
     
-        //----------------------- 多檔刪除 -------------------------------
-        $sel_where=['Tb_index'=>$_POST['fun_id']];
-        $otr_file=pdo_select('SELECT show_img FROM slideshow_tb WHERE Tb_index=:Tb_index', $sel_where);
-        $otr_file=explode(',', $otr_file['show_img']);
-        for ($i=0; $i <count($otr_file)-1 ; $i++) { //比對 
-           if ($otr_file[$i]!=$_POST['show_img']) {
-            $new_file.=$otr_file[$i].',';
-           }else{
-             unlink('../../../product_html/'.$_POST['case_id'].'/img/'.$_POST['show_img']);
+        //----------------------- 電腦多檔刪除 -------------------------------
+        if (!empty($_POST['show_img'])) {
+          
+           $sel_where=['Tb_index'=>$_POST['fun_id']];
+           $otr_file=pdo_select('SELECT show_img FROM slideshow_tb WHERE Tb_index=:Tb_index', $sel_where);
+           $otr_file=explode(',', $otr_file['show_img']);
+           for ($i=0; $i <count($otr_file)-1 ; $i++) { //比對 
+              if ($otr_file[$i]!=$_POST['show_img']) {
+               $new_file.=$otr_file[$i].',';
+              }else{
+                unlink('../../../product_html/'.$_POST['case_id'].'/img/'.$_POST['show_img']);
+              }
            }
+           $param=['show_img'=>$new_file];
+               $where=['Tb_index'=>$_POST['fun_id']];
+               pdo_update('slideshow_tb', $param, $where);
+          
+          exit();
         }
-        $param=['show_img'=>$new_file];
-            $where=['Tb_index'=>$_POST['fun_id']];
-            pdo_update('slideshow_tb', $param, $where);
-      
-       exit();
+
+        //----------------------- 手機多檔刪除 -------------------------------
+        else{
+          
+           $sel_where=['Tb_index'=>$_POST['fun_id']];
+           $otr_file=pdo_select('SELECT show_img_ph FROM slideshow_tb WHERE Tb_index=:Tb_index', $sel_where);
+           $otr_file=explode(',', $otr_file['show_img_ph']);
+           for ($i=0; $i <count($otr_file)-1 ; $i++) { //比對 
+              if ($otr_file[$i]!=$_POST['show_img_ph']) {
+               $new_file.=$otr_file[$i].',';
+              }else{
+                unlink('../../../product_html/'.$_POST['case_id'].'/img/'.$_POST['show_img_ph']);
+              }
+           }
+           $param=['show_img_ph'=>$new_file];
+               $where=['Tb_index'=>$_POST['fun_id']];
+               pdo_update('slideshow_tb', $param, $where);
+          
+          exit();
+        }
+       
     }
   
   //----------------- 新增 ----------------------------------------------
@@ -54,6 +78,21 @@ if($_POST){
       $show_img='';
     }
 
+    //-------------- 圖檔新增 ------------------
+    if (!empty($_FILES['show_img_ph'])){
+
+          for ($i=0; $i <count($_FILES['show_img_ph']['name']) ; $i++) { 
+
+               $type=explode('.', $_FILES['show_img_ph']['name'][$i]);
+               $show_img_ph.=$Tb_index.'_slider-ph_'.$i.'.'.$type[count($type)-1].',';
+               more_fire_upload('show_img_ph', $i, $Tb_index.'_slider-ph_'.$i.'.'.$type[count($type)-1], $_GET['Tb_index']);
+             
+          }
+    }
+    else{
+      $show_img_ph='';
+    }
+
     $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
 
     //---- 更新關聯資料表 -----
@@ -64,6 +103,7 @@ if($_POST){
        'case_id'=>$_GET['Tb_index'],
        'play_speed'=>$_POST['play_speed'],
        'show_img'=>$show_img,
+       'show_img_ph'=>$show_img_ph,
        'StartDate'=>date('Y-m-d H:i:s'),
        'OnLineOrNot'=>$OnLineOrNot
     ];
@@ -93,9 +133,9 @@ if($_POST){
         for ($i=0; $i <count($_FILES['show_img']['name']) ; $i++) { 
 
             if(!empty($_FILES['show_img']['name'][$i])){
-               $type=explode('/', $_FILES['show_img']['type'][$i]);
-               $show_img.=$Tb_index.'_slider_'.($file_num+$i).'.'.$type[1].',';
-               more_fire_upload('show_img', $i, $Tb_index.'_slider_'.($file_num+$i).'.'.$type[1], $_GET['Tb_index']);
+               $type=explode('.', $_FILES['show_img']['name'][$i]);
+               $show_img.=$Tb_index.'_slider_'.($file_num+$i).'.'.$type[count($type)-1].',';
+               more_fire_upload('show_img', $i, $Tb_index.'_slider_'.($file_num+$i).'.'.$type[count($type)-1], $_GET['Tb_index']);
 
                 unlink('../../../product_html/'.$_GET['Tb_index'].'/img/'.$_POST['old_file'][$i]);
             }
@@ -109,6 +149,39 @@ if($_POST){
         pdo_update('slideshow_tb', $show_img_param, $show_img_where);
       }
     //-------------- 圖檔修改-END ------------------
+
+
+    //-------------- 手機圖檔修改 ------------------
+    if (!empty($_FILES['show_img_ph'])) {
+        $sel_where=['Tb_index'=>$Tb_index];
+        $now_file =pdo_select("SELECT show_img_ph FROM slideshow_tb WHERE Tb_index=:Tb_index", $sel_where);
+        if (!empty($now_file['show_img_ph'])) {
+           $sel_file=explode(',', $now_file['show_img_ph']);
+           $file_num=explode('_', $sel_file[count($sel_file)-2]);
+           $file_num=explode('.', $file_num[2]);
+           $file_num=(int)$file_num[0]+1;
+        }else{
+           $file_num=0;
+        }
+        for ($i=0; $i <count($_FILES['show_img_ph']['name']) ; $i++) { 
+
+            if(!empty($_FILES['show_img_ph']['name'][$i])){
+               $type=explode('.', $_FILES['show_img_ph']['name'][$i]);
+               $show_img_ph.=$Tb_index.'_slider-ph_'.($file_num+$i).'.'.$type[count($type)-1].',';
+               more_fire_upload('show_img_ph', $i, $Tb_index.'_slider-ph_'.($file_num+$i).'.'.$type[count($type)-1], $_GET['Tb_index']);
+
+                unlink('../../../product_html/'.$_GET['Tb_index'].'/img/'.$_POST['old_file_ph'][$i]);
+            }
+            else{
+              $show_img_ph.=$_POST['old_file_ph'][$i].',';
+            }
+        }
+         
+        $show_img_ph_param=['show_img_ph'=>$show_img_ph];
+        $show_img_ph_where=['Tb_index'=>$Tb_index];
+        pdo_update('slideshow_tb', $show_img_ph_param, $show_img_ph_where);
+      }
+    //-------------- 手機圖檔修改-END ------------------
 
 
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0:1;
@@ -196,6 +269,44 @@ if($_POST){
 
 
             <div class="form-group">
+              <label class="col-sm-1 control-label" >手機圖片</label>
+              <div class="col-sm-11">
+               <button type="button" id="new_show_img_ph" class="btn btn-info"><i class="fa fa-plus"></i> 新增檔案</button><br>
+                <span class="text-danger">順序由左至右，由上到下</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+               <label class="col-md-2 control-label" ></label>
+
+              <div class="col-md-10">
+                <ul class="sortable-list connectList agile-list ui-sortable show_img_ph_div" >
+
+                  <?php 
+                       if(!empty($row['show_img_ph'])){
+                                  $show_img_ph=explode(',', $row['show_img_ph']);
+                                   for ($i=0; $i <count($show_img_ph)-1 ; $i++) { 
+                                     $img_txt='<li class="oneFile_div">
+                                                   <span class="mark_num">'.($i+1).'</span>
+                                                   <div class="">
+                                                     <input type="file" name="show_img_ph[]" class="form-control" id="show_img_ph" onchange="file_viewer_load_new(this, \'#one_img_ph'.$i.'\')">
+                                                     <button type="button" class="btn btn-danger one_del_div">x</button>
+                                                   </div>
+                                                   <div id="one_img_ph'.$i.'" class="other_div"></div>
+                                                   <div class="old_file" style="background: url(../../../product_html/'.$_GET['Tb_index'].'/img/'.$show_img_ph[$i].') center; background-size: cover;"><p>目前圖檔</p> </div>
+                                                   <input type="hidden" name="old_file_ph[]" value="'.$show_img_ph[$i].'">
+                                                 </li>';
+                                                 echo $img_txt;
+                                              }
+                                           }
+                  ?>
+
+                </ul>
+                </div>
+            </div>
+
+
+            <div class="form-group">
               <label class="col-sm-2 control-label" for="OnLineOrNot">是否上線</label>
               <div class="col-sm-10">
                 <input style="width: 20px; height: 20px;" id="OnLineOrNot" name="OnLineOrNot" type="checkbox" value="1" <?php echo $check=!isset($row['OnLineOrNot']) || $row['OnLineOrNot']==1 ? 'checked' : ''; ?>  />
@@ -235,8 +346,8 @@ if($_POST){
     });
 
 
-
-          //-- 多檔刪除 --
+    //=============================== 電腦多圖檔 ==================================
+      //-- 多檔刪除 --
       $('.OtherFile_div').on('click', '.one_del_div', function(event) {
         event.preventDefault();
 
@@ -286,6 +397,61 @@ if($_POST){
          update: function( event, ui ) {
 
               var OtherFile_arr = $( ".OtherFile_div" ).sortable( "toArray" );
+         }
+      }).disableSelection();
+
+
+      //=============================== 手機多圖檔 ==================================
+        //-- 多檔刪除 --
+      $('.show_img_ph_div').on('click', '.one_del_div', function(event) {
+        event.preventDefault();
+
+        if (confirm('是否要刪除檔案?')){
+        
+          if ($(this).parent().next().next().next().length>0) {
+             $.ajax({
+             url: 'iframe_show.php',
+             type: 'POST',
+             data: {
+               fun_id: '<?php echo $_GET['fun_id'];?>',
+               case_id: '<?php echo $_GET['Tb_index'];?>',
+               show_img_ph: $(this).parent().next().next().next().val(),
+               type: 'delete'
+             }
+
+            });
+          }
+        $(this).parent().parent().remove();
+      }
+      });
+
+
+       // 新增多檔
+       var otherfile_ph_num=$('[name="show_img_ph[]"]').length;
+       $('#new_show_img_ph').click(function(event) {
+
+         var otherfile_txt='<li class="oneFile_div">'
+                           +'<span class="mark_num">'+(otherfile_ph_num+1)+'</span>'
+                           +'<div class="">'
+                             + '<input type="file"  name="show_img_ph[]" class="form-control" id="OtherFile" onchange="file_viewer_load_new(this, \'#one_img_ph'+otherfile_ph_num+'\')">'
+                              +'<button type="button"  class="btn btn-danger one_del_div">x</button>'
+                          +'</div>'
+                             +'<div id="one_img_ph'+otherfile_ph_num+'" class="other_div">'
+                             +'</div>'
+                             +'<input type="hidden" name="old_file[]" value="">'
+                          +'</li>';
+
+         $('.show_img_ph_div').append(otherfile_txt);
+         otherfile_ph_num++;
+       });
+
+      
+      // 拖曳多圖檔
+       $(".show_img_ph_div").sortable({
+         connectWith: ".show_img_ph_div",
+         update: function( event, ui ) {
+
+              var OtherFile_arr = $( ".show_img_ph_div" ).sortable( "toArray" );
          }
       }).disableSelection();
 

@@ -3,8 +3,8 @@ $(document).ready(function() {
   //指定視窗物件
   var $body = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
   //目前畫面Div (預設 #case_di)
-  var nowDiv=$(window).width()>768 ? 'html,body' :'#case_div';
-
+  var pcph_Div=$(window).width()>768 ? 'html,body' :'#case_div';
+  var nowDiv=$(window).width()>768 ? 'html,body' :'#case_div';;
   //基本圖文-動態文字圖片
   wow = new WOW({ mobile: false } );
                     wow.init();
@@ -16,17 +16,20 @@ $(document).ready(function() {
 				$(this).addClass('is-active');
 				$('.collapse').css('display', 'block');
 				TweenMax.fromTo( '.collapse', 0.5, { opacity:0, top:70},{ opacity:1, top:34 });
+
 			}
 			else{
 				$(this).removeClass('is-active');
 				TweenMax.to( '.collapse', 0.5, { opacity:0, top:70});
 				setTimeout("$('.collapse').css('display', 'none')", 500);
 			}
+
+
 		});
     
     //關閉巡覽列
     if ($(window).width()<=768) {
-      $('#top_arrow, div:not(#top_navbar div)').click(function(event) {
+      $('#top_arrow, .ch_tool_btn, .txt_big_btn, #case_div, #news_div, #link_btn, #qr_btn, #life_btn, #more_btn').click(function(event) {
         $('#ph_nav_btn').removeClass('is-active');
         TweenMax.to( '.collapse', 0.5, { opacity:0, top:70});
         setTimeout("$('.collapse').css('display', 'none')", 500);
@@ -52,8 +55,8 @@ $(document).ready(function() {
 
       //生活按鈕
        $('#life_btn').click(function(event) {
-         $(nowDiv).animate({
-             scrollTop: $('#google_life').offset().top+$('#case_div').scrollTop() //食醫住行位置+位移量
+         $('#case_div').animate({
+             scrollTop: $('#google_life').offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-$('#top_navbar').height() //食醫住行位置+位移量-body位移量-navbar高度
          },1000);
 
        });
@@ -67,7 +70,7 @@ $(document).ready(function() {
               $('#case_div').css('z-index', '2');
               TweenMax.fromTo( $('#case_div'), 0.5, {display:'none', left:'-100%'},{display:'block', left:'0%' });
               TweenMax.to( $('#news_div'), 0.1, {display:'none',  delay:'0.5' });
-              //nowDiv='#case_div';
+              nowDiv='#case_div';
         	}
         });
 
@@ -76,9 +79,9 @@ $(document).ready(function() {
         	if ($('#news_div').css('display')!='block') {
         		$('#news_div').css('z-index', '2');
         		$('#case_div').css('z-index', '0');
-        		TweenMax.fromTo( $('#news_div'), 0.5, {display:'none', right:'-100%'},{display:'block', right:'0%'});
+        		TweenMax.fromTo( $('#news_div'), 0.5, {display:'none', left:'-100%'},{display:'block', left:'0%'});
         		TweenMax.to( $('#case_div'), 0.1, {display:'none',  delay:'0.5' });
-            //nowDiv='#news_div';
+            nowDiv='#news_div';
         	}
         });
 
@@ -97,19 +100,39 @@ $(document).ready(function() {
 
 		// 更多按鈕
 		$('#more_btn').click(function(event) {
-			if ($('.more_tool_btn').css('display')=='none') {
+			// if ($('.more_tool_btn').css('display')=='none') {
 
-			   $('.more_tool_btn').css('display', 'block');
-			   $('.more_tool_btn').css('left', $(this).offset().left);
-               TweenMax.fromTo( '#qr_btn', 0.5, { opacity:0, bottom:0},{ opacity:1, bottom:50 });
-               TweenMax.fromTo( '#link_btn', 0.5, { opacity:0, bottom:0},{ opacity:1, bottom:80 });
-			}
-			else{
-			   TweenMax.to( '.more_tool_btn', 0.5, { opacity:0, bottom:0});
-			   setTimeout("$('.more_tool_btn').css('display', 'none')", 500);
-			}
+			//    $('.more_tool_btn').css('display', 'block');
+			//    $('.more_tool_btn').css('left', $(this).offset().left);
+   //             TweenMax.fromTo( '#qr_btn', 0.5, { opacity:0, bottom:0},{ opacity:1, bottom:$('.bottom_tool').height()+30 });
+   //             TweenMax.fromTo( '#link_btn', 0.5, { opacity:0, bottom:0},{ opacity:1, bottom:$('.bottom_tool').height()+60 });
+			// }
+			// else{
+			//    TweenMax.to( '.more_tool_btn', 0.5, { opacity:0, bottom:0});
+			//    setTimeout("$('.more_tool_btn').css('display', 'none')", 500);
+			// }
 
 		});
+
+    // 更多按鈕2
+    $('#more_btn').click(function(event) {
+      if ($('.more_tool_div').css('display')=='none') {
+
+         $('.more_tool_div').css('display', 'block');
+         
+               TweenMax.fromTo( '.more_tool_div', 0.5, { opacity:0, left:30},{ opacity:1, left:0});
+      }
+      else{
+         TweenMax.to( '.more_tool_div', 0.5, { opacity:0, left:30});
+         setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+      }
+
+    });
+
+    $('.more_tool_btn').click(function(event) {
+      TweenMax.to( '.more_tool_div', 0.5, { opacity:0, left:30});
+      setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+    });
     
 
 
@@ -120,7 +143,7 @@ $(document).ready(function() {
        
        $('#navbarNavAltMarkup a').click(function(event) {
        var anchor_id=$(this).attr('anchor');
-       $(nowDiv).animate({
+       $(pcph_Div).animate({
            scrollTop: $('#'+anchor_id).offset().top-$('#top_navbar').height()
        },1000);
     
@@ -129,8 +152,9 @@ $(document).ready(function() {
     //-- 手機平板 --
     else{
        $('#navbarNavAltMarkup a').click(function(event) {
-       var anchor_offset=$('#'+$(this).attr('anchor')).offset().top+$('#case_div').scrollTop()-$('#top_navbar').height(); //錨點位置+位移量-navbar高度
-       $(nowDiv).animate({
+       var anchor_offset=$('#'+$(this).attr('anchor')).offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-$('#top_navbar').height(); //錨點位置+位移量-body位移量-navbar高度
+       console.log($('html, body').scrollTop());
+       $(pcph_Div).animate({
            scrollTop: anchor_offset
        },1000);
        

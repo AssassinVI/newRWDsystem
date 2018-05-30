@@ -95,80 +95,10 @@ echo $back_color;
     </div>
   </div>
     
-    <!-- navbar 選單 -->
-	<nav id="top_navbar" class="navbar navbar-expand-lg navbar-light ">
-	  
-    <div class="container">
-	  <button id="ph_nav_btn" class="hamburger hamburger--slider" type="button">
-	    <span class="hamburger-box">
-	      <span class="hamburger-inner"></span>
-	    </span>
-	  </button>
 
-	  <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-	    <div class="navbar-nav">
-      <?php
-       for ($i=0; $i < $fun_block_id_num ; $i++) { 
-        $fun_block_type=substr($fun_block_id[$i]['fun_id'], 0,2);
-         if ($fun_block_type=='an') {
-            $row_an=pdo_select("SELECT anchor_name FROM anchor_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
-            echo '<a class="nav-item nav-link" href="javascript:;" anchor="'.$fun_block_id[$i]['fun_id'].'" >'.$row_an['anchor_name'].'</a>';
-         }
-       }
-      ?>
-	    </div>
-	  </div>
+   <!-- navbar 選單 + bottom 工具欄 -->
+   <?php require '../../assets/php/'.$case['ph_tool_type'].'.php';?>
 
-	  <div class="ch_tool_btn">
-	  	<a id="case_btn" href="javascript:;"><?php echo $case['aTitle'];?> <span style="height: 100%;"></span></a>
-	  	<a id="news_btn" href="javascript:;">媒體報導 <span></span></a>
-	  </div>
-
-	  <div class="txt_big_btn">
-	  	<a href="javascript:;"><i class="fa fa-search-plus"></i></a>
-	  </div>
-  </div>
-
-	</nav>
-   
-   <!-- bottom 工具欄 -->
-   <div class="bottom_tool">
-   	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', 'phone_btn', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/007-phone-receiver.svg); background-size: 64%; background-color: #FFC107;"></span><br>電話
-   	 </a>
-   	 <a target="_blank" href="<?php echo $line_txt;?>" onclick="ga('send', 'event', '加LINE或Line分享', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/006-line.svg); background-size: 75%; background-color: #52CB34;"></span><br>LINE
-   	 </a>
-   	 <a target="_blank" href="<?php echo $fb_txt;?>" onclick="ga('send', 'event', 'fb分享', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/facebook-logo.svg); background-color: #576ba8; background-size: 92%;"></span><br>FB
-   	 </a>
-   	 <a id="life_btn" href="javascript:;">
-   	 	<span style="background-image: url(../../img/svg/004-smiling-emoticon-square-face.svg); background-size: 55%; background-color: #FFC107;"></span><br>生活
-   	 </a>
-   	 <a target="_blank" href="https://www.google.com/maps/dir//<?php echo $map_txt;?>/@<?php echo $map_txt;?>,17z?hl=zh-TW" onclick="ga('send', 'event', 'map_btn', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/003-google.svg); background-size: 99%;"></span><br>地圖
-   	 </a>
-   	 <a id="more_btn" href="javascript:;">
-   	 	<span style="background-image: url(../../img/svg/3point.svg); background-size: 60%; background-color: #FFC107;"></span><br>更多
-   	 </a>
-
-   	 <a id="link_btn" class="more_tool_btn" href="#link_div" data-fancybox onclick="ga('send', 'event', 'QR code 分享', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/002-chain-links.svg); background-size: 60%; background-color: #FFC107;"></span>
-   	 </a>
-   	 <a id="qr_btn" class="more_tool_btn" href="#qr_code_div" data-fancybox onclick="ga('send', 'event', '連結分享', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/001-qr-code.svg); background-size: 60%; background-color: #FFC107;"></span>
-   	 </a>
-     
-     <!-- QR code -->
-     <div id="qr_code_div" style="display: none;">
-       <img src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&chl=<?php echo $URL;?>&chld=H|0" alt="">
-     </div>
-     <!-- 連結 -->
-     <div id="link_div" style="display: none;">
-       <a href="<?php echo $URL;?>"><?php echo $URL;?></a>
-     </div>
-
-   </div>
     
     <!-- 建案資訊 -->
     <div id="case_div" class="container-fluid">
@@ -221,9 +151,9 @@ echo $back_color;
               <div class="row">
                 <div class="col-2"><span>'.$month.'<br><b>'. $date[2].'</b><br>'.$date[0].'</span></div>
                 <div class="col-10">
-                  <h4><a href="'.$news_row[$i]['aUrl'].'">'.$news_row[$i]['aTitle'].'</a></h4>
+                  <h4><a data-fancybox data-type="iframe" data-src="'.$news_row[$i]['aUrl'].'" href="javascript:;">'.$news_row[$i]['aTitle'].'</a></h4>
                   <p>來源：'.$news_row[$i]['source'].'</p>
-                  <p>'.$news_row[$i]['aAbstract'].' <a href="'.$news_row[$i]['aUrl'].'">More</a></p>
+                  <p>'.$news_row[$i]['aAbstract'].' <a data-fancybox data-type="iframe" data-src="'.$news_row[$i]['aUrl'].'" href="javascript:;">More</a></p>
                 </div>
               </div>
             </li>';
