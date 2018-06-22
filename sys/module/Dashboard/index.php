@@ -6,6 +6,13 @@
      .c3 svg{ font-size: 11px; }
     .c3-legend-item{ font-size: 13px; }
     #sel_case{ padding: 4px 12px; font-size: 15px; }
+
+    @media (max-width: 420px){
+      #page-wrapper{padding: 0px;}
+      .p-w-md{ padding: 0px; }
+      .flot-chart{ height: 250px; }
+      .ibox-content{ padding: 20px 0; }
+    }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -107,8 +114,8 @@ if ($_GET) {
                             data1: '#1ab394',
                             
                         },
-                        type: 'line',
-                        labels: true
+                        type: 'line'
+                        
                     },
                     axis:{
                        x:{

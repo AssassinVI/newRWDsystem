@@ -77,7 +77,7 @@
    </a>
    </div>
 
-    <a id="link_btn"  href="#link_div" data-fancybox onclick="ga('send', 'event', 'QR code 分享', 'click', 'tool_bar')">
+    <a id="link_btn"  data-clipboard-text="<?php echo $URL;?>" href="javascript:;" onclick="ga('send', 'event', 'QR code 分享', 'click', 'tool_bar')">
      <span style="background-image: url(../../img/svg/002-chain-links.svg); background-size: 60%; background-color: #FFC107;"></span><br>連結
     </a>
 
@@ -85,7 +85,7 @@
         <span style="background-image: url(../../img/svg/001-qr-code.svg); background-size: 60%; background-color: #FFC107;"></span><br>QR
     </a>
 
-    <a target="_blank" href="https://www.google.com/maps/dir//<?php echo $map_txt;?>/@<?php echo $map_txt;?>,17z?hl=zh-TW" onclick="ga('send', 'event', 'map_btn', 'click', 'tool_bar')">
+    <a target="_blank" href="https://www.google.com/maps/dir//<?php echo $map_txt;?>/@<?php echo $map_txt;?>,17z?hl=zh-TW" onclick="ga('send', 'event', 'google 導航', 'click', 'tool_bar')">
       <span style="background-image: url(../../img/svg/003-google.svg); background-size: 99%;"></span><br>地圖
      </a>
 
@@ -101,7 +101,7 @@
       <span style="background-image: url(../../img/svg/006-line.svg); background-size: 75%; background-color: #52CB34;"></span><br>LINE
      </a>
     
-   	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', 'phone_btn', 'click', 'tool_bar')">
+   	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', '撥打手機', 'click', 'tool_bar')">
    	 	<span style="background-image: url(../../img/svg/007-phone-receiver.svg); background-size: 64%; background-color: #FFC107;"></span><br>電話
    	 </a>
    	 
@@ -115,7 +115,9 @@
      
      <!-- QR code -->
      <div id="qr_code_div" style="display: none;">
-       <img src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&chl=<?php echo $URL;?>&chld=H|0" alt="">
+       <h3><?php echo $case['aTitle'];?> QR Code</h3>
+       <img id="qr_img" src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&chl=<?php echo $URL;?>&chld=H|0" alt="">
+       <p class="qa_txt">掃描上面的QR Code，連結到<?php echo $case['aTitle'];?></p>
      </div>
      <!-- 連結 -->
      <div id="link_div" style="display: none;">

@@ -1,3 +1,7 @@
+<?php
+  $life_type=isset($li_row['type']) ? $li_row['type']: 0;
+?>
+
   <!-- navbar 選單 -->
   <style type="text/css">
         html{ font-size: 12px; }
@@ -7,7 +11,7 @@
     
 
     @media (max-width: 768px){
-          #ph_nav_btn{ display: block; padding: 5px 5px 0px 5px; width: 100%; margin-bottom: 10px;}
+          #ph_nav_btn{ display: block; padding: 10px 5px ; width: 100%; margin-bottom: 10px;}
           .navbar{ padding: 0px; z-index: 10; position: fixed; background: #fff; width: 94%;}
 
           /*手機漢堡*/
@@ -33,7 +37,7 @@
          .bottom_tool{ position: fixed; bottom: 0; left: auto; right: 0; z-index: 10; background: #fff; width: 50px; height: 100%; padding: 7px 0px 3px 0px; display: inline-block;}
          .bottom_tool a{ text-align: center;  color: #000; display: inline-block; width: 100%; margin-bottom: 10px;}
          .bottom_tool a span{ display: inline-block; width: 25px; height: 24px; background-color: #fff; border-radius: 4px; background-repeat: no-repeat; background-position: center;}
-         .more_tool_btn { position: absolute; right: 5vw; bottom: 8vh; display: none;}
+         
 
 
          /*內容*/
@@ -73,49 +77,44 @@
 
    <div class="txt_big_btn">
    <a href="javascript:;">
-     <span style="background-image: url(../../img/svg/zoom-in.svg); background-size: 63%; background-color: #FFC107;"></span><br>字級
+     <span style="background-image: url(../../img/svg/zoom-in.svg); background-size: 63%; background-color: #FFC107;"></span>
    </a>
    </div>
 
-    <a id="link_btn"  href="#link_div" data-fancybox onclick="ga('send', 'event', 'QR code 分享', 'click', 'tool_bar')">
-     <span style="background-image: url(../../img/svg/002-chain-links.svg); background-size: 60%; background-color: #FFC107;"></span><br>連結
+    <a id="link_btn"  data-clipboard-text="<?php echo $URL;?>" href="javascript:;" onclick="ga('send', 'event', 'QR code 分享', 'click', 'tool_bar')">
+     <span style="background-image: url(../../img/svg/002-chain-links.svg); background-size: 60%; background-color: #FFC107;"></span>
     </a>
 
     <a id="qr_btn"  href="#qr_code_div" data-fancybox onclick="ga('send', 'event', '連結分享', 'click', 'tool_bar')">
-        <span style="background-image: url(../../img/svg/001-qr-code.svg); background-size: 60%; background-color: #FFC107;"></span><br>QR
+        <span style="background-image: url(../../img/svg/001-qr-code.svg); background-size: 60%; background-color: #FFC107;"></span>
     </a>
 
-    <a target="_blank" href="https://www.google.com/maps/dir//<?php echo $map_txt;?>/@<?php echo $map_txt;?>,17z?hl=zh-TW" onclick="ga('send', 'event', 'map_btn', 'click', 'tool_bar')">
-      <span style="background-image: url(../../img/svg/003-google.svg); background-size: 99%;"></span><br>地圖
-     </a>
+    <a target="_blank" href="https://www.google.com/maps/dir//<?php echo $map_txt;?>/@<?php echo $map_txt;?>,17z?hl=zh-TW" onclick="ga('send', 'event', 'google 導航', 'click', 'tool_bar')">
+      <span style="background-image: url(../../img/svg/003-google.svg); background-size: 99%;"></span>
 
-     <a id="life_btn" href="javascript:;">
-      <span style="background-image: url(../../img/svg/004-smiling-emoticon-square-face.svg); background-size: 55%; background-color: #FFC107;"></span><br>生活
+     <a id="life_btn1" href="javascript:;">
+      <span style="background-image: url(../../img/svg/004-smiling-emoticon-square-face.svg); background-size: 55%; background-color: #FFC107;"></span>
      </a>
 
      <a target="_blank" href="<?php echo $fb_txt;?>" onclick="ga('send', 'event', 'fb分享', 'click', 'tool_bar')">
-      <span style="background-image: url(../../img/svg/facebook-logo.svg); background-color: #576ba8; background-size: 92%;"></span><br>FB
+      <span style="background-image: url(../../img/svg/facebook-logo.svg); background-color: #576ba8; background-size: 92%;"></span>
      </a>
 
      <a target="_blank" href="<?php echo $line_txt;?>" onclick="ga('send', 'event', '加LINE或Line分享', 'click', 'tool_bar')">
-      <span style="background-image: url(../../img/svg/006-line.svg); background-size: 75%; background-color: #52CB34;"></span><br>LINE
+      <span style="background-image: url(../../img/svg/006-line.svg); background-size: 75%; background-color: #52CB34;"></span>
      </a>
     
-   	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', 'phone_btn', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/007-phone-receiver.svg); background-size: 64%; background-color: #FFC107;"></span><br>電話
+   	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', '撥打手機', 'click', 'tool_bar')">
+   	 	<span style="background-image: url(../../img/svg/007-phone-receiver.svg); background-size: 64%; background-color: #FFC107;"></span>
    	 </a>
    	 
-   	 
-   	 
-   	 
-       
-
-
    	 
      
      <!-- QR code -->
      <div id="qr_code_div" style="display: none;">
-       <img src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&chl=<?php echo $URL;?>&chld=H|0" alt="">
+       <h3><?php echo $case['aTitle'];?> QR Code</h3>
+       <img id="qr_img" src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&chl=<?php echo $URL;?>&chld=H|0" alt="">
+       <p class="qa_txt">掃描上面的QR Code，連結到<?php echo $case['aTitle'];?></p>
      </div>
      <!-- 連結 -->
      <div id="link_div" style="display: none;">
@@ -123,3 +122,6 @@
      </div>
 
    </div>
+
+
+   

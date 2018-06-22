@@ -267,6 +267,7 @@ if ($_GET) {
 									<option value="hor2">橫式造型2</option>
 									<option value="hor3">橫式造型3</option>
 									<option value="hor4">橫式造型4</option>
+									<option value="hor5">橫式造型5</option>
 									<option value="ver1">直式造型1</option>
 									<option value="ver2">直式造型2</option>
 									<option value="ver3">直式造型3</option>

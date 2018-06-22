@@ -8,6 +8,7 @@ $(document).ready(function() {
   //基本圖文-動態文字圖片
   wow = new WOW({ mobile: false } );
                     wow.init();
+  
 
 
 		// 巡覽列按鈕
@@ -17,32 +18,53 @@ $(document).ready(function() {
 				$('.collapse').css('display', 'block');
 				TweenMax.fromTo( '.collapse', 0.5, { opacity:0, top:70},{ opacity:1, top:34 });
 
+        //-- 建案資訊 --
+        if ($('#case_div').css('display')!='block') {
+
+               $('#life_more_btn').css('display', 'inline-block');
+
+               $('.ch_tool_btn a span').css('height', '0%');
+               TweenMax.to( $('#case_btn').find('span'), 0.2, {height:'100%'});
+
+              $('#news_div').css('z-index', '0');
+              $('#case_div').css('z-index', '2');
+              TweenMax.fromTo( $('#case_div'), 0.5, {display:'none', left:'-100%'},{display:'block', left:'0%' });
+              TweenMax.to( $('#news_div'), 0.1, {display:'none',  delay:'0.5' });
+              nowDiv='#case_div';
+          }
+
 			}
 			else{
 				$(this).removeClass('is-active');
 				TweenMax.to( '.collapse', 0.5, { opacity:0, top:70});
 				setTimeout("$('.collapse').css('display', 'none')", 500);
 			}
-
-
 		});
+
+
+
     
-    //關閉巡覽列
+    //---- 關閉巡覽列 ----
     if ($(window).width()<=768) {
-      $('#top_arrow, .ch_tool_btn, .txt_big_btn, #case_div, #news_div, #link_btn, #qr_btn, #life_btn, #more_btn').click(function(event) {
+     
+      //---------------- 滑動關閉 -----------------
+      $(document).on("scrollstart",function(){
+
+      	 TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
+          setTimeout("$('.life_tool_div').css('display', 'none')", 500);
+          TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
+         setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+        
+      });
+
+
+      $('#top_arrow, .ch_tool_btn, .txt_big_btn, #case_div, #news_div, #link_btn, #qr_btn, #life_btn0, #life_btn1, #more_btn').click(function(event) {
         $('#ph_nav_btn').removeClass('is-active');
         TweenMax.to( '.collapse', 0.5, { opacity:0, top:70});
         setTimeout("$('.collapse').css('display', 'none')", 500);
       });
     }
 
-        //切換按鈕
-		$('.ch_tool_btn a').click(function(event) {
-			if ($(this).find('span').height()=='0') {
-			   $('.ch_tool_btn a span').css('height', '0%');
-               TweenMax.to( $(this).find('span'), 0.2, {height:'100%'});
-			}
-		});
 
 
         // Top按鈕
@@ -52,20 +74,133 @@ $(document).ready(function() {
             },1000);
         });
 
+   
+        /*-- 食醫住行+新聞提示 --*/
+        // $('.prompt').click(function(event) {
+        //   TweenMax.to('.prompt', 0.5, {opacity:0});
+        //   TweenMax.to('.prompt', 0.1, {display:'none', delay:0.5});
+        //   // $(this).css('display', 'none');
+        // });
 
-      //生活按鈕
-       $('#life_btn').click(function(event) {
+        TweenMax.to('.life_prompt', 0.5, {bottom:67 ,repeat:-1, yoyo:true});
+        TweenMax.to('.news_prompt', 0.5, {top:51 ,repeat:-1, yoyo:true});
+        //-- 三秒後消失 --
+        TweenMax.to('.life_prompt', 0.5, {opacity:0, delay:5});
+        TweenMax.to('.life_prompt', 0.1, {display:'none', delay:5.5});
+        TweenMax.to('.news_prompt', 0.5, {opacity:0, delay:5});
+        TweenMax.to('.news_prompt', 0.1, {display:'none', delay:5.5});
+
+
+       //生活按鈕1-彈出----------------------
+       $('#life_btn0').click(function(event) {
+         
+          if ($('.life_tool_div').css('display')=='none') {
+
+             $('.life_tool_div').css('display', 'flex');
+             $('.more_tool_div').css('display', 'none');
+                   TweenMax.fromTo( '.life_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:57});
+          }
+          else{
+             TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
+             setTimeout("$('.life_tool_div').css('display', 'none')", 500);
+          }
+       });
+
+       $('#life_more_btn').click(function(event) {
+          $('#case_div').animate({
+             scrollTop: $('#google_life').offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-$('#top_navbar').height() //食醫住行位置+位移量-body位移量-navbar高度
+         },1000);
+
+           $('#more_life_div').css('display', 'flex');
+           TweenMax.fromTo( '#more_life_div', 0.5, { opacity:0},{ opacity:1});
+           $('#life_more i').addClass('fa-chevron-up');
+           $('#life_more i').removeClass('fa-chevron-down');
+           TweenMax.fromTo( '#life_more i', 1, { opacity:1, top:0 },{ opacity:0, top:-10, repeat:-1});
+       });
+
+       //-- 關閉 --
+       $('#top_arrow, .ch_tool_btn, .txt_big_btn, #case_div, #news_div, #link_btn, #qr_btn, #life_btn, #more_btn, #ph_nav_btn').click(function(event) {
+       	  TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
+          setTimeout("$('.life_tool_div').css('display', 'none')", 500);
+       });
+
+
+      //生活按鈕1-彈出 END----------------------
+
+      //生活按鈕2-滑到指定位置------------------
+       $('#life_btn1').click(function(event) {
          $('#case_div').animate({
              scrollTop: $('#google_life').offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-$('#top_navbar').height() //食醫住行位置+位移量-body位移量-navbar高度
          },1000);
 
        });
+      //生活按鈕2-滑到指定位置 END------------------
+
+      //更多生活按鈕
+      $('#life_more').click(function(event) {
+
+        if ($('#more_life_div').css('display')=='none') {
+          $('#more_life_div').css('display', 'flex');
+          TweenMax.fromTo( '#more_life_div', 0.5, { opacity:0},{ opacity:1});
+          $('#life_more i').addClass('fa-chevron-up');
+          $('#life_more i').removeClass('fa-chevron-down');
+          TweenMax.fromTo( '#life_more i', 1, { opacity:1, top:0 },{ opacity:0, top:-10, repeat:-1});
+
+        }
+        else{
+          TweenMax.fromTo( '#more_life_div', 0.5, { opacity:1},{ opacity:0});
+          setTimeout(function () {
+            $('#more_life_div').css('display', 'none');
+          },300);
+          $('#life_more i').removeClass('fa-chevron-up');
+          $('#life_more i').addClass('fa-chevron-down');
+          TweenMax.fromTo( '#life_more i', 1, { opacity:1, top:0 }, { opacity:0, top:10, repeat:-1});
+        }
+
+      });
+       //更多生活按鈕預設動畫
+      TweenMax.fromTo( '#life_more i', 1,{ opacity:1, top:0 }, { opacity:0, top:10, repeat:-1});
+
+      //--- 電腦食醫住行 按鈕特效 ---
+      $('#pc_life_div a').mouseenter(function(event) {
+         TweenMax.to( $(this), 0.3,{ width:70, right:20 });
+         TweenMax.to( $(this).find('p'), 0.3,{ opacity:0 });
+         TweenMax.to( $(this).find('img'), 0.3,{ opacity:1 });
+      });
+
+      $('#pc_life_div a').mouseleave(function(event) {
+         TweenMax.to( $(this), 0.3,{ width:52, right:0 });
+         TweenMax.to( $(this).find('p'), 0.3,{ opacity:1 });
+         TweenMax.to( $(this).find('img'), 0.3,{ opacity:0 });
+        
+      });
       
+
+      $('#pc_life_more').click(function(event) {
+         $body.animate({
+             scrollTop: $('#google_life').offset().top-$('#top_navbar').height() //食醫住行位置+位移量-body位移量-navbar高度
+         },1000);
+
+         if ($('#more_life_div').css('display')=='none') {
+          $('#more_life_div').css('display', 'flex');
+          TweenMax.fromTo( '#more_life_div', 0.5, { opacity:0},{ opacity:1});
+          $('#life_more i').addClass('fa-chevron-up');
+          $('#life_more i').removeClass('fa-chevron-down');
+          TweenMax.fromTo( '#life_more i', 1, { opacity:1, top:0 },{ opacity:0, top:-10, repeat:-1});
+
+        }
+      });
         
 
 		// ===== 建案資訊 ====
         $('#case_btn').click(function(event) {
         	if ($('#case_div').css('display')!='block') {
+
+               $('#life_more_btn').css('display', 'inline-block');
+
+               $('.ch_tool_btn a span').css('height', '0%');
+               TweenMax.to( $(this).find('span'), 0.2, {height:'100%'});
+
               $('#news_div').css('z-index', '0');
               $('#case_div').css('z-index', '2');
               TweenMax.fromTo( $('#case_div'), 0.5, {display:'none', left:'-100%'},{display:'block', left:'0%' });
@@ -77,6 +212,12 @@ $(document).ready(function() {
 		// ===== 新聞內容 ====
         $('#news_btn').click(function(event) {
         	if ($('#news_div').css('display')!='block') {
+
+            $('#life_more_btn').css('display', 'none');
+
+            $('.ch_tool_btn a span').css('height', '0%');
+            TweenMax.to( $(this).find('span'), 0.2, {height:'100%'});
+
         		$('#news_div').css('z-index', '2');
         		$('#case_div').css('z-index', '0');
         		TweenMax.fromTo( $('#news_div'), 0.5, {display:'none', left:'-100%'},{display:'block', left:'0%'});
@@ -119,19 +260,44 @@ $(document).ready(function() {
       if ($('.more_tool_div').css('display')=='none') {
 
          $('.more_tool_div').css('display', 'block');
+         $('.life_tool_div').css('display', 'none');
          
-               TweenMax.fromTo( '.more_tool_div', 0.5, { opacity:0, left:30},{ opacity:1, left:0});
+               TweenMax.fromTo( '.more_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:57});
       }
       else{
-         TweenMax.to( '.more_tool_div', 0.5, { opacity:0, left:30});
+         TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
          setTimeout("$('.more_tool_div').css('display', 'none')", 500);
       }
-
     });
 
+    //-- 關閉 --
+       $('#top_arrow, .ch_tool_btn, .txt_big_btn, #case_div, #news_div, #link_btn, #qr_btn, #life_btn, #ph_nav_btn').click(function(event) {
+       	 TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
+         setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+       });
+
+
+    
+    //-- 更多功能點擊後關閉 --
     $('.more_tool_btn').click(function(event) {
-      TweenMax.to( '.more_tool_div', 0.5, { opacity:0, left:30});
-      setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+
+      if($('.more_tool_div').css('display')!='none'){
+        TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
+        setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+      }
+      else{
+        TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
+        setTimeout("$('.life_tool_div').css('display', 'none')", 500);
+      }
+      
+    });
+
+
+
+    //-------- 複製連結 ------------
+    new Clipboard('#link_btn');
+    $('#link_btn').click(function(event) {
+      alert('已複製連結!!');
     });
     
 
@@ -153,7 +319,7 @@ $(document).ready(function() {
     else{
        $('#navbarNavAltMarkup a').click(function(event) {
        var anchor_offset=$('#'+$(this).attr('anchor')).offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-$('#top_navbar').height(); //錨點位置+位移量-body位移量-navbar高度
-       console.log($('html, body').scrollTop());
+       
        $(pcph_Div).animate({
            scrollTop: anchor_offset
        },1000);
@@ -214,9 +380,20 @@ $(document).ready(function() {
             'marker': [{
                 'addr': $('.map').attr('location'),
                 'text': '<p style="font-size: 1.4rem;">'+document.title+'<br>'+$('.map').attr('loc_txt')+'</p>',
-                'newLabel': '<b>'+document.title+'</b>',
-                'newLabelCSS': 'map_labels'
-            }]
+                
+            }],
+            'event': {
+              'idle':{
+                'func':function () {
+                  var self = this;
+                  $('.map').tinyMap('get', 'marker', function (markers) {
+                    markers.forEach(function (marker) {
+                      marker.infoWindow.open(self, marker);
+                    });
+                  });
+                }
+              }
+            }
         });
         }
 
@@ -340,17 +517,30 @@ $(document).ready(function() {
       });
 
        //-- 重新試算 --
-       $('#reset_btn').click(function(event) {
-           $.fancybox.close();
-           $.fancybox.open({
-               src  : '#math_count',
-               type : 'inline'
-           });
-       });
+       // $('#reset_btn').click(function(event) {
+       //     $.fancybox.close();
+       //     $.fancybox.open({
+       //         src  : '#math_count',
+       //         type : 'inline'
+       //     });
+       // });
 
     }
       
-        
+    
+
+    //-----橫式無效 ------
+    $(window).on("orientationchange",function(event){
+       
+       //--- 橫式 ---
+       if (event.orientation=='landscape') {
+         $('.landscape_div').css('display', 'block');
+       }
+       //--- 直式 ---
+       else{
+         $('.landscape_div').css('display', 'none');
+       }
+    });
              
 });
 

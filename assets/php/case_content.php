@@ -14,42 +14,105 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
     $base_img_ph=explode(',', $base_row['base_img_ph']);
 		$txt_fadein=empty($base_row['txt_fadein']) ? '': 'wow '.$base_row['txt_fadein'];
 		$img_fadein=empty($base_row['img_fadein']) ? '': 'wow '.$base_row['img_fadein'];
-  
-   echo '<div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 no-gutters">';
 
+    
+   $back_img=empty($base_row['back_img']) ? '':'style="background-image: url(img/'.$base_row['back_img'].'); background-size:cover;"';
+  
+   $total_txt= '<div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 row no-gutters base_word" '.$back_img.'>';
+   
+   //-- 判斷是否左右編排  --
+   $imgWord_col=$base_row['ImgWord_type']>2 ? '6':'12';
+
+   //-- 排序(電腦) --
+   $img_sort=$base_row['ImgWord_type']%2==1 ? 'order-lg-1':'order-lg-2';
+   //-- 排序(手機) --
+   $img_ph_sort=$base_row['ImgWord_ph_type']==1 ? 'order-1':'order-2';
+   
+    $img_txt='';
+   //----------------- 手機圖片 --------------
     if (wp_is_mobile() && !empty($base_row['base_img_ph'])) {
       for ($j=0; $j <count($base_img_ph)-1 ; $j++) { 
-      echo '
-       <div class="col-md-12 '.$img_fadein.'">
-          <img src="img/'.$base_img_ph[$j].'" alt="">
-        </div>';
+       
+
+        if ($base_row['zoomin_img']=='1') {
+          $img_txt.= '
+           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+             <a href="img/'.$base_img_ph[$j].'" data-fancybox>
+               <img src="img/'.$base_img_ph[$j].'" alt="">
+               <i class="fa fa-search-plus zoomin_img"></i>
+             </a>
+            </div>';
+        }
+        else{
+         $img_txt.= '
+           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+              <img src="img/'.$base_img_ph[$j].'" alt="">
+            </div>';
+        }
      }
     }
+     //----------------- 電腦圖片 --------------
     else{
       for ($j=0; $j <count($base_img)-1 ; $j++) { 
-      echo '
-       <div class="col-md-12 '.$img_fadein.'">
-          <img src="img/'.$base_img[$j].'" alt="">
-        </div>';
+       
+        if ($base_row['zoomin_img']=='1') {
+          $img_txt.= '
+           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+             <a href="img/'.$base_img[$j].'" data-fancybox>
+               <img src="img/'.$base_img[$j].'" alt="">
+               <i class="fa fa-search-plus zoomin_img"></i>
+             </a>
+            </div>';
+        }
+        else{
+         $img_txt.= '
+           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+              <img src="img/'.$base_img[$j].'" alt="">
+            </div>';
+        }
+        
      }
     }
 		
-
+    //-------------------------- 文字 -----------------------
+    $word_txt='';
 		if (!empty($base_row['aTitle']) || !empty($base_row['Title_two']) || !empty($base_row['content'])) {
 
-      $back_img=empty($base_row['back_img']) ? '':'style="background: url(img/'.$base_row['back_img'].');"';
-			echo '
-		    <div class="col-md-12 con_txt" '.$back_img.'>
-    			<h1 class="'.$txt_fadein.'">'.$base_row['aTitle'].'</h1>
-    			<h2 class="'.$txt_fadein.'">'.$base_row['Title_two'].'</h2>
-    			<div>
-    			  '.$base_row['content'].'
-    			</div>
-    		</div>';
+      //-- 排序(電腦) --
+       $word_sort=$base_row['ImgWord_type']%2==1 ? 'order-lg-2':'order-lg-1';
+      //-- 排序(手機) --
+       $word_ph_sort=$base_row['ImgWord_ph_type']==1 ? 'order-2':'order-1';
+
+      $LeftRight_div= $base_row['ImgWord_type']>2 ? '<div class="center_div">' : '';
+
+			$word_txt.= '
+		    <div class="col-md-'.$imgWord_col.' '.$word_sort.' '.$word_ph_sort.' con_txt" >'.$LeftRight_div;
+
+     
+      if(!empty($base_row['aTitle'])){ 
+        $word_txt.= '<h1 class="'.$txt_fadein.'">'.nl2br($base_row['aTitle']).'</h1>';
+      }
+
+      if (!empty($base_row['Title_two'])) {
+        $word_txt.= '<h2 class="'.$txt_fadein.'">'.$base_row['Title_two'].'</h2>';
+      }
+
+      if (!empty($base_row['content'])) {
+        
+       $word_txt.= '<div class="'.$txt_fadein.'">'.$base_row['content'].'</div>';
+      }
+
+      $LeftRight_div= $base_row['ImgWord_type']>2 ? '</div>' : '';
+
+    	$word_txt.= $LeftRight_div.'</div>';
 		}
 
-  echo '</div>';
-		
+
+   //-------------------------- 圖文編排 ----------------------------
+    $total_txt.=$img_txt.$word_txt;
+    
+  $total_txt.= '</div>';
+	echo $total_txt;
 	}
 
 	//----------- 幻燈片 -----------
@@ -65,9 +128,23 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
       $show_img=explode(',', $show_row['show_img']);
       $show_img_num=count($show_img)-1;
 
+      //-- 判斷是否左右編排  --
+      $imgWord_col=$show_row['ImgWord_type']>2 ? '6':'12';
+
+      //-- 幻燈片排序(電腦) --
+      $slider_sort=$show_row['ImgWord_type']%2==1 ? 'order-lg-1':'order-lg-2';
+      //-- 幻燈片排序(手機) --
+      $slider_ph_sort=$show_row['ImgWord_ph_type']==1 ? 'order-1':'order-2';
+
+      //-- 內容排序(電腦) --
+      $txt_sort=$show_row['ImgWord_type']%2==1 ? 'order-lg-2':'order-lg-1';
+      //-- 內容排序(手機) --
+      $txt_ph_sort=$show_row['ImgWord_ph_type']==1 ? 'order-2':'order-1';
+
       echo '
-        <div class="col-md-12">
-          <div id="'.$fun_block_id[$i]['fun_id'].'" class="swiper-container">
+        <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 row no-gutters slideshow_tb">
+          <div class="col-md-'.$imgWord_col.' '.$slider_sort.' '.$slider_ph_sort.'">
+           <div class="swiper-container">
               <div class="swiper-wrapper">';
 
              if (wp_is_mobile() && !empty($show_row['show_img_ph'])){
@@ -80,17 +157,29 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
                 echo '<div class="swiper-slide"><img src="img/'.$show_img[$j].'" alt=""></div>';
                } 
              }
-
-             
              
        echo   '</div>
-              
               <!-- 如果需要导航按钮 -->
               <div class="swiper-button-prev"><i class="fa fa-angle-left"></i></div>
               <div class="swiper-button-next"><i class="fa fa-angle-right"></i></div>
-             
           </div>
         </div>';
+        
+        //-- 內容 --
+        if (!empty($show_row['aTXT'])) {
+          echo'
+          <div class="col-md-'.$imgWord_col.' '.$txt_sort.' '.$txt_ph_sort.'">
+           <div class="center_div con_txt">
+           '.$show_row['aTXT'].'
+           </div>
+         </div>';
+        }
+        
+
+      echo'</div>';
+
+        //-- 內容 --
+
 
 
         $play_speed=!empty($show_row['play_speed']) ? 'autoplay : { delay:'. $show_row['play_speed'] .' },' : '';
@@ -116,7 +205,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 		<script type="text/javascript">
 	       $(window).on("load", function(event) {
 		
-	         var myswiper = new Swiper("#'.$fun_block_id[$i]['fun_id'].'", {
+	         var myswiper = new Swiper("#'.$fun_block_id[$i]['fun_id'].' .swiper-container", {
 	             speed: 1500,
 	             '.$play_speed.'
 	             '.$effect.'
@@ -144,7 +233,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
        if ($youtube_row['video_type']=='0') {
        	    $you_adds=explode('v=', $youtube_row['you_adds']);
          	echo '
-       	       <div class="col-md-12 video-container">
+       	       <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 video-container youtube_tb">
        	        <iframe width="560" height="315" src="https://www.youtube.com/embed/'.$you_adds[1].'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
        	      </div>';
        }
@@ -152,8 +241,8 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
        	  $autoPlay=$youtube_row['autoPlay']=='1' ? 'autoPlay':'';
            echo '
-       	       <div class="col-md-12 video-container">
-       	         <video src="video/'.$youtube_row['video_file'].'" controls '.$autoPlay.'></video>
+       	       <div class="col-md-12">
+       	         <video style="width: 100%;" src="video/'.$youtube_row['video_file'].'" controls '.$autoPlay.'></video>
        	      </div>';
        } 
        
@@ -170,7 +259,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
        $img_file_num=count($img_file)-1;
        $img_item_arr=['grid-item--w-h2', 'grid-item--width2', 'grid-item--height2', '', 'grid-item--height2', '', 'grid-item--width2', ''];
        echo '
-       <div class="col-md-12">
+       <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 img_wall_tb">
         <div class="grid">
           <div class="grid-sizer" ></div>';
           
@@ -185,38 +274,136 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
 	//-------------- 食醫住行 ----------------
 	elseif($fun_type=='li'){
+     $li_row=pdo_select("SELECT * FROM life_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
+
+     $life_location=empty($li_row['location']) ? $map_txt:$li_row['location'];
+     
+     switch ($li_row['color_type']) {
+       case '0':
+         $color_arr=['#3d3d3d', '#4d4d4d', '#3d3d3d', '#4d4d4d', '#3d3d3d', '#4d4d4d'];
+         $img_dir='mapTool';
+         $txt_color='#fff';
+         $pc_a_back=['#3d3d3d', '#4d4d4d', '#3d3d3d', '#4d4d4d', '#3d3d3d', '#4d4d4d', '#3d3d3d'];
+         break;
+       case '1':
+         $color_arr=['#303030', '#303030', '#303030', '#303030', '#303030', '#303030'];
+         $img_dir='gold';
+         $txt_color='#c8a062';
+         $pc_a_back=['#303030', '#303030', '#303030', '#303030', '#303030', '#303030', '#303030'];
+         break;
+     }
 
       echo '
-      <div class="col-md-12">
+      <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 google_life_div">
         <div id="google_life" class="life_div row">
-          <div id="gm_food_btn" class="col-4">
-            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=food&keyword=餐廳&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
-              <img src="../../img/svg/mapTool/food_black.svg" alt=""><p>食</p>
+         <div id="base_life_div"  class="row no-gutters">
+          <div id="gm_food_btn" style="background-color: '.$color_arr[0].';" class="col-4">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=food&keyword=餐廳&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'食\')">
+              <img src="../../img/svg/'.$img_dir.'/food.svg" alt=""><p style="color:'.$txt_color.';">食</p>
             </a>
           </div>
-          <div id="gm_hos_btn" class="col-4">
-            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=doctor&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
-              <img src="../../img/svg/mapTool/hospital_black.svg" alt=""><p>醫</p>
+
+          <div id="gm_hos_btn" style="background-color: '.$color_arr[1].';" class="col-4">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=doctor&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'醫\')">
+              <img src="../../img/svg/'.$img_dir.'/hospital.svg" alt=""><p style="color:'.$txt_color.';">醫</p>
             </a>
           </div>
-          <div id="gm_home_btn" class="col-4"><a href="https://www.google.com/maps/dir//'.$map_txt.'/@ '.$map_txt.',17z/?hl=zh-TW"><img src="../../img/svg/mapTool/home_black.svg" alt=""><p>住</p></a></div>
-          <div id="gm_work_btn" class="col-4">
-             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=bus_station&radius=500&zoom=16&case_name='.$case['aTitle'].'" href="javascript:;">
-               <img src="../../img/svg/mapTool/bus_black.svg" alt=""><p>行</p>
+
+          <div id="gm_home_btn" style="background-color: '.$color_arr[2].';" class="col-4">
+           <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=lodging&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'住\')">
+             <img src="../../img/svg/'.$img_dir.'/home.svg" alt=""><p style="color:'.$txt_color.';">住</p>
+           </a>
+           </div>
+
+          <div id="gm_work_btn" style="background-color: '.$color_arr[3].';" class="col-4">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=bus_station&radius=500&zoom=16&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'行\')">
+               <img src="../../img/svg/'.$img_dir.'/bus.svg" alt=""><p style="color:'.$txt_color.';">行</p>
              </a>
           </div>
-          <div id="gm_school_btn" class="col-4">
-             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=school&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
-               <img src="../../img/svg/mapTool/school_black.svg" alt=""><p>育</p>
+          <div id="gm_school_btn" style="background-color: '.$color_arr[4].';" class="col-4">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=school&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'育\')">
+               <img src="../../img/svg/'.$img_dir.'/school.svg" alt=""><p style="color:'.$txt_color.';">育</p>
              </a>
           </div>
-          <div id="gm_fun_btn" class="col-4">
-            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$map_txt.'&type=shopping_mall&keyword=&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;">
-             <img src="../../img/svg/mapTool/shop_black.svg" alt=""><p>樂</p>
+          <div id="gm_fun_btn" style="background-color: '.$color_arr[5].';" class="col-4">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=shopping_mall&keyword=&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'樂\')">
+             <img src="../../img/svg/'.$img_dir.'/shop.svg" alt=""><p style="color:'.$txt_color.';">樂</p>
             </a>
            </div>
+          </div>
+
+            
+          
+          <div id="more_life_div" class="row no-gutters">
+          
+          <div id="gm_school_btn" style="background-color: '.$color_arr[4].';" class="col-4">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=park&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'公園\')">
+               <img src="../../img/svg/'.$img_dir.'/park.svg" alt=""><p style="color:'.$txt_color.';">公園</p>
+             </a>
+          </div>
+          <div id="gm_hos_btn" style="background-color: '.$color_arr[1].';" class="col-4">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=cafe&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'咖啡店\')">
+              <img src="../../img/svg/'.$img_dir.'/cafe.svg" alt=""><p style="color:'.$txt_color.';">咖啡店</p>
+            </a>
+          </div>
+          <div id="gm_home_btn" style="background-color: '.$color_arr[2].';" class="col-4">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=bank&radius=2000&zoom=16&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'銀行\')">
+               <img src="../../img/svg/'.$img_dir.'/bank.svg" alt=""><p style="color:'.$txt_color.';">銀行</p>
+             </a>
+          </div>
+          <div id="gm_work_btn" style="background-color: '.$color_arr[3].';" class="col-4">
+             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=convenience_store&radius=1000&zoom=16&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'商店\')">
+               <img src="../../img/svg/'.$img_dir.'/store.svg" alt=""><p style="color:'.$txt_color.';">商店</p>
+             </a>
+          </div>
+          <div id="gm_food_btn" style="background-color: '.$color_arr[0].';" class="col-4">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=gas_station&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'加油站\')">
+              <img src="../../img/svg/'.$img_dir.'/gas-station.svg" alt=""><p style="color:'.$txt_color.';">加油站</p>
+            </a>
+          </div>
+          
+          <div id="gm_fun_btn" style="background-color: '.$color_arr[5].';" class="col-4">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=pharmacy&keyword=&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'藥局\')">
+             <img src="../../img/svg/'.$img_dir.'/pharmacy.svg" alt=""><p style="color:'.$txt_color.';">藥局</p>
+            </a>
+           </div>
+          </div>
+
+          <a id="life_more" href="javascript:;"><i style="color:'.$txt_color.';" class="fa fa-chevron-down"></i></a>
+
         </div>
-      </div>';
+      </div>
+
+      <div id="pc_life_div">
+         <a style="background-color:'.$pc_a_back[0].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=food&keyword=餐廳&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'食\')">
+              <img src="../../img/svg/'.$img_dir.'/food.svg" alt=""><p style="color:'.$txt_color.';">食</p>
+         </a>
+
+         <a style="background-color:'.$pc_a_back[1].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=doctor&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'醫\')">
+              <img src="../../img/svg/'.$img_dir.'/hospital.svg" alt=""><p style="color:'.$txt_color.';">醫</p>
+         </a>
+
+         <a style="background-color:'.$pc_a_back[2].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=lodging&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'住\')">
+             <img src="../../img/svg/'.$img_dir.'/home.svg" alt=""><p style="color:'.$txt_color.';">住</p>
+         </a>
+
+         <a style="background-color:'.$pc_a_back[3].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=bus_station&radius=500&zoom=16&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'行\')">
+               <img src="../../img/svg/'.$img_dir.'/bus.svg" alt=""><p style="color:'.$txt_color.';">行</p>
+          </a>
+
+          <a style="background-color:'.$pc_a_back[4].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=school&radius=1000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'育\')">
+               <img src="../../img/svg/'.$img_dir.'/school.svg" alt=""><p style="color:'.$txt_color.';">育</p>
+          </a>
+
+         <a style="background-color:'.$pc_a_back[5].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=shopping_mall&keyword=&radius=2000&zoom=14&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'樂\')">
+             <img src="../../img/svg/'.$img_dir.'/shop.svg" alt=""><p style="color:'.$txt_color.';">樂</p>
+          </a>
+
+          <a style="background-color:'.$pc_a_back[6].'; border: 1px solid '.$txt_color.';" id="pc_life_more" href="javascript:;">
+            <img src="../../img/svg/'.$img_dir.'/new_more.png" alt=""><p style="color:'.$txt_color.'; font-weight: 600;">....</p>
+          </a>
+      </div>
+      ';
 
 	}
     
@@ -228,7 +415,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
       if (empty($gm_row['Tb_index'])) { continue; }
 
        echo '
-       <div class="col-md-12 googleMap_div">';
+       <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 googleMap_div">';
 
       if (!empty($gm_row['aTitle'])) {
       	echo '<h1>'.$gm_row['aTitle'].'</h1>';
@@ -236,8 +423,8 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
       echo' 
         <div class="map" location="'.$gm_row['location'].'" loc_txt="'.$gm_row['loc_txt'].'"></div>
-        <a target="_blank" class="map_placeholder" href="https://www.google.com/maps/dir//'.$gm_row['location'].'/@ '.$gm_row['location'].',17z/?hl=zh-TW">
-          <img src="../../img/svg/gps.svg" alt=""> 導航-星晴天接待會館位置
+        <a target="_blank" class="map_placeholder" href="https://www.google.com/maps/dir//'.$gm_row['location'].'/@ '.$gm_row['location'].',17z/?hl=zh-TW" onclick="ga(\'send\', \'event\', \'google 導航\', \'click\', \'tool_bar\')">
+          <img src="../../img/svg/gps.svg" alt=""> 導航
         </a>
       </div>';
        
@@ -262,7 +449,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
       $send_list=implode('||', $send_list);
 
 
-      echo '<div class="col-md-12">
+      echo '<div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 contact_us_div">
         <div class="contact_us">
           <h1>'.$call_row['btn_name'].'</h1>
           <form id="call_form">
@@ -303,7 +490,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
                <div class="form-group row no-gutters">
                 <label  class="col-sm-2 col-form-label">內容：</label>
                 <div class="col-sm-10">
-                  <textarea class="form-control" placeholder="Message" id="ca_msg" style="height: 200px;"></textarea>
+                  <textarea class="form-control" placeholder="Message" id="ca_msg" style="height: 180px;"></textarea>
                 </div>
               </div>
               <div class="form-group row no-gutters">
@@ -323,10 +510,10 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
   elseif($fun_type=='ma'){
      
      echo '
-     <div class="col-md-12">
-        <a href="#math_count" data-fancybox class="btn btn-info btn-lg btn-block open_math_btn">房貸試算</a>
+     <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 math_count_div">
 
-        <div id="math_count" style="width: 700px; margin: auto; display: none;">
+        <div id="math_count" >
+         <h1>房貸試算</h1>
           <div class="form-group row no-gutters">
             <label  class="col-sm-3 col-form-label">貸款總額：</label>
             <div class="col-sm-9">
@@ -360,7 +547,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
             </div>
           </div>
           <div class="form-group row no-gutters">
-            <div class="col-sm-12 text-right">
+            <div class="col-sm-12 text-center">
               <button id="enter_math" type="button" class="btn btn-info btn-lg ">試算</button>
             </div>
           </div>
@@ -413,7 +600,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
           <div class="form-group row no-gutters">
             <div class="col-sm-12">
               <p class="math_ state" >*本表僅提供試算 <br> 實際貸款數字仍需以申貸銀行為準</p>
-              <button id="reset_btn" type="button" class="btn btn-default btn-lg ">重新試算</button>
+              
             </div>
           </div>
         </div>
@@ -439,7 +626,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
      //-- 判斷是否啟用 --
      if (empty($other_row['Tb_index'])) { continue; }
 
-     echo '<div class="col-md-12">';
+     echo '<div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12">';
      echo $other_row['content'];
      echo '</div>';
   }

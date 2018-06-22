@@ -5,6 +5,10 @@
   .loading{ display: block; position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 31px; margin: auto; }
   .md-skin .ibox-content{ position: relative; }
   .sk-spinner-three-bounce div{ background-color: #838383; }
+  .iframe_div{ position: relative; width: 100%; height: 820px; overflow-x:auto;}
+  .iframe_div iframe{ position: absolute; top: 0; left: 0; width: 1920px; height: 800px; }
+
+  .ibox-title h3{ display: inline-block; margin-right: 10px; }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -22,6 +26,7 @@ if ($_POST) {
 if ($_GET) {
 
    $case_id=empty($_GET['Tb_index']) ? '':$_GET['Tb_index'];
+   $case_num=substr($case_id, 4);
 
    $sql=$pdo->prepare("SELECT * FROM Related_tb WHERE case_id = :com_id ORDER BY OrderBy DESC");
    $sql->execute( ['case_id'=>$_GET['Tb_index']] );
@@ -42,7 +47,7 @@ if ($_GET) {
 	  </div>
 	</div>
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-md-3">
 			<div class="ibox float-e-margins">
 			 <div class="ibox-title">
 			 	<div class="ibox-tools">
@@ -97,11 +102,34 @@ if ($_GET) {
         </div>
 		</div>
 	</div>
+
+  <div class="col-md-9">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h3>畫面預覽</h3>
+        <button type="button" id="if_reload" class="btn btn-info">重新整理</button>
+        <div class="ibox-tools">
+        </div>
+      </div>
+      <div class="ibox-content iframe_div ">
+      <?php 
+        if(empty($case_num)){
+        echo "<h2>無畫面...</h2>";
+        }
+        else{
+          echo '<iframe src="http://ws.srl.tw/cs/'.$case_num.'/" id="case_iframe" ></iframe>';
+        }
+      ?>
+      </div>
+    </div>
+  </div>
 </div>
 </div><!-- /#page-content -->
 <?php  include("../../core/page/footer01.php");//載入頁面footer01.php?>
 <script type="text/javascript">
 	$(document).ready(function() {
+
+
    
    //-- 撈取功能區塊 --
    funbox_all();
@@ -203,8 +231,24 @@ if ($_GET) {
          return;
        }
     });
+
+
+    //-- iframe 重新整理 ---
+    $('#if_reload').click(function(event) {
+      $('#case_iframe').attr('src', $('#case_iframe').attr('src'));
+    });
      
 	});
+
+
+  //-- iframe完全載入後 ---
+  // $('#case_iframe').load(function() {
+     
+  //    var if_body=$(this).contents();
+
+  // });
+
+
   
   //-- 查詢功能區塊外型 --
   function sel_FunBox(funbox_id) {
@@ -255,7 +299,7 @@ if ($_GET) {
                                                  
                           + '<a href="#" title="'+funbox['box_name']+'" class="pull-right btn btn-xs btn-danger del_funbox">刪除</a>'
                           + '<a style="margin-right:5px;" href="'+funbox['aUrl']+'?Tb_index='+this['case_id']+'&fun_id='+this['fun_id']+'&rel_id='+this['Tb_index']+'" class="pull-right btn btn-xs btn-primary iframe_box">編輯</a>'
-                          + '<a style="margin-right:5px;" href="#" class="pull-right btn btn-xs btn-white">檢視</a>'
+                          + '<a style="margin-right:5px;" href="javascript:;" onclick="move_iframe(\''+this['fun_id']+'\')" class="pull-right btn btn-xs btn-white">檢視</a>'
                       + '</li>';
              $('.sortable-list').append(txt);
 
@@ -290,6 +334,19 @@ if ($_GET) {
    });
 
    return name;
+ }
+
+
+
+ //----- iframe 滑到指定位置 ------
+ function move_iframe(id) {
+
+   var if_body=$('#case_iframe').contents();
+
+         if_body.find('html,body').animate({
+            scrollTop: if_body.find('#'+id).offset().top-if_body.find('#top_navbar').height()
+         },1000);
+      
  }
 
 </script>

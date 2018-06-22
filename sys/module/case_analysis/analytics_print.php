@@ -7,6 +7,10 @@
     #com_tb, #title_tb{ font-size: 18px; }
     body.fixed-sidebar .navbar-static-side, body.canvas-menu .navbar-static-side, .border-bottom{ display: none; }
     #page-wrapper{ margin:0 !important;   }
+  #wrapper{ width: 800px; }
+
+    @page { margin: 1cm;} /* 列印邊距 */
+
 
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
@@ -69,7 +73,7 @@ if ($_GET) {
                     </div>
 
 		</div>
-		<div class="col-lg-6 col-xs-6">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用者性別
@@ -83,7 +87,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6 col-xs-6">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用者年齡
@@ -96,8 +100,11 @@ if ($_GET) {
                     </div>
 
 		</div>
+    
+    <!-- -- 分頁 -- -->
+    <p style='page-break-after:always'> </p>
 
-		<div class="col-lg-6 col-xs-6">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用的媒體
@@ -111,7 +118,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6 col-xs-6">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>使用的功能鈕
@@ -127,7 +134,10 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6 col-xs-6">
+    <!-- -- 分頁 -- -->
+    <p style='page-break-after:always'> </p>
+
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>流量來源
@@ -143,7 +153,7 @@ if ($_GET) {
 
 		</div>
 
-		<div class="col-lg-6 col-xs-6">
+		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>地區使用人數
@@ -168,6 +178,9 @@ if ($_GET) {
                     </div>
 
 		</div>
+
+    <!-- -- 分頁 -- -->
+    <p style='page-break-after:always'> </p>
 
 		<div class="col-lg-12 col-xs-12">
 			<div class="ibox float-e-margins">
@@ -227,7 +240,10 @@ if ($_GET) {
                                return value+"人";
                               }
                             }
-                       }
+                       },
+                     size:{
+                      height:300
+                    }
                  });
          ajax_sex(data_sex);
 
@@ -294,6 +310,9 @@ if ($_GET) {
                           return value+"人";
                          }
                        }
+                  },
+                size:{
+                    height:500
                   }
             });
       ajax_tool_btn(data_tool_btn);
@@ -364,14 +383,14 @@ if ($_GET) {
                             
                         },
                         type: 'line',
-                        labels: true
+                        
                     },
                     axis:{
                        x:{
                          type:'timeseries',
                           tick:{
                               
-                              count:4,
+                              count:10,
                               format: '%m-%d'
                           }
                        }
@@ -379,9 +398,24 @@ if ($_GET) {
                 });
          ajax_data_use(data_use);
 
-
+      
     }); //JQUERY END
+   
 
+   //--- 載入完成後列印 ---
+   $(window).load(function() {
+     setTimeout ("CloseWin()" , 1);
+     window.print();
+   });
+ 
+
+// -- 列印後關閉 --
+
+function CloseWin()
+{
+window.opener=null;
+window.close();
+}
 
     //=========================================== 撈取資料 ====================================
 

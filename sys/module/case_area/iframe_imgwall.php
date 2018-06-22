@@ -112,7 +112,6 @@ if($_POST){
     //-------------- 圖檔修改-END ------------------
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0:1;
       $param=[
-       'play_speed'=>$_POST['play_speed'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('img_wall_tb', $param, ['Tb_index'=>$Tb_index]);

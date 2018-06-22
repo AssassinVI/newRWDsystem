@@ -198,13 +198,13 @@ if ($_GET) {
 	 		   	  	}
 	 				    txt+='<tr>';
 						txt+=' <td>'+x+'</td>';
-						txt+=' <td>'+this['Tb_index']+'</td>';
+						txt+=' <td class="none_420">'+this['Tb_index']+'</td>';
 						txt+=' <td style="font-size: 1.5em;">'+this['aTitle']+'</td>';
-						txt+=' <td><input type="number" class="sort_in" name="OrderBy" Tb_index="'+this['Tb_index']+'" value="'+this['OrderBy']+'"></td>';
-						txt+=' <td>'+OnLineOrNot+'</td>';
-						txt+=' <td>'+version+'</td>';
+						txt+=' <td class="none_420"><input type="number" class="sort_in" name="OrderBy" Tb_index="'+this['Tb_index']+'" value="'+this['OrderBy']+'"></td>';
+						txt+=' <td class="none_420">'+OnLineOrNot+'</td>';
+						txt+=' <td class="none_420">'+version+'</td>';
 						txt+=' <td class="text-right">';
-						txt+='    <a class="btn btn-default btn-sm" href="analytics.php?MT_id=site2017111611004594&Tb_index='+this['Tb_index']+'"><i class="fa fa-line-chart"></i> 分析</a>';
+						txt+='    <a class="btn btn-default btn-sm" href="analytics.php?MT_id=<?php echo $_GET['MT_id'];?>&Tb_index='+this['Tb_index']+'"><i class="fa fa-line-chart"></i> 分析</a>';
 						txt+=' </td>';
 						txt+='</tr>';
 				       x++;

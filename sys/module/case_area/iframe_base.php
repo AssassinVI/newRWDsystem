@@ -126,6 +126,7 @@ if($_POST){
     pdo_update('Related_tb', ['fun_id'=>$Tb_index, 'OnLineOrNot'=>$OnLineOrNot], ['Tb_index'=>$_GET['rel_id']]);
 
     $line_show=empty($_POST['line_show'])? 0 : 1;
+    $zoomin_img=empty($_POST['zoomin_img'])? 0 : 1;
     $txt_fadein=empty($_POST['txt_fadein']) ? '' : $_POST['txt_fadein_type'];
     $img_fadein=empty($_POST['img_fadein']) ? '' : $_POST['img_fadein_type'];
     
@@ -140,7 +141,9 @@ if($_POST){
        'back_img'=>$back_img,
        'txt_fadein'=>$txt_fadein,
        'img_fadein'=>$img_fadein,
-       
+       'ImgWord_type'=>$_POST['ImgWord_type'],
+       'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
+       'zoomin_img'=>$zoomin_img,
        'line_show'=>$line_show,
        'OnLineOrNot'=>$OnLineOrNot,
        'StartDate'=>date('Y-m-d H:i:s')
@@ -250,6 +253,7 @@ if($_POST){
 
 
       $line_show=empty($_POST['line_show'])? 0 : 1;
+      $zoomin_img=empty($_POST['zoomin_img'])? 0 : 1;
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
       
       $txt_fadein=empty($_POST['txt_fadein']) ? '' : $_POST['txt_fadein_type'];
@@ -261,7 +265,9 @@ if($_POST){
        'content'=>$_POST['content'],
        'txt_fadein'=>$txt_fadein,
        'img_fadein'=>$img_fadein,
-       
+       'ImgWord_type'=>$_POST['ImgWord_type'],
+       'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
+       'zoomin_img'=>$zoomin_img,
        'line_show'=>$line_show,
        'OnLineOrNot'=>$OnLineOrNot
     ];
@@ -511,9 +517,35 @@ if($_POST){
             </div>
 
             <div class="form-group">
+              <label class="col-sm-2 control-label" for="line_show">圖文排版樣式(電腦)</label>
+              <div class="col-sm-10">
+                <label><input type="radio" name="ImgWord_type" value="1" checked> 上圖下文</label>｜
+                <label><input type="radio" name="ImgWord_type" value="2"> 上文下圖</label>｜
+                <label><input type="radio" name="ImgWord_type" value="3"> 左圖右文</label>｜
+                <label><input type="radio" name="ImgWord_type" value="4"> 左文右圖</label>｜
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="line_show">圖文排版樣式(手機)</label>
+              <div class="col-sm-10">
+                <label><input type="radio" name="ImgWord_ph_type" value="1" checked> 上圖下文</label>｜
+                <label><input type="radio" name="ImgWord_ph_type" value="2"> 上文下圖</label>｜
+              </div>
+            </div>
+
+            <div class="form-group">
               <label class="col-sm-2 control-label" for="line_show">是否顯示分割線</label>
               <div class="col-sm-10">
                 <input style="width: 20px; height: 20px;" id="line_show" name="line_show" type="checkbox" value="1" <?php echo $check=!isset($row['line_show']) || $row['line_show']==1 ? 'checked' : ''; ?>  />
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="zoomin_img">是否圖片放大</label>
+              <div class="col-sm-10">
+                <input style="width: 20px; height: 20px;" id="zoomin_img" name="zoomin_img" type="checkbox" value="1" <?php echo $check=$row['zoomin_img']==1 ? 'checked' : ''; ?>  />
               </div>
             </div>
 
@@ -560,6 +592,24 @@ if($_POST){
     <?php
       }
     ?>
+
+    //------------- 圖文排版樣式(電腦) ---------------
+    <?php if(!empty($row['ImgWord_type'])){ ?>
+     $('[name="ImgWord_type"][value="<?php echo $row['ImgWord_type'];?>"]').prop('checked', true);
+
+    <?php }else{ ?>
+      $('[name="ImgWord_type"][value="1"]').prop('checked', true);
+    <?php } ?>
+
+
+    //------------- 圖文排版樣式(手機) ---------------
+    <?php if(!empty($row['ImgWord_ph_type'])){ ?>
+     $('[name="ImgWord_ph_type"][value="<?php echo $row['ImgWord_ph_type'];?>"]').prop('checked', true);
+
+    <?php }else{ ?>
+      $('[name="ImgWord_ph_type"][value="1"]').prop('checked', true);
+    <?php } ?>
+
 
 
       $('#save_btn').click(function(event) {

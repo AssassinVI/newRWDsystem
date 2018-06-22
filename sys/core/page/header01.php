@@ -11,7 +11,7 @@ $URL = $protocol.'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 //-- 阻擋無權限進入 --
 if ($_SESSION['admin_per']!='admin') {
-   if (strpos($URL, 'Dashboard')===false && !in_array($_GET['MT_id'], $_SESSION['group'])) {
+   if (strpos($URL, 'Dashboard')===false && strpos($URL, 'catch_web')===false && !in_array($_GET['MT_id'], $_SESSION['group'])) {
        location_up('back', '抱歉，您無使用權限!!');
    }
 }
@@ -41,6 +41,9 @@ if ($_SESSION['admin_per']!='admin') {
 
      <!-- FancyBox -->
      <link rel="stylesheet" type="text/css" href="../../js/plugins/fancyBox/jquery.fancybox.css">
+
+     <!-- 漂亮拉bar -->
+     <link rel="stylesheet" type="text/css" href="../../js/plugins/mCustomScrollbar/jquery.mCustomScrollbar.css">
 
      <style type="text/css">
         body, div, h1, h2, h3, h4, h5, p, a, li, span{ font-family: Microsoft JhengHei; }

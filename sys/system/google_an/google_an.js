@@ -45,13 +45,9 @@ function google_an_all(view_id, case_id) {
 
 			//---- 超過10秒重新整理 ----
 			if (timeOut_num>100) {
-				window.location.reload();
-			}
-            
-            //---------- 全都有值 --------
-			if (is_data_num==$('#an_data').find('input').length) {
+				//window.location.reload();
 
-		           $.ajax({
+				$.ajax({
 		           	url: 'google_an_ajax.php',
 		           	type: 'POST',
 		           	data: {
@@ -80,8 +76,41 @@ function google_an_all(view_id, case_id) {
 		           });
 
 		           clearTimeout(t);
-				}
+			}
+            
+            //---------- 全都有值 --------
+			if (is_data_num==$('#an_data').find('input').length) {
+                   
+                   $.ajax({
+		           	url: 'google_an_ajax.php',
+		           	type: 'POST',
+		           	data: {
+		           		  Tb_index: case_id,
+		           		 week_user: $('[name="week_user"]').val(),
+		           		month_user: $('[name="month_user"]').val(),
+		           		total_user: $('[name="total_user"]').val(),
+		           		       sex: $('[name="sex"]').val(),
+		           		     years: $('[name="years"]').val(),
+		           		     media: $('[name="media"]').val(),
+		           		     event: $('[name="event"]').val(),
+		           		       src: $('[name="src"]').val(),
+		           		      city: $('[name="city"]').val(),
+		             timeOnSite_years: $('[name="timeOnSite_years"]').val(),
+		           		 user_date: $('[name="user_date"]').val()
+		           	},
+		           	success:function (data) {
+		           		$('#an_data').find('input').val('');
+		           		$('#'+case_id).css('opacity', '0');
+		           		$('#timeOut_num').val(timeOut_num);
 
+		           		var Today=new Date();
+
+		           		$('#time_'+case_id).html(Today.getFullYear()+'-'+(Today.getMonth()+1)+'-'+Today.getDate()+' '+Today.getHours()+':'+Today.getMinutes()+':'+Today.getSeconds());
+		           	}
+		           });
+
+		           clearTimeout(t);
+			}
 
 	}, 100);
 	

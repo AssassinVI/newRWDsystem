@@ -20,8 +20,8 @@
 <script src="../../js/plugins/pace/pace.min.js"></script>
 
 <!-- CKeditor -->
-<!--<script src="../../js/plugins/ckeditor/ckeditor.js"></script>-->
-<script src="//cdn.ckeditor.com/4.5.11/full/ckeditor.js"></script>
+<script src="../../js/plugins/ckeditor/ckeditor.js"></script>
+<!-- <script src="//cdn.ckeditor.com/4.5.11/full/ckeditor.js"></script> -->
 
 <!-- twzipcode -->
 <script src="../../js/plugins/twzipcode/jquery.twzipcode.js"></script>
@@ -38,6 +38,10 @@
 
 <!-- FancyBox -->
 <script type="text/javascript" src="../../js/plugins/fancyBox/jquery.fancybox.js"></script>
+
+<!-- 漂亮拉bar -->
+<script type="text/javascript" src="../../js//plugins/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+
 </script>
 
 <script type="text/javascript">

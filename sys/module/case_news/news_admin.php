@@ -84,7 +84,7 @@ if ($_GET) {
 								編輯</button>
 								</a>
 
-								<a href="admin.php?case_id=<?php echo $_GET['case_id']?>&Tb_index=<?php echo $row['Tb_index'];?>" 
+								<a href="news_admin.php?case_id=<?php echo $_GET['case_id']?>&Tb_index=<?php echo $row['Tb_index'];?>" 
 								   onclick="if (!confirm('確定要刪除 [<?php echo $row['Tb_index']?>] ?')) {return false;}">
 								<button type="button" class="btn btn-rounded btn-warning btn-sm">
 								<i class="fa fa-trash" aria-hidden="true"></i>

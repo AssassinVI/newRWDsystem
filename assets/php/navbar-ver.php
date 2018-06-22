@@ -17,7 +17,7 @@
 	  </div>
 
 	  <div class="ch_tool_btn">
-	  	<a id="case_btn" href="javascript:;"><?php echo $case['aTitle'];?> <span style="height: 100%;"></span></a>
+	  	<a id="case_btn" href="javascript:;">建案資訊 <span style="height: 100%;"></span></a>
 	  	<a id="news_btn" href="javascript:;">媒體報導 <span></span></a>
 	  </div>
 

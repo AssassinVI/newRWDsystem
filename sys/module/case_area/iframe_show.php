@@ -102,8 +102,12 @@ if($_POST){
        'Tb_index'=>$Tb_index,
        'case_id'=>$_GET['Tb_index'],
        'play_speed'=>$_POST['play_speed'],
+       'effect'=>$_POST['effect'],
        'show_img'=>$show_img,
        'show_img_ph'=>$show_img_ph,
+       'ImgWord_type'=>$_POST['ImgWord_type'],
+       'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
+       'aTXT'=>$_POST['aTXT'],
        'StartDate'=>date('Y-m-d H:i:s'),
        'OnLineOrNot'=>$OnLineOrNot
     ];
@@ -187,6 +191,10 @@ if($_POST){
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0:1;
       $param=[
        'play_speed'=>$_POST['play_speed'],
+       'effect'=>$_POST['effect'],
+       'ImgWord_type'=>$_POST['ImgWord_type'],
+       'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
+       'aTXT'=>$_POST['aTXT'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('slideshow_tb', $param, ['Tb_index'=>$Tb_index]);
@@ -228,8 +236,19 @@ if($_POST){
                 <input type="text" class="form-control" id="play_speed" name="play_speed" value="<?php echo $row['play_speed'];?>">
                 <span >單位：毫秒</span>
               </div>
-              
             </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="effect">輪播特效</label>
+              <div class="col-sm-6">
+                <select class="form-control" name="effect">
+                  <option value="slide">預設(滑動)</option>
+                  <option value="fade">淡入淡出</option>
+                  <option value="coverflow">3D切換</option>
+                </select>
+              </div>
+            </div>
+
              <div class="form-group">
               <label class="col-sm-1 control-label" >圖片</label>
               <div class="col-sm-11">
@@ -305,6 +324,31 @@ if($_POST){
                 </div>
             </div>
 
+            <div class="form-group">
+              <label class="col-sm-1 control-label" for="aTXT">內容</label>
+              <div class="col-sm-11">
+                <textarea id="ckeditor" name="aTXT" class="form-control"><?php echo $row['aTXT'];?></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="line_show">圖文排版樣式(電腦)</label>
+              <div class="col-sm-10">
+                <label><input type="radio" name="ImgWord_type" value="1" checked> 上圖下文</label>｜
+                <label><input type="radio" name="ImgWord_type" value="2"> 上文下圖</label>｜
+                <label><input type="radio" name="ImgWord_type" value="3"> 左圖右文</label>｜
+                <label><input type="radio" name="ImgWord_type" value="4"> 左文右圖</label>｜
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="line_show">圖文排版樣式(手機)</label>
+              <div class="col-sm-10">
+                <label><input type="radio" name="ImgWord_ph_type" value="1" checked> 上圖下文</label>｜
+                <label><input type="radio" name="ImgWord_ph_type" value="2"> 上文下圖</label>｜
+              </div>
+            </div>
+
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="OnLineOrNot">是否上線</label>
@@ -325,6 +369,30 @@ if($_POST){
 <?php  include("../../core/page/footer01.php");//載入頁面footer01.php?>
 <script type="text/javascript">
 	$(document).ready(function() {
+
+    //------------- 圖文排版樣式(電腦) ---------------
+    <?php if(!empty($row['ImgWord_type'])){ ?>
+     $('[name="ImgWord_type"][value="<?php echo $row['ImgWord_type'];?>"]').prop('checked', true);
+
+    <?php }else{ ?>
+      $('[name="ImgWord_type"][value="1"]').prop('checked', true);
+    <?php } ?>
+
+
+    //------------- 圖文排版樣式(手機) ---------------
+    <?php if(!empty($row['ImgWord_ph_type'])){ ?>
+     $('[name="ImgWord_ph_type"][value="<?php echo $row['ImgWord_ph_type'];?>"]').prop('checked', true);
+
+    <?php }else{ ?>
+      $('[name="ImgWord_ph_type"][value="1"]').prop('checked', true);
+    <?php } ?>
+
+
+    // 目前特效
+    <?php if(!empty($row['effect'])){ ?>
+     $('[value="<?php echo $row['effect'];?>"]').prop('selected', 'true');
+    <?php }?>
+    
         
 
       $('#save_btn').click(function(event) {

@@ -10,6 +10,14 @@
     .col-lg-4{ width: 33.33333%; float: left; }
     .col-lg-6{ width: 600px; }
   }
+
+  @media (max-width: 420px){
+    h2.text-primary{  margin-bottom: 32px; }
+    .ibox-content{  padding: 15px 0px 20px 0px; }
+    .wrapper-content{ padding: 20px 0px 40px; }
+    #page-wrapper{ padding: 0 5px; }
+    .c3 text{ font-size: 12px; }
+  }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -29,7 +37,7 @@ if ($_GET) {
       <h2 class="text-primary">GOOGLE分析 列表 - <?php echo $row_name['aTitle'];?></h2>
       <p>本頁面列出各建案常用分析圖表</p>
        <div class="new_div">
-         <a href="analytics_print.php?MT_id=<?php echo $_GET['MT_id'];?>&Tb_index=<?php echo $_GET['Tb_index'];?>" class="btn btn-default"><i class="fa fa-print"></i> 列印報表</a>
+         <a target="_blank" href="analytics_print.php?MT_id=<?php echo $_GET['MT_id'];?>&Tb_index=<?php echo $_GET['Tb_index'];?>" class="btn btn-default"><i class="fa fa-print"></i> 列印報表</a>
           
       </div>
     </div>
@@ -297,6 +305,9 @@ if ($_GET) {
                           return value+"人";
                          }
                        }
+                  },
+                size:{
+                    height:500
                   }
             });
       ajax_tool_btn(data_tool_btn);
@@ -367,7 +378,6 @@ if ($_GET) {
                             
                         },
                         type: 'line',
-                        labels: true
                     },
                     axis:{
                        x:{

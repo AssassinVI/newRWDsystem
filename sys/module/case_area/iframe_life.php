@@ -8,6 +8,10 @@
 
   #txt_fadein_type{ display: none; }
   #img_fadein_type{ display: none; }
+
+  .one_traffic{ float: left; position: relative; width: 33%;}
+  .one_traffic label{ display: block; }
+  .top_traffic{ margin-top: 10px; }
 	
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
@@ -27,9 +31,21 @@ if($_POST){
     //---- 更新關聯資料表 -----
     pdo_update('Related_tb', ['fun_id'=>$Tb_index, 'OnLineOrNot'=>$OnLineOrNot], ['Tb_index'=>$_GET['rel_id']]);
     
+    $range=implode('|', $_POST['range']);
+    $keyword=implode('|', $_POST['keyword']);
+    $traffic_loc=empty($_POST['traffic_loc']) ? '' : implode('|', $_POST['traffic_loc']);
+    $traffic_name=empty($_POST['traffic_name']) ? '' : implode('|', $_POST['traffic_name']);
+
     $param=[
        'Tb_index'=>$Tb_index,
        'case_id'=>$_GET['Tb_index'],
+       'location'=>$_POST['location'],
+       'life_range'=>$range,
+       'life_keyword'=>$keyword,
+       'traffic_loc'=>$traffic_loc,
+       'traffic_name'=>$traffic_name,
+       'color_type'=>$_POST['color_type'],
+       'type'=>$_POST['type'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_insert('life_tb', $param);
@@ -41,11 +57,23 @@ if($_POST){
   else{
 
     $Tb_index=$_GET['fun_id'];
+
+    $range=implode('|', $_POST['range']);
+    $keyword=implode('|', $_POST['keyword']);
+    $traffic_loc=empty($_POST['traffic_loc']) ? '' : implode('|', $_POST['traffic_loc']);
+    $traffic_name=empty($_POST['traffic_name']) ? '' : implode('|', $_POST['traffic_name']);
     
 
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
 
       $param=[
+       'location'=>$_POST['location'],
+       'life_range'=>$range,
+       'life_keyword'=>$keyword,
+       'traffic_loc'=>$traffic_loc,
+       'traffic_name'=>$traffic_name,
+       'color_type'=>$_POST['color_type'],
+       'type'=>$_POST['type'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('life_tb', $param, ['Tb_index'=>$Tb_index]);
@@ -63,6 +91,10 @@ if($_POST){
   $Tb_id=substr($_GET['Tb_index'], 4);
 
   $row=pdo_select("SELECT * FROM life_tb WHERE Tb_index=:Tb_index", ['Tb_index'=>$_GET['fun_id']]);
+
+  $range=explode('|', $row['life_range']);
+  $keyword=explode('|', $row['life_keyword']);
+
 ?>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -82,7 +114,9 @@ if($_POST){
 			<div class="ibox-content">
 				<form id="fun_form" action="#" method="POST" class="form-horizontal" enctype='multipart/form-data'>
             
-
+           <div class="form-group">
+             <label class="col-sm-2 control-label" ></label>
+             <div class="col-sm-10">
             <?php 
              if (empty($row['Tb_index'])) {
             ?>
@@ -94,6 +128,102 @@ if($_POST){
             <?php
              }
             ?>
+            </div>
+           </div> 
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" >食醫住行按鈕類型</label>
+              <div class="col-sm-10">
+                <select class="form-control" name="type">
+                  <option value="0" <?php echo $check=$row['type']=='0' ?  'selected':'';?> >Menu彈出</option>
+                  <option value="1" <?php echo $check=$row['type']=='1' ?  'selected':'';?>>滑到指定位置</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" >按鈕配色</label>
+              <div class="col-sm-10">
+                <select class="form-control" name="color_type">
+                  <option value="0" <?php echo $check=$row['color_type']=='0' ?  'selected':'';?> >預設</option>
+                  <option value="1" <?php echo $check=$row['color_type']=='1' ?  'selected':'';?>>高檔1</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" >位置座標:</label>
+              <div class="col-sm-10">
+                <input class="form-control" type="text" name="location" placeholder="請輸入地圖座標" value="<?php echo  $row['location'];?>">
+              </div>
+            </div>
+
+
+            <?php
+              $life_name=['食','醫','住','育','樂','公園','公車站','咖啡店','銀行','商店','加油站','藥局'];
+              $life_num=count($life_name);
+
+              for ($i=0; $i <$life_num ; $i++) { 
+                
+                echo '
+                <div class="form-group">
+                 <label class="col-sm-2 control-label" >"'.$life_name[$i].'"範圍:</label>
+                 <div class="col-sm-2">
+                   <input class="form-control" type="text" name="range[]" placeholder="請輸入地圖範圍" value="'.$range[$i].'">
+                 </div>
+
+                 <label class="col-sm-1 control-label" >"'.$life_name[$i].'"關鍵字:</label>
+                 <div class="col-sm-7">
+                   <input class="form-control" type="text" name="keyword[]" placeholder="請輸入關鍵字" value="'.$keyword[$i].'">
+                 </div>
+                </div>';
+              }
+            ?>
+
+             
+
+
+
+
+            <hr>
+
+            <h2>"行"座標，名稱自訂</h2>
+            <div class="form-group">
+              <div class="col-sm-10">
+                <button type="button" id="traffic_btn" class="btn btn-info"><i class="fa fa-plus"></i> 新增座標</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+               <div class="col-sm-12">
+                <ul class="sortable-list connectList agile-list ui-sortable traffic_div" >
+
+                 <?php 
+                  if (!empty($row['traffic_loc'])) {
+                    
+                    $traffic_loc=explode('|', $row['traffic_loc']);
+                    $traffic_name=explode('|', $row['traffic_name']);
+                    $traffic_num=count($traffic_loc);
+
+                    for ($i=0; $i <$traffic_num ; $i++) { 
+                       
+                       echo '<li class="one_traffic">
+                              <span class="mark_num">'.($i+1).'</span>
+                              <button type="button"  class="btn btn-danger one_del_div">x</button>
+                              <label class="top_traffic">座標位置: <input type="text" name="traffic_loc[]" value="'.$traffic_loc[$i].'" class="form-control"></label>
+                              <label>座標名稱: <input type="text" name="traffic_name[]" value="'.$traffic_name[$i].'" class="form-control"></label>
+                            </li>';
+                    }
+                  }
+                 ?>
+
+
+                                                
+                </ul>
+              </div>
+            </div>
+
+            <hr>
             
 
             <div class="form-group">
@@ -102,6 +232,7 @@ if($_POST){
                 <input style="width: 20px; height: 20px;" id="OnLineOrNot" name="OnLineOrNot" type="checkbox" value="1" <?php echo $check=!isset($row['OnLineOrNot']) || $row['OnLineOrNot']==1 ? 'checked' : ''; ?>  />
               </div>
             </div>
+
             
          
 				</form>
@@ -109,6 +240,7 @@ if($_POST){
 		</div>
 	</div>
 </div>
+
 
 
 </div><!-- /#page-content -->
@@ -120,6 +252,38 @@ if($_POST){
       $('#save_btn').click(function(event) {
          $('#fun_form').submit();
       });
+
+
+      //-- 行 新增座標 --
+      var traffic_num=$('[name="traffic_loc[]"]').length;
+      $('#traffic_btn').click(function(event) {
+
+        var txt='<li class="one_traffic">'+
+                    '<span class="mark_num">'+(traffic_num+1)+'</span>'+
+                    '<button type="button"  class="btn btn-danger one_del_div">x</button>'+
+                    '<label class="top_traffic">座標位置: <input type="text" name="traffic_loc[]"  class="form-control"></label>'+
+                    '<label>座標名稱: <input type="text" name="traffic_name[]"  class="form-control"></label>'+
+                '</li>';
+
+         $('.traffic_div').append(txt);
+        traffic_num++;
+      });
+      
+      $('.traffic_div').on('click', '.one_del_div', function(event) {
+        event.preventDefault();
+         if (confirm('是否要刪除此座標??')) {
+          $(this).parent().remove();
+        }
+      });
+
+      // 拖曳多圖檔
+       $(".traffic_div").sortable({
+         connectWith: ".traffic_div",
+         update: function( event, ui ) {
+
+              var OtherFile_arr = $( ".traffic_div" ).sortable( "toArray" );
+         }
+      }).disableSelection();
       
 	 });
 

@@ -72,7 +72,7 @@ $row=$sql_q->fetch(PDO::FETCH_ASSOC);
     .no_photo img{ width:100%; max-height:250px; }
 
     
-    #back_btn{ position: fixed; bottom: 60px; right: 0px; text-decoration: none; background-color: rgba(255, 255, 255, 0.65); padding: 10px 21px; color: #483c37; font-size: 20px; border-radius: 30px 0px 0px 30px; font-weight: 600;  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.35); z-index: 100;}
+    #back_btn{ position: fixed; bottom: 60px; right: 0px; text-decoration: none; background-color: rgb(255, 255, 255); padding: 10px 21px; color: #483c37; font-size: 20px; border-radius: 30px 0px 0px 30px; font-weight: 600;  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.35); z-index: 100;}
     #back_btn img{ width: 18px; }
 
     .footer_btn a img{ width: 20px; height: 20px; }
