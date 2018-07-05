@@ -56,27 +56,27 @@
 
      <!-- 食醫住行 -->
      <div class="life_tool_div">
-       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=food&keyword=餐廳&radius=1000&zoom=14&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '食')">
+       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=food&keyword=<?php echo $life_keyword[0];?>&radius=<?php echo $life_range[0];?>&zoom=<?php echo $life_zoom[0];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '食')">
         <span style="background-image: url(../../img/svg/mapTool/food.svg); background-size: 60%; background-color: #FFC107;"></span><br>食
        </a>
 
-       <a class="more_tool_btn"  data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=doctor&radius=1000&zoom=14&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '醫')">
+       <a class="more_tool_btn"  data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=doctor&keyword=<?php echo $life_keyword[1];?>&radius=<?php echo $life_range[1];?>&zoom=<?php echo $life_zoom[1];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '醫')">
         <span style="background-image: url(../../img/svg/mapTool/hospital.svg); background-size: 60%; background-color: #FFC107;"></span><br>醫
        </a>
 
-       <a  class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=lodging&radius=1000&zoom=14&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '住')">
+       <a  class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=lodging&keyword=<?php echo $life_keyword[2];?>&radius=<?php echo $life_range[2];?>&zoom=<?php echo $life_zoom[2];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '住')">
         <span style="background-image: url(../../img/svg/mapTool/home.svg); background-size: 60%; background-color: #FFC107;"></span><br>住
        </a>
 
-       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=bus_station&radius=500&zoom=16&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '行')">
-        <span style="background-image: url(../../img/svg/mapTool/bus.svg); background-size: 60%; background-color: #FFC107;"></span><br>行
+       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_traffic.php?place_loc=<?php echo $life_location;?>&case_id=<?php echo $case_id;?>&zoom=<?php echo $traffic_zoom;?>&case_name=<?php echo $case['aTitle'];?> " href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '行')">
+        <span style="background-image: url(../../img/svg/mapTool/traffic.svg); background-size: 60%; background-color: #FFC107;"></span><br>行
        </a>
 
-       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=school&radius=1000&zoom=14&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '育')">
+       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=school&keyword=<?php echo $life_keyword[3];?>&radius=<?php echo $life_range[3];?>&zoom=<?php echo $life_zoom[3];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '育')">
         <span style="background-image: url(../../img/svg/mapTool/school.svg); background-size: 60%; background-color: #FFC107;"></span><br>育
        </a>
 
-       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=shopping_mall&keyword=&radius=2000&zoom=14&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '樂')">
+       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=shopping_mall&keyword=<?php echo $life_keyword[4];?>&radius=<?php echo $life_range[4];?>&zoom=<?php echo $life_zoom[4];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '樂')">
         <span style="background-image: url(../../img/svg/mapTool/shop.svg); background-size: 60%; background-color: #FFC107;"></span><br>樂
        </a>
 

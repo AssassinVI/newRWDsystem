@@ -70,6 +70,12 @@ $(document).ready(function() {
              $('.life_tool_div').css('display', 'flex');
              $('.more_tool_div').css('display', 'none');
                    TweenMax.fromTo( '.life_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:57});
+
+             //-- 關閉提示 --
+                   TweenMax.to('.life_prompt', 0.5, {opacity:0 });
+                   TweenMax.to('.life_prompt', 0.1, {display:'none', delay:0.5});
+                   TweenMax.to('.news_prompt', 0.5, {opacity:0});
+                   TweenMax.to('.news_prompt', 0.1, {display:'none', delay:0.5});
           }
           else{
              TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
@@ -194,6 +200,12 @@ $(document).ready(function() {
         		TweenMax.fromTo( $('#news_div'), 0.5, {display:'none', left:'-100%'},{display:'block', left:'0%'});
         		TweenMax.to( $('#case_div'), 0.1, {display:'none',  delay:'0.5' });
             nowDiv='#news_div';
+
+            //-- 關閉提示 --
+                   TweenMax.to('.life_prompt', 0.5, {opacity:0 });
+                   TweenMax.to('.life_prompt', 0.1, {display:'none', delay:0.5});
+                   TweenMax.to('.news_prompt', 0.5, {opacity:0});
+                   TweenMax.to('.news_prompt', 0.1, {display:'none', delay:0.5});
         	}
         });
 
@@ -289,7 +301,7 @@ $(document).ready(function() {
     //-- 手機平板 --
     else{
        $('#navbarNavAltMarkup a').click(function(event) {
-       var anchor_offset=$('#'+$(this).attr('anchor')).offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-$('#top_navbar').height(); //錨點位置+位移量-body位移量-navbar高度
+       var anchor_offset=$('#'+$(this).attr('anchor')).offset().top+$('#case_div').scrollTop()-$('html, body').scrollTop()-42; //錨點位置+位移量-body位移量-navbar高度
        
        $(pcph_Div).animate({
            scrollTop: anchor_offset

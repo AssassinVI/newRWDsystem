@@ -1,6 +1,8 @@
-        
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
        /*googlemap BUG*/
        body{ height: 110vh !important; }
+
 
        html, body { width : 100%; height: 100%;}
 
@@ -14,6 +16,9 @@
         .life_tool_div{display: none;}
         .news_prompt, .life_prompt{display: none;}
         .center_div{ position: relative; top: 50%; transform: translateY(-50%); }
+        
+        #logo_img{ height: 60px; position: absolute; left: 0; }
+        .navbar-expand-lg .navbar-collapse{ position: relative; }
 
         /*JQUERY mobile*/
         .ui-loader{ display: none; }
@@ -160,24 +165,26 @@
 
     /*========= 平板畫面 =============*/
 		@media (max-width: 768px){
+          #logo_img{ display: none; }
+
           #ph_nav_btn{ display: block; padding: 12px 5px 10px 5px;}
           .navbar{ padding: 0px 10px; z-index: 10; position: fixed; background: #fff; width: 100%;}
 
 
          /*食醫住行+新聞提示*/
         .prompt{ display: block; position: fixed; width: 100%; height: 100%; z-index: 102;  }
-         .life_prompt{display: block; position: absolute; bottom: 62px; right: 22%; background-color: #c8a062; padding: 6px 15px; border-radius: 30px; z-index: 102;}
+         .life_prompt{display: block; position: absolute; bottom: 62px; right: 22%; background-color: #ffc105; padding: 6px 15px; border-radius: 30px; z-index: 102;}
          .life_prompt p{ margin: 0; color: #26120b;}
-         .life_prompt i{position: absolute; left: 45px; width: 0; height: 0; border-style: solid; border-width: 14px 8px 0 8px; border-color: #c8a062 transparent transparent transparent; }
+         .life_prompt i{position: absolute; left: 45px; width: 0; height: 0; border-style: solid; border-width: 14px 8px 0 8px; border-color: #ffc105 transparent transparent transparent; }
        
-         .news_prompt{ display: block; position: absolute; top: 46px; right: 24%; background-color: #c8a062; padding: 6px 15px; border-radius: 30px; z-index: 102;}
+         .news_prompt{ display: block; position: absolute; top: 46px; right: 24%; background-color: #ffc105; padding: 6px 15px; border-radius: 30px; z-index: 102;}
          .news_prompt p{ margin: 0; color: #26120b;}
-         .news_prompt i{position: absolute; top: -8px; left: 30px; width: 0; height: 0; border-style: solid; border-width: 0 8px 15px 8px; border-color: transparent transparent #c8a062 transparent; }
+         .news_prompt i{position: absolute; top: -8px; left: 30px; width: 0; height: 0; border-style: solid; border-width: 0 8px 15px 8px; border-color: transparent transparent #ffc105 transparent; }
        
 
 
           /*導覽列*/
-          #navbarNavAltMarkup{ background: #fff;  height: 90vh;}
+          #navbarNavAltMarkup{ background: #fff;  height: 86vh;}
           #navbarNavAltMarkup a{ font-size: 15px; text-align: center; padding: 18px 0px; border-bottom: 1px solid #ccc; }
 
           /*手機漢堡*/
@@ -238,7 +245,7 @@
          .googleMap_div h1{ font-size: 2.5rem; margin: 25px 0; }
 
          /*------------ 聯絡我們 ----------*/
-        .contact_us{  width: 95%; }
+        .contact_us{  width: 100%; }
         .contact_us label{ font-size: 1.4rem; }
         
          /*------------ 房貸試算 ----------*/

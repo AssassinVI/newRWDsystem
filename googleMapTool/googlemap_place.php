@@ -60,8 +60,8 @@
 	<title>附近景點</title>
   <link rel="stylesheet" type="text/css" href="../assets/js/plugins/fancybox/jquery.fancybox.min.css">
 	<style type="text/css">
-    body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; }
-		#map{ width: 100%;height: 800px; margin-top: 45px; margin-bottom: 20px;}
+    body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; height: 750px;}
+		#map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px;}
     #detial{ width: 98%; margin: auto; }
     #title{ text-align: center; background-color: #373737; padding: 10px 0px; font-size: 20px; color: #fff; position: fixed; top: 0px; width: 100%; z-index: 1000;  box-shadow: 0px 2px 10px rgba(0,0,0,0.67);}
 
@@ -84,7 +84,7 @@
 
     .map_img_div{ width:98%; height:300px; margin: 10px 0px 0px 10px; }
 
-    .map_a_div{ display: inline-block; width: 100%; }
+    .map_a_div{ display: inline-block; width: 100%; margin-bottom: 10px;}
     .map_a_div h1 p{ font-size: 18px; margin: 0 10px; vertical-align: middle; display: inline-block; }
 
     .life_item_div{ width: 33%; display: inline-block; }
@@ -139,7 +139,7 @@
 
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDd8Sh2hJ_40P92vt8sOyZwPvVTh867DmU&libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmcZ9YTd68k4QYur5nowITqcI_kGZO5Ks&libraries=places"></script>
 
 <script type="text/javascript" src="../assets/js/plugins/fancybox/jquery.fancybox.min.js"></script>
 

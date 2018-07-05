@@ -46,6 +46,27 @@
 
 <script type="text/javascript">
 
+//-- 過時自動登出 ---
+$(document).ready(function() {
+   $(document).mousemove(function(event) {
+    session_replay();
+  });
+
+  $(document).mousedown(function(event) {
+    session_replay();
+  });
+});
+
+var t;
+function session_replay() {
+  clearTimeout(t);
+    t=setTimeout(function () {
+    alert('您以登出，請重新登入');
+    location.replace('../../login.php');
+  },1440*1000);
+}
+
+
 if ($('#ckeditor').length>0) {
   	CKEDITOR.replace('ckeditor',{filebrowserUploadUrl:'../../js/plugins/ckeditor/php/upload.php?case_id=<?php echo $_GET['Tb_index']?>',filebrowserImageUploadUrl : '../../js/plugins/ckeditor/php/upload_img.php?case_id=<?php echo $_GET['Tb_index']?>', height:300});
   }

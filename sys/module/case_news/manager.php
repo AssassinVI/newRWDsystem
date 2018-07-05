@@ -69,6 +69,7 @@ if ($_POST) {
 			               'aPic'=>$aPic,
 			             'source'=>$_POST['source'],
 			               'aUrl'=>$_POST['aUrl'],
+			         'youtubeUrl'=>$_POST['youtubeUrl'],
 			          'StartDate'=>$_POST['StartDate'],
 			        'OnLineOrNot'=>$OnLineOrNot
 			         ];
@@ -133,6 +134,7 @@ if ($_POST) {
 			               'aPic'=>$aPic,
 			             'source'=>$_POST['source'],
 			               'aUrl'=>$_POST['aUrl'],
+			         'youtubeUrl'=>$_POST['youtubeUrl'],
 			          'StartDate'=>$_POST['StartDate'],
 			        'OnLineOrNot'=>$OnLineOrNot
 			         ];
@@ -209,6 +211,13 @@ if ($_GET) {
 							<label class="col-md-2 control-label" for="aUrl">連結</label>
 							<div class="col-md-10">
 								<input type="text" class="form-control" id="aUrl" name="aUrl" value="<?php echo $row['aUrl'];?>">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="youtubeUrl">Youtube連結</label>
+							<div class="col-md-10">
+								<input type="text" class="form-control" id="youtubeUrl" name="youtubeUrl" value="<?php echo $row['youtubeUrl'];?>">
 							</div>
 						</div>
                         

@@ -9,9 +9,10 @@
 
     @media (max-width: 420px){
       #page-wrapper{padding: 0px;}
+      .wrapper-content{  padding: 0px 10px 40px; }
       .p-w-md{ padding: 0px; }
       .flot-chart{ height: 250px; }
-      .ibox-content{ padding: 20px 0; }
+      .ibox-content{ padding: 20px 0; text-align: center;}
     }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
@@ -72,6 +73,7 @@ if ($_GET) {
                         <div class="flot-chart m-b-xl">
                             <div class="flot-chart-content" id="date_use"></div>
                         </div>
+                        <a id="an_btn" href="#" class="btn btn-info">數據分析</a>
                     </div>
                 </div>
             </div>
@@ -173,6 +175,8 @@ if ($_GET) {
               an_ch.load({
                 columns:[date,users]
               });
+
+              $('#an_btn').attr('href', 'http://ws.srl.tw/sys/module/case_analysis/analytics.php?MT_id=site2018040210520640&Tb_index='+Tb_index);
            }
         });
  }

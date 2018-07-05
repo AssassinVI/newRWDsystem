@@ -3,8 +3,8 @@ date_default_timezone_set("Asia/Taipei");//台灣時區
 require_once 'phpmailer/class.phpmailer.php';
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PDO連線 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-function pdo_conn() {
-	$dbanme = 'srltw_website'; //資料庫名稱
+function pdo_conn($dataBase_name='srltw_website') {
+	$dbanme = $dataBase_name; //資料庫名稱
 	$user_id = 'srltw_website'; //使用者ID
 	$user_pwd = '1qazXSW@3'; //使用者密碼
 
@@ -13,6 +13,7 @@ function pdo_conn() {
 	$db->exec("SET NAMES UTF8");
 	return $db;
 }
+
 
 /*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PHPMail @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
 function send_Mail($set_name, $set_mail, $Subject, $body_data, $name_data, $adds_data)

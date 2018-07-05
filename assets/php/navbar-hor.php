@@ -8,6 +8,13 @@
 	  </button>
 
 	  <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      
+      <?php 
+       if(!empty($case['logo'])){
+         echo '<img id=logo_img src="img/'.$case['logo'].'">';
+       }
+      ?>
+
 	    <div class="navbar-nav">
       <?php
        for ($i=0; $i < $fun_block_id_num ; $i++) { 

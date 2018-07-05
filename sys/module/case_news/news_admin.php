@@ -38,8 +38,8 @@ if ($_GET) {
 		<p>本頁面條列出所有的文章清單，如需檢看或進行管理，請由每篇文章右側 管理區進行，感恩</p>
 	   <div class="new_div">
 
-       <!-- <button id="sort_btn" type="button" class="btn btn-default">
-        <i class="fa fa-sort-amount-desc"></i> 更新排序</button>-->
+        <button id="sort_btn" type="button" class="btn btn-default">
+        <i class="fa fa-sort-amount-desc"></i> 更新排序</button>
 
 	    <a href="manager.php?case_id=<?php echo $_GET['case_id'];?>">
         <button type="button" class="btn btn-default">
@@ -121,10 +121,10 @@ if ($_GET) {
                         OrderBy: arr_OrderBy,
                        Tb_index: arr_Tb_index 
                       };
-             ajax_in('admin.php', data, 'no', 'no');
+             ajax_in('news_admin.php', data, 'no', 'no');
 
           alert('更新排序');
-         location.replace('admin.php?MT_id=<?php echo $_GET['MT_id'];?>');
+         location.replace('news_admin.php?case_id=<?php echo $_GET['case_id'];?>');
 		});
 	});
 </script>

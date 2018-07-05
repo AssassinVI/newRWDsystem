@@ -2,7 +2,8 @@
 <style type="text/css">
 	.fb_fans{ display: none; }
 	#ph_tool_type_exp img{ width: 100%; height: 750px; }
-
+    
+    .other_ad{display: none; }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -16,7 +17,13 @@ if ($_POST) {
             pdo_update('build_case', $param, $where);
             unlink($_POST['data']);
 
-    	}elseif($_POST['col']=='activity_song'){
+    	}elseif($_POST['col']=='logo'){
+            $param=['logo'=>''];
+            $where=['Tb_index'=>$_POST['Tb_index']];
+            pdo_update('build_case', $param, $where);
+            unlink($_POST['data']);
+    	}
+    	elseif($_POST['col']=='activity_song'){
             $param=['activity_song'=>''];
             $where=['Tb_index'=>$_POST['Tb_index']];
             pdo_update('build_case', $param, $where);
@@ -50,10 +57,20 @@ if ($_POST) {
 
      
      //===================== 專案LOGO ========================
+      if (!empty($_FILES['logo']['name'])){
+
+      	 $type=explode('.', $_FILES['logo']['name']);
+      	 $logo=$Tb_index.date('His').'.'.$type[count($type)-1];
+         fire_upload('logo', $logo, $Tb_index);
+      }else{
+      	$logo='';
+      }
+
+     //===================== 分享圖片 ========================
       if (!empty($_FILES['aPic']['name'])){
 
-      	 $type=explode('/', $_FILES['aPic']['type']);
-      	 $aPic=$Tb_index.date('His').'.'.$type[1];
+      	 $type=explode('.', $_FILES['aPic']['name']);
+      	 $aPic=$Tb_index.date('His').'.'.$type[count($type)-1];
          fire_upload('aPic', $aPic, $Tb_index);
       }else{
       	$aPic='';
@@ -78,6 +95,14 @@ if ($_POST) {
       }else{
       	$activity_song='';
       }
+
+      //===================== 廣告製作判斷 ==================
+      if ($_POST['ad_making']=='o') {
+      	$ad_making=$_POST['ad_making'].','.$_POST['ad_making_name'].','.$_POST['ad_making_url'];
+      }
+      else{
+      	$ad_making=$_POST['ad_making'];
+      }
      
 
 	$param=  [          'Tb_index'=>$Tb_index,
@@ -98,9 +123,10 @@ if ($_POST) {
 			           'StartDate'=>date('Y-m-d'),
 			         'OnLineOrNot'=>$_POST['OnLineOrNot'],
 			                'aPic'=>$aPic,
+			                'logo'=>$logo,
 			        'activity_img'=>$activity_img,
 			       'activity_song'=>$activity_song,
-			           'ad_making'=>$_POST['ad_making']
+			           'ad_making'=>$ad_making
 			         ];
 	pdo_insert('build_case', $param);
 
@@ -114,6 +140,20 @@ if ($_POST) {
    	$Tb_index =$_POST['Tb_index'];
 
    	 //===================== 專案LOGO ========================
+   	 if (!empty($_FILES['logo']['name'])) {
+
+      	unlink('../../../product_html/'.$Tb_index.'/img/'.$_POST['logo_file']);
+
+      	 $type=explode('/', $_FILES['logo']['type']);
+      	 $logo=$Tb_index.date('His').'.'.$type[1];
+         fire_upload('logo', $logo, $Tb_index);
+        $logo_param=['logo'=>$logo];
+        $logo_where=['Tb_index'=>$Tb_index];
+        pdo_update('build_case', $logo_param, $logo_where);
+        
+      }
+
+   	 //===================== 分享圖片 ========================
       if (!empty($_FILES['aPic']['name'])) {
 
       	unlink('../../../product_html/'.$Tb_index.'/img/'.$_POST['aPic_file']);
@@ -163,6 +203,14 @@ if ($_POST) {
      	elseif($_POST['version']=='0'){//-- 簡易版 --
      		copy('../../../product/product_easy.php', '../../../product_html/' . $Tb_index . '/Default.php');
      	}
+
+     //===================== 廣告製作判斷 ==================
+      if ($_POST['ad_making']=='o') {
+      	$ad_making=$_POST['ad_making'].','.$_POST['ad_making_name'].','.$_POST['ad_making_url'];
+      }
+      else{
+      	$ad_making=$_POST['ad_making'];
+      }
     
     
     $param=[  
@@ -181,7 +229,7 @@ if ($_POST) {
 			         'description'=>$_POST['description'],
 			             'KeyWord'=>$_POST['KeyWord'],
 			         'OnLineOrNot'=>$_POST['OnLineOrNot'],
-			           'ad_making'=>$_POST['ad_making']
+			           'ad_making'=>$ad_making
 		          ];
     $where= ['Tb_index'=>$Tb_index] ;
 	pdo_update('build_case', $param, $where);
@@ -250,13 +298,42 @@ if ($_GET) {
 							<div class="col-md-4">
 								<input type="text" class="form-control" id="aTitle" name="aTitle" value="<?php echo $row['aTitle'];?>">
 							</div>
+							
+						</div>
+
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="ad_making">廣告製作</label>
 							<div class="col-md-4">
 								<select name="ad_making" class="form-control">
 									<option <?php echo $selected=$row['ad_making']=='j' ? 'selected' : '';?> value="j">聯創數位</option>
 									<option <?php echo $selected=$row['ad_making']=='c' ? 'selected' : '';?> value="c">元際數位</option>
+									<option <?php echo $selected=$row['ad_making']!='j' && $row['ad_making']!='c' ? 'selected' : '';?> value="o">其他</option>
 								</select>
 							</div>
+                            
+                            <?php 
+                              if ($row['ad_making']!='j' && $row['ad_making']!='c') {
+                              	$other_dis='display: block;';
+                              	$ad_making=explode(',', $row['ad_making']);
+                              }
+                              else{
+                              	$other_dis='display: none;';
+                              }
+                              
+                            ?>
+
+                             <div class="other_ad" style="<?php echo $other_dis;?>">
+							  <label class="col-md-1 control-label" >名稱</label>
+							  <div class="col-md-2">
+							    <input type="text" class="form-control"  name="ad_making_name" value="<?php echo $ad_making[1];?>">
+                              </div>
+
+                              <label class="col-md-1 control-label" >網址</label>
+							  <div class="col-md-2">
+							    <input type="text" class="form-control"  name="ad_making_url" value="<?php echo $ad_making[2];?>">
+                              </div>
+                             </div>
+							
 						</div>
 
 						<div class="form-group">
@@ -326,7 +403,32 @@ if ($_GET) {
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="aPic">專案LOGO</label>
+							<label class="col-md-2 control-label" for="logo">專案LOGO</label>
+							<div class="col-md-10">
+								<input type="file" name="logo" class="form-control" accept="image/*" id="logo" onchange="file_viewer_load_new(this, '#logo_box')">
+							</div>
+						</div>
+
+						<div class="form-group">
+						   <label class="col-md-2 control-label" ></label>
+						   <div id="logo_box" class="col-md-4">
+								
+						   </div>
+						<?php if(!empty($row['logo'])){?>
+							<div  class="col-md-4">
+							   <div id="logo" class="img_div" >
+							    <p>目前圖檔</p>
+								 <button type="button" class="one_del"> X </button>
+								  <img id="one_img" src="../../../product_html/<?php echo $row['Tb_index'];?>/img/<?php echo $row['logo'];?>" alt="請上傳代表圖檔">
+								</div>
+								<input type="hidden" name="logo_file" value="<?php echo $row['logo'];?>">
+							</div>
+						<?php }?>		
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="aPic">分享圖片</label>
 							<div class="col-md-10">
 								<input type="file" name="aPic" class="form-control" accept="image/*" id="aPic" onchange="file_viewer_load_new(this, '#img_box')">
 							</div>
@@ -576,6 +678,17 @@ if ($_GET) {
        	 	$('.fb_fans').css('display', 'none');
        	 }
        });
+
+
+       //------------------ 廣告選擇 -------------------
+       $('[name="ad_making"]').change(function(event) {
+       	if ($(this).val()=='o') {
+       		$('.other_ad').css('display', 'block');
+       	}else{
+       		$('.other_ad').css('display', 'none');
+       	}
+       });
+
       });
 </script>
 <?php  include("../../core/page/footer02.php");//載入頁面footer02.php?>

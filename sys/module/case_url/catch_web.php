@@ -93,7 +93,7 @@
 					 <p>Google 分析-定義廣告來源/媒介</p>
 					 <label class="col-sm-3 control-label">來源:</label><div class="col-sm-9"><input class="form-control" type="text" name="source" value="報紙"></div>
 					 <label class="col-sm-3 control-label">媒介:</label><div class="col-sm-9"><input class=" form-control" type="text" name="media" value="QR code"></div>
-					 <label class="col-sm-3 control-label">活動:</label><div class="col-sm-9"><input class=" form-control" type="text" name="active" value="無"></div>
+					 <label class="col-sm-3 control-label">活動:</label><div class="col-sm-9"><input class=" form-control" type="text" name="active" value="一般"></div>
 				    </div>
 				    <div class="col-sm-6" style="text-align: center;">
 					<p>QR Code網址: <a href="" target="_block"></a></p> 
@@ -174,9 +174,11 @@
         //---------------- 專案網址 --------------
 		var case_url=$('#case_url').attr('href');
         //---------------- 短網址 --------------
-        get_shortURL(case_url,'#short_url');
+        //get_shortURL(case_url,'#short_url');
+        get_shortURL_new(case_url, '<?php echo $row_case['aTitle'];?>', '#short_url');
         //---------------- QR code --------------
-        get_qrcode(case_url,'#QR_code','#qr_url');
+        //get_qrcode(case_url,'#QR_code','#qr_url');
+        get_qrcode_new(case_url+"?utm_source=報紙&utm_medium=QR code&utm_campaign=一般", '<?php echo $row_case['aTitle'];?>', '#QR_code','#qr_url');
         //------ 更新已儲存QRcode ------
         save_QRcode();
 
@@ -193,8 +195,8 @@
 	 	var media=$('[name="media"]').val();
 	 	var active=$('[name="active"]').val();
 	 	var new_url=case_url+"?utm_source="+source+"&utm_medium="+media+"&utm_campaign="+active;
-	 	get_shortURL(new_url,'#short_url');
-	 	get_qrcode(new_url,'#QR_code','#qr_url');
+	 	//get_shortURL(new_url,'#short_url');
+	 	get_qrcode_new(new_url, '<?php echo $row_case['aTitle'];?>','#QR_code','#qr_url');
 	 });
      
      //---------------------- 儲存QR code 網址 ------------------------
@@ -248,6 +250,26 @@
          });
       }
 
+   /* =================================== 產生短網址(自製) ============================================= */
+      function get_shortURL_new(get_url, aTitle, show_id) {
+
+         $.ajax({
+          url: 'shortUrl_ajax.php',
+          type: 'POST',
+          data: {
+          	type:'Url',
+          	longUrl:get_url,
+            aTitle: aTitle
+          },
+          success:function (data) {
+
+               $(show_id).html(data);
+               $(show_id).attr('href', data);
+            
+          }
+         });
+      }
+
 /* =================================== 產生QR code ============================================= */
       function get_qrcode(get_url,show_id,put_id) {
 
@@ -267,6 +289,37 @@
               $(put_id).attr('value', qr_url);
 
             }
+          },
+          beforeSend:function () {
+          	$('.loading').css('display', 'block');
+          },
+          complete:function () {
+          	$('.loading').css('display', 'none');
+          }
+         });
+      }
+
+
+/* =================================== 產生QR code (自製) ============================================= */
+      function get_qrcode_new(get_url, aTitle, show_id,put_id) {
+
+         $.ajax({
+          url: 'shortUrl_ajax.php',
+          type: 'POST',
+          data: {
+          	type:'QR_code',
+          	longUrl:get_url,
+            aTitle: aTitle
+          },
+          success:function (data) {
+                       //產生QR_code
+              var qr_url='http://chart.apis.google.com/chart?cht=qr&chs=150x150&chl='+data+'&chld=H|0';
+               $(show_id).attr('src', qr_url);
+               $(show_id).prev().find('a').attr('href', data);
+               $(show_id).prev().find('a').html(data);
+              $(put_id).attr('value', qr_url);
+
+            
           },
           beforeSend:function () {
           	$('.loading').css('display', 'block');

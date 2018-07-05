@@ -7,7 +7,17 @@
   $case_id='case'.$Tb_index[2];
   $case=pdo_select('SELECT * FROM build_case WHERE Tb_index=:Tb_index', ['Tb_index'=>$case_id] );
   //廣告製作
-  $ad_making=$case['ad_making']=='j' ?  ['聯創數位', 'http://srl.tw/RWD/HTML/Default2.html'] : ['元際數位', 'http://srl.tw/RWD/HTML/Default_cu.html'];
+  if ($case['ad_making']=='j') {
+    $ad_making= ['聯創數位', 'http://srl.tw/RWD/HTML/Default2.html'];
+  }
+  elseif($case['ad_making']=='c'){
+    $ad_making= ['元際數位', 'http://srl.tw/RWD/HTML/Default_cu.html'];
+  }
+  else{
+    $ad_making= explode(',', $case['ad_making']);
+    array_splice($ad_making,0,1);
+  }
+  
   //LINE分享或群組
   $line_txt=strpos($case['line_txt'], 'line.me/R/ti')===false ? 'http://line.me/R/msg/text/?'.$case['line_txt']: $case['line_txt'];
   //FB分享或粉絲團
@@ -59,6 +69,7 @@
 
 <style type="text/css">
 
+
 <?php
  //-------- 更改顏色 ----------
 $row_color=pdo_select("SELECT * FROM color WHERE Tb_index=:Tb_index", ['Tb_index'=>$case_id]);
@@ -67,7 +78,7 @@ $h1_color= empty($row_color['h1_color']) ? '': '.no-gutters .con_txt h1 {color: 
 $h2_color= empty($row_color['h2_color']) ? '': '.no-gutters .con_txt h2 p {color: '.$row_color['h2_color'].';}';
 $p_color= empty($row_color['p_color']) ? '': '.no-gutters .con_txt p {color: '.$row_color['p_color'].';}';
 $top_txt= empty($row_color['top_txt']) ? '': '.navbar-light .navbar-nav .nav-link {color: '.$row_color['top_txt'].';} .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{ color: '.$row_color['top_txt'].'; } .navbar-light .navbar-nav .nav-link::after { background-color: '.$row_color['top_txt'].';}';
-$top_bar= empty($row_color['top_bar']) ? '': '#top_navbar {background-color: '.$row_color['top_bar'].';}';
+$top_bar= empty($row_color['top_bar']) ? '': '@media (min-width: 769px){ #top_navbar {background-color: '.$row_color['top_bar'].';} }';
 $back_color= empty($row_color['back_color']) ? '': '#case_div {background-color: '.$row_color['back_color'].';}';
 
 echo $h1_color;
@@ -164,21 +175,39 @@ echo $back_color;
           <?php 
 
             $pdo=pdo_conn();
-            $sql=$pdo->prepare("SELECT * FROM case_news WHERE case_id=:case_id");
+            $sql=$pdo->prepare("SELECT * FROM case_news WHERE case_id=:case_id ORDER BY OrderBy DESC, Tb_index DESC");
             $sql->execute(['case_id'=>$case_id]);
             
             while ($news_row=$sql->fetch(PDO::FETCH_ASSOC)) {
               
               $date=explode('-', $news_row['StartDate']);
-              $month=substr($date[1], -1);
+
+              if ((int)$date[1]<10) {
+                $month=substr($date[1], -1);
+              }else{
+                $month=$date[1];
+              }
+
+
+              if (!empty($news_row['youtubeUrl'])) {
+                $you_adds=explode('?v=', $news_row['youtubeUrl']);
+                $txt='<div class="video-container" style=" margin-bottom: 15px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/'.$you_adds[1].'?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>';
+                $aUrl='<a  href="javascript:;">'.$news_row['aTitle'].'</a>';
+              }
+              else{
+                $txt='<p>'.$news_row['aAbstract'].' <a data-fancybox data-type="iframe" data-src="'.$news_row['aUrl'].'" href="javascript:;">More</a></p>';
+                $aUrl='<a data-fancybox data-type="iframe" data-src="'.$news_row['aUrl'].'" href="javascript:;">'.$news_row['aTitle'].'</a>';
+              }
+
+
               echo '
             <li>
               <div class="row">
                 <div class="col-2"><span>'.$month.'月<br><b>'. $date[2].'</b><br>'.$date[0].'</span></div>
                 <div class="col-10">
-                  <h4><a data-fancybox data-type="iframe" data-src="'.$news_row['aUrl'].'" href="javascript:;">'.$news_row['aTitle'].'</a></h4>
+                  <h4>'.$aUrl.'</h4>
                   <p>來源：'.$news_row['source'].'</p>
-                  <p>'.$news_row['aAbstract'].' <a data-fancybox data-type="iframe" data-src="'.$news_row['aUrl'].'" href="javascript:;">More</a></p>
+                  '.$txt.'
                 </div>
               </div>
             </li>';

@@ -33,6 +33,7 @@ if($_POST){
     
     $range=implode('|', $_POST['range']);
     $keyword=implode('|', $_POST['keyword']);
+    $life_zoom=implode('|', $_POST['life_zoom']);
     $traffic_loc=empty($_POST['traffic_loc']) ? '' : implode('|', $_POST['traffic_loc']);
     $traffic_name=empty($_POST['traffic_name']) ? '' : implode('|', $_POST['traffic_name']);
 
@@ -42,8 +43,10 @@ if($_POST){
        'location'=>$_POST['location'],
        'life_range'=>$range,
        'life_keyword'=>$keyword,
+       'life_zoom'=>$life_zoom,
        'traffic_loc'=>$traffic_loc,
        'traffic_name'=>$traffic_name,
+       'traffic_zoom'=>$_POST['traffic_zoom'],
        'color_type'=>$_POST['color_type'],
        'type'=>$_POST['type'],
        'OnLineOrNot'=>$OnLineOrNot
@@ -60,6 +63,7 @@ if($_POST){
 
     $range=implode('|', $_POST['range']);
     $keyword=implode('|', $_POST['keyword']);
+    $life_zoom=implode('|', $_POST['life_zoom']);
     $traffic_loc=empty($_POST['traffic_loc']) ? '' : implode('|', $_POST['traffic_loc']);
     $traffic_name=empty($_POST['traffic_name']) ? '' : implode('|', $_POST['traffic_name']);
     
@@ -70,8 +74,10 @@ if($_POST){
        'location'=>$_POST['location'],
        'life_range'=>$range,
        'life_keyword'=>$keyword,
+       'life_zoom'=>$life_zoom,
        'traffic_loc'=>$traffic_loc,
        'traffic_name'=>$traffic_name,
+       'traffic_zoom'=>$_POST['traffic_zoom'],
        'color_type'=>$_POST['color_type'],
        'type'=>$_POST['type'],
        'OnLineOrNot'=>$OnLineOrNot
@@ -94,6 +100,7 @@ if($_POST){
 
   $range=explode('|', $row['life_range']);
   $keyword=explode('|', $row['life_keyword']);
+  $life_zoom=explode('|', $row['life_zoom']);
 
 ?>
 
@@ -158,7 +165,12 @@ if($_POST){
               </div>
             </div>
 
-
+            <div class="form-group">
+              <label class="col-sm-2 control-label" ></label>
+              <div class="col-sm-10">
+                <p class="text-danger">食醫住行範圍預設: 1000，地圖縮放比預設: 14</p>
+              </div>
+            </div>
             <?php
               $life_name=['食','醫','住','育','樂','公園','公車站','咖啡店','銀行','商店','加油站','藥局'];
               $life_num=count($life_name);
@@ -173,8 +185,14 @@ if($_POST){
                  </div>
 
                  <label class="col-sm-1 control-label" >"'.$life_name[$i].'"關鍵字:</label>
-                 <div class="col-sm-7">
+                 <div class="col-sm-3">
                    <input class="form-control" type="text" name="keyword[]" placeholder="請輸入關鍵字" value="'.$keyword[$i].'">
+                 </div>
+
+                 <label class="col-sm-1 control-label" >"'.$life_name[$i].'"地圖縮放比:</label>
+                 <div class="col-sm-3">
+                   <input class="form-control" type="text" name="life_zoom[]" placeholder="請輸入比率" value="'.$life_zoom[$i].'">
+                   <span class="text-danger">縮放比數字越大地圖越近，反之越小越遠</span>
                  </div>
                 </div>';
               }
@@ -191,6 +209,14 @@ if($_POST){
             <div class="form-group">
               <div class="col-sm-10">
                 <button type="button" id="traffic_btn" class="btn btn-info"><i class="fa fa-plus"></i> 新增座標</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-1 control-label" >"行"地圖縮放比:</label>
+              <div class="col-sm-10">
+                <input class="form-control" type="text" name="traffic_zoom" placeholder="請輸入地圖座標" value="<?php echo  $row['traffic_zoom'];?>">
+                <span class="text-danger">縮放比數字越小地圖越近，反之越大越遠 ，地圖縮放比預設: 14</span>
               </div>
             </div>
 
