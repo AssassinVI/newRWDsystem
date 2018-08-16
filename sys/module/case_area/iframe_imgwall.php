@@ -62,6 +62,7 @@ if($_POST){
        'Tb_index'=>$Tb_index,
        'case_id'=>$_GET['Tb_index'],
        'img_file'=>$img_file,
+       'img_word'=>$_POST['img_word'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_insert('img_wall_tb', $param);
@@ -112,6 +113,7 @@ if($_POST){
     //-------------- 圖檔修改-END ------------------
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0:1;
       $param=[
+       'img_word'=>$_POST['img_word'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('img_wall_tb', $param, ['Tb_index'=>$Tb_index]);
@@ -184,7 +186,14 @@ if($_POST){
                 </ul>
                 </div>
             </div>
-
+            
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="OnLineOrNot">圖說</label>
+              <div class="col-sm-10">
+                <input type="text" name="img_word" class="form-control" value="<?php echo $row['img_word'];?>">
+                <span>請使用","分割字串</span>
+              </div>
+            </div>
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="OnLineOrNot">是否上線</label>

@@ -108,6 +108,7 @@ if($_POST){
        'ImgWord_type'=>$_POST['ImgWord_type'],
        'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
        'aTXT'=>$_POST['aTXT'],
+       'img_txt'=>$_POST['img_txt'],
        'StartDate'=>date('Y-m-d H:i:s'),
        'OnLineOrNot'=>$OnLineOrNot
     ];
@@ -195,6 +196,7 @@ if($_POST){
        'ImgWord_type'=>$_POST['ImgWord_type'],
        'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
        'aTXT'=>$_POST['aTXT'],
+       'img_txt'=>$_POST['img_txt'],
        'OnLineOrNot'=>$OnLineOrNot
     ];
     pdo_update('slideshow_tb', $param, ['Tb_index'=>$Tb_index]);
@@ -323,6 +325,16 @@ if($_POST){
                 </ul>
                 </div>
             </div>
+
+
+            <div class="form-group">
+              <label class="col-sm-1 control-label" for="img_txt">圖說</label>
+              <div class="col-sm-11">
+                <input type="text" name="img_txt" class="form-control" value="<?php echo $row['img_txt'];?>">
+                <span>使用","分隔字串</span>
+              </div>
+            </div>
+
 
             <div class="form-group">
               <label class="col-sm-1 control-label" for="aTXT">內容</label>

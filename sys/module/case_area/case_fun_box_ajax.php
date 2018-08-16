@@ -38,9 +38,11 @@
  	}
   //------- 更新功能區塊排序 ------
  	elseif($_POST['type']=='update'){
+
+       $related_id_array=explode(',', $_POST['related_id_array']);
        
-       for ($i=0; $i <count($_POST['related_id_array']) ; $i++) { 
-       	 pdo_update('Related_tb', ['OrderBy'=>($i+1)], ['Tb_index'=>$_POST['related_id_array'][$i]]);
+       for ($i=0; $i <count($related_id_array) ; $i++) { 
+       	 pdo_update('Related_tb', ['OrderBy'=>($i+1)], ['Tb_index'=>$related_id_array[$i]]);
        	//echo $_POST['related_id_array'][$i].'\n';
        }
  	}

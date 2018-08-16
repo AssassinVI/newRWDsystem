@@ -34,17 +34,17 @@ function google_an_all(view_id, case_id) {
 				$.each($('#an_data').find('input'), function(index, val) {
 					 
 					 if ($(this).val()!='') {
-					 	console.log('無空直');
+					 	console.log($(this).attr('name')+'無空直');
 					 	is_data_num++;
 					 }
 				});
 
-			t=setTimeout(an_ajax, 100);
+			t=setTimeout(an_ajax, 1000);
 
 			timeOut_num++;
 
 			//---- 超過10秒重新整理 ----
-			if (timeOut_num>100) {
+			if (timeOut_num>5) {
 				//window.location.reload();
 
 				$.ajax({
@@ -112,7 +112,7 @@ function google_an_all(view_id, case_id) {
 		           clearTimeout(t);
 			}
 
-	}, 100);
+	}, 1000);
 	
 }
 

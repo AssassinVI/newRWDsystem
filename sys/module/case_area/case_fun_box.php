@@ -1,5 +1,6 @@
 <?php include("../../core/page/header01.php");//載入頁面heaer01?>
 <style type="text/css">
+  .wrapper-content{ padding: 20px 10px 350px; }
 	#sel_fun{ padding: 5px 15px; margin-right: 5px; font-size: 15px; }
 	.ibox-tools a{ color: #fff; }
   .loading{ display: block; position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 31px; margin: auto; }
@@ -9,6 +10,9 @@
   .iframe_div iframe{ position: absolute; top: 0; left: 0; width: 1920px; height: 800px; }
 
   .ibox-title h3{ display: inline-block; margin-right: 10px; }
+  .ibox-content{ height: 90vh; overflow: auto; }
+
+  #sort_btn{ display: none; }
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
 <?php 
@@ -29,7 +33,7 @@ if ($_GET) {
    $case_num=substr($case_id, 4);
 
    $sql=$pdo->prepare("SELECT * FROM Related_tb WHERE case_id = :com_id ORDER BY OrderBy DESC");
-   $sql->execute( ['case_id'=>$_GET['Tb_index']] );
+   $sql->execute( ['com_id'=>$_GET['Tb_index']] );
 
    //-- 專案名稱 --
    $row_name=pdo_select("SELECT aTitle FROM build_case WHERE Tb_index=:Tb_index", ['Tb_index'=>$_GET['Tb_index']]);
@@ -66,13 +70,10 @@ if ($_GET) {
 
 			 		        <a href="iframe_color.php?Tb_index=<?php echo $_GET['Tb_index']?>" class="iframe_box btn btn-success">更改顏色</a>
 			 		        <a href="iframe_css.php?Tb_index=<?php echo $_GET['Tb_index']?>" class="iframe_box btn btn-success">自訂CSS</a>
-			 		       <!--  <button id="sort_btn" type="button" class="btn btn-default">
-			 		        <i class="fa fa-sort-amount-desc"></i> 更新排序</button>
+                  <button id="sort_btn" type="button" class="btn btn-success"><i class="fa fa-sort-amount-desc"></i> 更新排序</button>
+                  <!-- 功能區塊排序 -->
+                  <input type="hidden" id="fun_sort">
 
-			 			    <a href="manager.php?MT_id=<?php //echo $_GET['MT_id'];?>">
-			 		        <button type="button" class="btn btn-success">
-			 		        <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
-			 		        </a> -->
 			 	</div>
 			 </div>
 			  <div class="ibox-content">
@@ -180,18 +181,28 @@ if ($_GET) {
 
               var FunBox_ul = $( "#FunBox_ul" ).sortable( "toArray" );
               //更新功能區塊排序
-              $.ajax({
-                url: 'case_fun_box_ajax.php',
-                type: 'POST',
-                data: {
-                  type: 'update',
-                  related_id_array: FunBox_ul
-                }
-                
-              });
+              $('#fun_sort').val(FunBox_ul);
+              $('#sort_btn').css('display', 'inline-block');
               
          }
      }).disableSelection();
+
+     //更新功能區塊排序
+     $('#sort_btn').click(function(event) {
+       
+                     $.ajax({
+                       url: 'case_fun_box_ajax.php',
+                       type: 'POST',
+                       data: {
+                         type: 'update',
+                         related_id_array: $('#fun_sort').val()
+                       },
+                       success:function () {
+                         alert('以更新排序');
+                         $('#sort_btn').css('display', 'none');
+                       }
+                     });
+     });
 
 
 

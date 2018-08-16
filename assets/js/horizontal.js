@@ -54,6 +54,8 @@ $(document).ready(function() {
           setTimeout("$('.life_tool_div').css('display', 'none')", 500);
           TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
          setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+
+
         
       });
 
@@ -74,22 +76,9 @@ $(document).ready(function() {
             },1000);
         });
 
-   
-        /*-- 食醫住行+新聞提示 --*/
-        // $('.prompt').click(function(event) {
-        //   TweenMax.to('.prompt', 0.5, {opacity:0});
-        //   TweenMax.to('.prompt', 0.1, {display:'none', delay:0.5});
-        //   // $(this).css('display', 'none');
-        // });
+  
 
-        TweenMax.to('.life_prompt', 0.5, {bottom:67 ,repeat:-1, yoyo:true});
-        TweenMax.to('.news_prompt', 0.5, {top:51 ,repeat:-1, yoyo:true});
-        //-- 三秒後消失 --
-        TweenMax.to('.life_prompt', 0.5, {opacity:0, delay:5});
-        TweenMax.to('.life_prompt', 0.1, {display:'none', delay:5.5});
-        TweenMax.to('.news_prompt', 0.5, {opacity:0, delay:5});
-        TweenMax.to('.news_prompt', 0.1, {display:'none', delay:5.5});
-
+      
 
        //生活按鈕1-彈出----------------------
        $('#life_btn0').click(function(event) {
@@ -98,7 +87,9 @@ $(document).ready(function() {
 
              $('.life_tool_div').css('display', 'flex');
              $('.more_tool_div').css('display', 'none');
-                   TweenMax.fromTo( '.life_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:57});
+
+                 TweenMax.fromTo( '.life_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:$('.bottom_tool').css('height').slice(0,-2)-3});
+
 
                    //-- 關閉提示 --
                    TweenMax.to('.life_prompt', 0.5, {opacity:0 });
@@ -273,8 +264,9 @@ $(document).ready(function() {
 
          $('.more_tool_div').css('display', 'block');
          $('.life_tool_div').css('display', 'none');
+          
+          TweenMax.fromTo( '.more_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:$('.bottom_tool').css('height').slice(0,-2)-3});
          
-               TweenMax.fromTo( '.more_tool_div', 0.3, { opacity:0, bottom:0},{ opacity:1, bottom:57});
       }
       else{
          TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
@@ -294,12 +286,12 @@ $(document).ready(function() {
     $('.more_tool_btn').click(function(event) {
 
       if($('.more_tool_div').css('display')!='none'){
-        TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
-        setTimeout("$('.more_tool_div').css('display', 'none')", 500);
+       // TweenMax.to( '.more_tool_div', 0.3, { opacity:0, bottom:0});
+       // setTimeout("$('.more_tool_div').css('display', 'none')", 500);
       }
       else{
-        TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
-        setTimeout("$('.life_tool_div').css('display', 'none')", 500);
+       // TweenMax.to( '.life_tool_div', 0.3, { opacity:0, bottom:0});
+       // setTimeout("$('.life_tool_div').css('display', 'none')", 500);
       }
       
     });
@@ -383,7 +375,7 @@ $(document).ready(function() {
         if ($('.map').length>0) {
 
         	$.fn.tinyMapConfigure({
-        	'key': 'AIzaSyDd8Sh2hJ_40P92vt8sOyZwPvVTh867DmU'
+        	'key': 'AIzaSyBmcZ9YTd68k4QYur5nowITqcI_kGZO5Ks'
         	});
 
         	$('.map').tinyMap({
@@ -560,8 +552,46 @@ $(document).ready(function() {
 // ===== 網站加載完成後 =====
 $(window).on('load', function(event) {
   
+   TweenMax.to( '#nowLoading', 0.5, { opacity:0, 'z-index':-1});
+    
+    //-- 手機平板適用 --
+    if ($(window).width()<=768) {
 
+    	$(document).on("scrollstart",function(){
+         	if ($('.navbar').css('top')!='0px') {
+         		all_show();
+         	}
+         });
+
+
+        setTimeout(function () {
+        	if ($('.navbar').css('top')!='0px') {
+        		all_show();
+        	}
+        }, 3000);
+    }
+       
+        
 });
+
+
+//-- 顯示功能欄 --
+function all_show() {
+
+	/*-- 食醫住行+新聞提示 --*/
+	TweenMax.to('.life_prompt', 0.5, {opacity:1, });
+	TweenMax.to('.news_prompt', 0.5, {opacity:1, });
+
+	var test1= $(window).width()==375 ? TweenMax.to('.life_prompt', 0.5, {bottom:110 ,repeat:-1, yoyo:true}) : TweenMax.to('.life_prompt', 0.5, {bottom:67 ,repeat:-1, yoyo:true});
+	var test2= TweenMax.to('.news_prompt', 0.5, {top:51 ,repeat:-1, yoyo:true});
+	//-- 五秒後消失 --
+	TweenMax.to('.life_prompt', 0.5, {opacity:0, delay:5, display:'none'});
+	TweenMax.to('.news_prompt', 0.5, {opacity:0, delay:5, display:'none'});
+	setTimeout(function () { test1.kill(); test2.kill(); },5500);
+
+	TweenMax.to('.navbar', 0.5, {top:0});
+	TweenMax.to('.bottom_tool', 0.5, {bottom:0});
+}
   
 
 

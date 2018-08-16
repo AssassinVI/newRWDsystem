@@ -98,6 +98,16 @@ echo $back_color;
 </head>
 
 <body>
+
+
+   <!-- 讀取畫面 -->
+   <div id="nowLoading">
+   	<div>
+   		<img src="../../img/loading.gif" alt="">
+   	</div>
+   </div>
+
+
    <!-- Top按鈕 -->
    <a id="top_arrow" href="javascript:;" style="background-image: url(../../img/svg/up-arrow.svg); "></a>
 
@@ -131,8 +141,6 @@ echo $back_color;
  }
 ?>
 
-  
-
     
 
     
@@ -151,7 +159,7 @@ echo $back_color;
     	    <span><i class="fa fa-home"></i> 接待會館：<?php echo $case['build_adds'];?></span>
     	    <span><i class="fa fa-phone"></i> 禮賓專線：<?php echo $case['phone'];?></span>
           <p class="footer_adv">
-            廣告製作：<a href="<?php echo $ad_making[1];?>"><?php echo $ad_making[0];?> <img src="../../img/svg/footer_btn.svg" alt=""></a>
+            廣告製作：<a href="<?php echo $ad_making[1];?>"><?php echo $ad_making[0];?></a>
           </p>
     	  </div>
       </div>
@@ -192,7 +200,7 @@ echo $back_color;
               if (!empty($news_row['youtubeUrl'])) {
                 $you_adds=explode('?v=', $news_row['youtubeUrl']);
                 $txt='<div class="video-container" style=" margin-bottom: 15px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/'.$you_adds[1].'?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>';
-                $aUrl='<a  href="javascript:;">'.$news_row['aTitle'].'</a>';
+                $aUrl='<a target="_blank" href="https://www.youtube.com/watch?v='.$you_adds[1].'">'.$news_row['aTitle'].'</a>';
               }
               else{
                 $txt='<p>'.$news_row['aAbstract'].' <a data-fancybox data-type="iframe" data-src="'.$news_row['aUrl'].'" href="javascript:;">More</a></p>';

@@ -9,9 +9,9 @@
   #txt_fadein_type{ display: none; }
   #img_fadein_type{ display: none; }
 
-  .one_traffic{ float: left; position: relative; width: 33%;}
-  .one_traffic label{ display: block; }
-  .top_traffic{ margin-top: 10px; }
+  .one_traffic, .one_fun{ float: left; position: relative; width: 33%;}
+  .one_traffic label, .one_fun label{ display: block; }
+  .top_traffic, .top_fun{ margin-top: 10px; }
 	
 </style>
 <?php include("../../core/page/header02.php");//載入頁面heaer02?>
@@ -36,6 +36,8 @@ if($_POST){
     $life_zoom=implode('|', $_POST['life_zoom']);
     $traffic_loc=empty($_POST['traffic_loc']) ? '' : implode('|', $_POST['traffic_loc']);
     $traffic_name=empty($_POST['traffic_name']) ? '' : implode('|', $_POST['traffic_name']);
+    $fun_loc=empty($_POST['fun_loc']) ? '' : implode('|', $_POST['fun_loc']);
+    $fun_name=empty($_POST['fun_name']) ? '' : implode('|', $_POST['fun_name']);
 
     $param=[
        'Tb_index'=>$Tb_index,
@@ -47,6 +49,8 @@ if($_POST){
        'traffic_loc'=>$traffic_loc,
        'traffic_name'=>$traffic_name,
        'traffic_zoom'=>$_POST['traffic_zoom'],
+       'fun_loc'=>$fun_loc,
+       'fun_name'=>$fun_name,
        'color_type'=>$_POST['color_type'],
        'type'=>$_POST['type'],
        'OnLineOrNot'=>$OnLineOrNot
@@ -66,6 +70,8 @@ if($_POST){
     $life_zoom=implode('|', $_POST['life_zoom']);
     $traffic_loc=empty($_POST['traffic_loc']) ? '' : implode('|', $_POST['traffic_loc']);
     $traffic_name=empty($_POST['traffic_name']) ? '' : implode('|', $_POST['traffic_name']);
+    $fun_loc=empty($_POST['fun_loc']) ? '' : implode('|', $_POST['fun_loc']);
+    $fun_name=empty($_POST['fun_name']) ? '' : implode('|', $_POST['fun_name']);
     
 
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
@@ -78,6 +84,8 @@ if($_POST){
        'traffic_loc'=>$traffic_loc,
        'traffic_name'=>$traffic_name,
        'traffic_zoom'=>$_POST['traffic_zoom'],
+       'fun_loc'=>$fun_loc,
+       'fun_name'=>$fun_name,
        'color_type'=>$_POST['color_type'],
        'type'=>$_POST['type'],
        'OnLineOrNot'=>$OnLineOrNot
@@ -250,6 +258,42 @@ if($_POST){
             </div>
 
             <hr>
+
+             <h2>"樂"額外座標，名稱自訂</h2>
+            <div class="form-group">
+              <div class="col-sm-10">
+                <button type="button" id="fun_btn" class="btn btn-info"><i class="fa fa-plus"></i> 新增座標</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+               <div class="col-sm-12">
+                <ul class="sortable-list connectList agile-list ui-sortable fun_div" >
+
+                 <?php 
+                  if (!empty($row['fun_loc'])) {
+                    
+                    $fun_loc=explode('|', $row['fun_loc']);
+                    $fun_name=explode('|', $row['fun_name']);
+                    $fun_num=count($fun_loc);
+
+                    for ($i=0; $i <$fun_num ; $i++) { 
+                       
+                       echo '<li class="one_fun">
+                              <span class="mark_num">'.($i+1).'</span>
+                              <button type="button"  class="btn btn-danger one_del_div">x</button>
+                              <label class="top_fun">座標位置: <input type="text" name="fun_loc[]" value="'.$fun_loc[$i].'" class="form-control"></label>
+                              <label>座標名稱: <input type="text" name="fun_name[]" value="'.$fun_name[$i].'" class="form-control"></label>
+                            </li>';
+                    }
+                  }
+                 ?>
+                                                
+                </ul>
+              </div>
+            </div>
+
+            <hr>
             
 
             <div class="form-group">
@@ -310,6 +354,40 @@ if($_POST){
               var OtherFile_arr = $( ".traffic_div" ).sortable( "toArray" );
          }
       }).disableSelection();
+
+       
+
+      //-- 樂 新增座標 --
+      var fun_num=$('[name="fun_loc[]"]').length;
+      $('#fun_btn').click(function(event) {
+
+        var txt='<li class="one_fun">'+
+                    '<span class="mark_num">'+(fun_num+1)+'</span>'+
+                    '<button type="button"  class="btn btn-danger one_del_div">x</button>'+
+                    '<label class="top_fun">座標位置: <input type="text" name="fun_loc[]"  class="form-control"></label>'+
+                    '<label>座標名稱: <input type="text" name="fun_name[]"  class="form-control"></label>'+
+                '</li>';
+
+         $('.fun_div').append(txt);
+        fun_num++;
+      });
+      
+      $('.fun_div').on('click', '.one_del_div', function(event) {
+        event.preventDefault();
+         if (confirm('是否要刪除此座標??')) {
+          $(this).parent().remove();
+        }
+      });
+
+      // 拖曳多圖檔
+       $(".fun_div").sortable({
+         connectWith: ".fun_div",
+         update: function( event, ui ) {
+
+              var OtherFile_arr = $( ".fun_div" ).sortable( "toArray" );
+         }
+      }).disableSelection();
+
       
 	 });
 

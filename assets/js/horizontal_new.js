@@ -53,13 +53,7 @@ $(document).ready(function() {
         //   TweenMax.to('.prompt', 0.1, {display:'none', delay:0.5});
         //   // $(this).css('display', 'none');
         // });
-        TweenMax.to('.life_prompt', 0.5, {bottom:67 ,repeat:-1, yoyo:true});
-        TweenMax.to('.news_prompt', 0.5, {top:51 ,repeat:-1, yoyo:true});
-        //-- 三秒後消失 --
-        TweenMax.to('.life_prompt', 0.5, {opacity:0, delay:5});
-        TweenMax.to('.life_prompt', 0.1, {display:'none', delay:5.5});
-        TweenMax.to('.news_prompt', 0.5, {opacity:0, delay:5});
-        TweenMax.to('.news_prompt', 0.1, {display:'none', delay:5.5});
+
 
 
        //生活按鈕1-彈出----------------------
@@ -531,8 +525,45 @@ $(document).ready(function() {
 // ===== 網站加載完成後 =====
 $(window).on('load', function(event) {
   
+  TweenMax.to( '#nowLoading', 0.5, { opacity:0, 'z-index':-1});
 
+  
+  //-- 手機平板適用 --
+    if ($(window).width()<=768) {
+
+      $(document).on("scrollstart",function(){
+          if ($('.navbar').css('top')!='0px') {
+            all_show();
+          }
+         });
+
+
+        setTimeout(function () {
+          if ($('.navbar').css('top')!='0px') {
+            all_show();
+          }
+        }, 3000);
+    }
 });
+
+
+//-- 顯示功能欄 --
+function all_show() {
+
+  /*-- 食醫住行+新聞提示 --*/
+  TweenMax.to('.life_prompt', 0.5, {opacity:1, });
+  TweenMax.to('.news_prompt', 0.5, {opacity:1, });
+
+  var test1= $(window).width()==375 ? TweenMax.to('.life_prompt', 0.5, {bottom:110 ,repeat:-1, yoyo:true}) : TweenMax.to('.life_prompt', 0.5, {bottom:67 ,repeat:-1, yoyo:true});
+  var test2= TweenMax.to('.news_prompt', 0.5, {top:51 ,repeat:-1, yoyo:true});
+  //-- 五秒後消失 --
+  TweenMax.to('.life_prompt', 0.5, {opacity:0, delay:5, display:'none'});
+  TweenMax.to('.news_prompt', 0.5, {opacity:0, delay:5, display:'none'});
+  setTimeout(function () { test1.kill(); test2.kill(); },5500);
+
+  TweenMax.to('.navbar', 0.5, {top:0});
+  TweenMax.to('.bottom_tool', 0.5, {bottom:0});
+}
   
 
 

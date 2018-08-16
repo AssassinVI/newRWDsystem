@@ -1,3 +1,5 @@
+
+
 <?php 
  
 
@@ -7,46 +9,6 @@
    $type=$_GET['type'];
    $radius=$_GET['radius'];
    $zoom=$_GET['zoom'];
-
-
-    switch ($type) {
- 	case 'food': //食
- 		$type_name='美食餐廳';
- 		break;
-    case 'doctor': //醫
- 		$type_name='醫療院所';
- 		break;
- 	case 'bus_station': //行
- 		$type_name='公車站牌';
- 		break;
- 	case 'school':  //育
- 		$type_name='鄰近學區';
- 		break;
- 	case 'shopping_mall':  //樂
- 		$type_name='娛樂購物';
- 		break;
-  case 'gas_station':  //加油站
-    $type_name='加油站';
-    break;
-  case 'cafe':  //咖啡店
-    $type_name='咖啡店';
-    break;
-  case 'bank':  //銀行
-    $type_name='銀行';
-    break;
-  case 'convenience_store':  //商店
-    $type_name='便利商店';
-    break;
-  case 'park':  //公園
-    $type_name='公園';
-    break;
-  case 'pharmacy':  //藥局
-    $type_name='藥局';
-    break;
-  case 'lodging':  //飯店
-    $type_name='飯店';
-    break;
-  }
  }
 
 
@@ -61,11 +23,11 @@
   <link rel="stylesheet" type="text/css" href="../assets/js/plugins/fancybox/jquery.fancybox.min.css">
 	<style type="text/css">
     body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; height: 750px;}
-		#map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px;}
+    #map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px;}
     #detial{ width: 98%; margin: auto; }
     #title{ text-align: center; background-color: #373737; padding: 10px 0px; font-size: 20px; color: #fff; position: fixed; top: 0px; width: 100%; z-index: 1000;  box-shadow: 0px 2px 10px rgba(0,0,0,0.67);}
 
-		.del_div{ width: 98%;  display: inline-block; text-align: center; margin: 0px 0px 0px 10px;     background-color: #ffffff; color: #483c37; text-decoration: none; }
+    .del_div{ width: 98%;  display: inline-block; text-align: center; margin: 0px 0px 0px 10px;     background-color: #ffffff; color: #483c37; text-decoration: none; }
 
         .del_div a{ display: inline-block; padding: 12px 45px; margin: 15px 11px; background: #b39c94; text-decoration: none; color: #5f4f49; font-size: 20px; font-weight: 700; border-radius: 4px; box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.2);}
 
@@ -126,26 +88,30 @@
 </head>
 <body>
 <div id="title">
-    <?php echo $_GET['case_name'].' 附近-'.$type_name?> 
+    <?php echo $_GET['case_name'].' 附近-娛樂'?> 
 </div>
 
 <div id="map"></div>
 
 
-<div id="detial"></div>
+<div id="detial">
+  
+
+
+
+</div>
 
 
 <!-- <a id="back_btn" href="javascript:history.back()"><img src="img/back1.svg"> 返回</a> -->
 
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmcZ9YTd68k4QYur5nowITqcI_kGZO5Ks&libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDd8Sh2hJ_40P92vt8sOyZwPvVTh867DmU&libraries=places"></script>
 
 <script type="text/javascript" src="../assets/js/plugins/fancybox/jquery.fancybox.min.js"></script>
 
 
 <script type="text/javascript">
-var type ='<?php echo $type;?>'; //導航類型
 var map;
 var infowindow;
 var $body = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');//指定視窗物件
@@ -174,29 +140,90 @@ var latLng='<?php echo $place_loc?>';
   });
 
 
-// =========================== 地點搜尋 ==================================
-var service = new google.maps.places.PlacesService(map); //地方資訊庫
-  service.nearbySearch({
-    location: pyrmont,
-    radius: '<?php echo $radius;?>',
-    keyword:'<?php echo $keyword?>',
-    type: ['<?php echo $type;?>'] //百貨商店    
-  }, callback);
+service = new google.maps.places.PlacesService(map);//地方資訊庫
 
-var num=0;
-// =========================== 建立marker ==================================
+
+
+//-- 抓取自訂 樂 座標 --
+$.ajax({
+  url: 'googlemap_fun_ajax.php',
+  type: 'POST',
+  dataType: 'json',
+  data: {case_id: '<?php echo $_GET['case_id'];?>'},
+  success:function (json) {
+    console.log(json['fun_loc']);
+    var fun_loc=json['fun_loc'].split('|');
+    var fun_name=json['fun_name'].split('|');
+    var num=0;
+    var timeout;
+    timeout=window.setInterval(function () {
+         
+          if (num < fun_loc.length) {
+            
+               custom_loc(num,fun_loc, fun_name);
+          }else{
+               window.clearInterval(timeout);
+          }
+          num++;
+       },400);
+
+
+    // =========================== 地點搜尋 ==================================
+     setTimeout(function () {
+       service.nearbySearch({
+        location: pyrmont,
+        radius: '<?php echo $radius;?>',
+        keyword:'<?php echo $keyword?>',
+        type: ['<?php echo $type;?>'] //百貨商店    
+      }, callback);
+     },fun_loc.length*500);
+    
+  }
+});
+
+
+//================================ 自訂地點 =================================
+function custom_loc(i,fun_loc, fun_name) {
+  
+  var loc=fun_loc[i].split(',');
+  var lat_num=parseFloat(loc[0]);
+  var lng_num=parseFloat(loc[1]);
+  var request = {
+      query: fun_name[i],
+      fields: ['formatted_address', 'name', 'rating', 'geometry', 'place_id'],
+      locationBias: {lat: lat_num, lng: lng_num}
+    }
+    service.findPlaceFromQuery(request, callback_get);
+}
+
+//================================ 自訂地點建立marker =================================
+function callback_get(results, status) {
+  console.log(status);
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
+}
+
+  
+  
+
+// =========================== 地點搜尋建立marker ==================================
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+    var num=0;
        
-       
-       var timeout;
-           timeout=window.setInterval(function () {
+       console.log(status);
+       var timeout2;
+           timeout2=window.setInterval(function () {
          
           if (num < results.length) {
           	
                createMarker(results[num]); 
           }else{
-               window.clearInterval(timeout);
+               window.clearInterval(timeout2);
           }
           num++;
        },300);
@@ -204,14 +231,14 @@ function callback(results, status) {
 }
 
 
+//-- 建立詳細資料 --
 function createMarker(place) {
-
 
   var infowindow = new google.maps.InfoWindow({
     content: '<table>'+
              '<tr>'+
                '<td>'+
-                 place.name+
+                 '<h3>'+place.name+'</h3>'+
                '</td>'+
              '</tr>'+
           '</table>'
@@ -226,108 +253,45 @@ function createMarker(place) {
     position: placeLoc
   });
 
+  //infowindow.open(map, marker);
+
   marker.addListener('click', function() {
     infowindow.open(map, marker);
   });
-   
-
-service.getDetails({placeId: place.place_id}, function (det,status) {
   
- if ((status === google.maps.places.PlacesServiceStatus.OK)) {
-    // ====================== 詳細方塊 ============================= 
+  // ====================== 詳細方塊 ============================= 
+  service.getDetails({placeId: place.place_id}, function (det,status){
+    if ((status === google.maps.places.PlacesServiceStatus.OK)){
 
-    if (place.name.length>=10) {
-      var name=place.name.substr(0,9)+'...';
-    }else{
-      var name=place.name;
+       var name=place.name.length>=10 ? place.name.substr(0,9)+'...' : place.name;
+       var adds=det.formatted_address.length>=30 ? det.formatted_address.substr(0,29)+'...' : det.formatted_address;
+       
+       var del_txt= '<div class="life_item_div">';
+       del_txt=del_txt+'<div class="map_a_div"> <a href="googlemap_place_one.php?placeId='+place.place_id+'&place_loc=<?php echo $place_loc;?>&type=<?php echo $type;?>" class="del_div rippleria">';
+       //-- 評價 --
+       var rating_txt= place.rating==undefined ? '<h1><p>評價</p>-</h1>': '<h1><p>評價</p>'+place.rating+'</h1>';
+       del_txt=del_txt+rating_txt;
+       del_txt=del_txt+'<div>';
+       del_txt=del_txt+'<h3>'+name+'</h3>';
+       del_txt=del_txt+'<p class="no_ptxt">'+adds+'</p>';
+       //-- 電話 --
+       var phone_txt=det.formatted_phone_number!=undefined ? '<p class="no_ptxt">'+det.formatted_phone_number+'</p>' : '<p class="no_ptxt">　</p>';
+       del_txt=del_txt+phone_txt;
+       del_txt=del_txt+'</div>';
+       del_txt=del_txt+'</a>';
+       del_txt=del_txt+'<div class="footer_tool_div">';
+       del_txt=del_txt+'<a href="tel:'+det.formatted_phone_number+'" class="place_btn" ><img src="img/phone.svg"> 電話</a>';
+       del_txt=del_txt+'<a target="_blank" href="'+place_url+'"><img src="img/navigation.svg"> 導航</a>';
+       del_txt=del_txt+'</div>';
+       del_txt=del_txt+'</div>';
+       del_txt=del_txt+'</div>';
+       
+       $("#detial").append(del_txt);
     }
-
-    if (det.formatted_address.length>=30) {
-      var adds=det.formatted_address.substr(0,29)+'...';
-    }else{
-      var adds=det.formatted_address;
-    }
-
-    var del_txt= '<div class="life_item_div">';
-
-    
-    <?php if($type=='food' || $type=='cafe'){ ?>
-
-    del_txt=del_txt+'<div class="map_img_div" style=" background: url(\''+place.photos[0].getUrl({'maxWidth': 700, 'maxHeight': 700})+'\') no-repeat center;"></div>';
-
-    <?php }?>
-
-    
-
-    del_txt=del_txt+'<div class="map_a_div"> <a href="googlemap_place_one.php?placeId='+place.place_id+'&place_loc=<?php echo $place_loc;?>&type=<?php echo $type;?>" class="del_div rippleria">';
-
-    //--評價--
-    if (place.rating==undefined) {
-      del_txt=del_txt+'<h1><p>評價</p>-</h1>';
-    }else{
-
-      del_txt=del_txt+'<h1><p>評價</p>'+place.rating+'</h1>';
-    }
-    
-    del_txt=del_txt+'<div>';
-
-    <?php 
-        if ($_GET['type']=='bus_station') {
-          echo "del_txt=del_txt+'<h3>'+name+'站</h3>';";
-        }
-        else{
-          echo "del_txt=del_txt+'<h3>'+name+'</h3>';";
-        }
-      ?>
-    
-
-    del_txt=del_txt+'<p class="no_ptxt">'+adds+'</p>';
-
-    if (det.formatted_phone_number!=undefined) {
-      del_txt=del_txt+'<p class="no_ptxt">'+det.formatted_phone_number+'</p>';
-    }
-    else{
-      del_txt=del_txt+'<p class="no_ptxt">　</p>';
-    }
-
-    
-    del_txt=del_txt+'</div>';
-    del_txt=del_txt+'</a>';
-
-    del_txt=del_txt+'<div class="footer_tool_div">';
-    del_txt=del_txt+'<a href="tel:'+det.formatted_phone_number+'" class="place_btn" ><img src="img/phone.svg"> 電話</a>';
-    del_txt=del_txt+'<a target="_blank" href="'+place_url+'"><img src="img/navigation.svg"> 導航</a>';
-    del_txt=del_txt+'</div>';
-
-    del_txt=del_txt+'</div>';
-
-    del_txt=del_txt+'</div>';
-
-     $("#detial").append(del_txt);
-   
-
-
-  }
-});
+  });
    
 }
 
-
-$(document).ready(function() {
-  
-  /* ================================= 環景燈箱 ======================================= */
-          // $(".place_btn").fancybox({
-          //      'padding'               :'0',
-          //      'width'                 : '800px',
-          //      'height'               : '800px',
-          //      'autoScale'               : false,
-          //      'transitionIn'          : 'none',
-          //      'transitionOut'          : 'none',
-          //      'type'                    : 'iframe'
-          // });
-
-
-});
 
 
 </script>

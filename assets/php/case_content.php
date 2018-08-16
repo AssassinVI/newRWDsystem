@@ -36,7 +36,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
         if ($base_row['zoomin_img']=='1') {
           $img_txt.= '
-           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+           <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
              <a href="img/'.$base_img_ph[$j].'" data-fancybox>
                <img src="img/'.$base_img_ph[$j].'" alt="">
                <i class="fa fa-search-plus zoomin_img"></i>
@@ -45,7 +45,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
         }
         else{
          $img_txt.= '
-           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+           <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
               <img src="img/'.$base_img_ph[$j].'" alt="">
             </div>';
         }
@@ -57,7 +57,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
        
         if ($base_row['zoomin_img']=='1') {
           $img_txt.= '
-           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+           <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
              <a href="img/'.$base_img[$j].'" data-fancybox>
                <img src="img/'.$base_img[$j].'" alt="">
                <i class="fa fa-search-plus zoomin_img"></i>
@@ -66,7 +66,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
         }
         else{
          $img_txt.= '
-           <div class="col-md-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
+           <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
               <img src="img/'.$base_img[$j].'" alt="">
             </div>';
         }
@@ -86,7 +86,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
       $LeftRight_div= $base_row['ImgWord_type']>2 ? '<div class="center_div">' : '';
 
 			$word_txt.= '
-		    <div class="col-md-'.$imgWord_col.' '.$word_sort.' '.$word_ph_sort.' con_txt" >'.$LeftRight_div;
+		    <div class="col-lg-'.$imgWord_col.' '.$word_sort.' '.$word_ph_sort.' con_txt" >'.$LeftRight_div;
 
      
       if(!empty($base_row['aTitle'])){ 
@@ -143,18 +143,20 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
       echo '
         <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 row no-gutters slideshow_tb">
-          <div class="col-md-'.$imgWord_col.' '.$slider_sort.' '.$slider_ph_sort.'">
+          <div class="col-lg-'.$imgWord_col.' '.$slider_sort.' '.$slider_ph_sort.'">
            <div class="swiper-container">
               <div class="swiper-wrapper">';
 
+              $img_txt_txt=empty($show_row['img_txt']) ? '': explode(',', $show_row['img_txt']);
+
              if (wp_is_mobile() && !empty($show_row['show_img_ph'])){
                for ($j=0; $j < $show_img_ph_num; $j++) { 
-                echo '<div class="swiper-slide"><img src="img/'.$show_img_ph[$j].'" alt=""></div>';
+                echo '<div class="swiper-slide"><img src="img/'.$show_img_ph[$j].'" alt=""><span>'.$img_txt_txt[$j].'</span></div>';
                } 
              }
              else{
                for ($j=0; $j < $show_img_num; $j++) { 
-                echo '<div class="swiper-slide"><img src="img/'.$show_img[$j].'" alt=""></div>';
+                echo '<div class="swiper-slide"><img src="img/'.$show_img[$j].'" alt=""><span>'.$img_txt_txt[$j].'</span></div>';
                } 
              }
              
@@ -168,7 +170,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
         //-- 內容 --
         if (!empty($show_row['aTXT'])) {
           echo'
-          <div class="col-md-'.$imgWord_col.' '.$txt_sort.' '.$txt_ph_sort.'">
+          <div class="col-lg-'.$imgWord_col.' '.$txt_sort.' '.$txt_ph_sort.'">
            <div class="center_div con_txt">
            '.$show_row['aTXT'].'
            </div>
@@ -264,7 +266,8 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
           <div class="grid-sizer" ></div>';
           
        for ($j=0; $j <$img_file_num ; $j++) { 
-       	 echo '<div class="grid-item '.$img_item_arr[$j].' " style="background-image: url(img/'.$img_file[$j].');"><a href="img/'.$img_file[$j].'" data-fancybox="groups"></a></div>';
+         $img_word=!empty($img_wall_row['img_word'])? explode(',', $img_wall_row['img_word']):'';
+       	 echo '<div class="grid-item '.$img_item_arr[$j].' " style="background-image: url(img/'.$img_file[$j].');"><a href="img/'.$img_file[$j].'" data-fancybox="groups" data-caption="'.$img_word[$j].'" ><span>'.$img_word[$j].'</span></a></div>';
        } 
 
      echo'</div>
@@ -354,17 +357,12 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
              </a>
           </div>
           <div id="gm_fun_btn" style="background-color: '.$color_arr[5].';" class="col-4">
-            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=shopping_mall&keyword='.$life_keyword[4].'&radius='.$life_range[4].'&zoom='.$life_zoom[4].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'樂\')">
+            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_fun.php?place_loc='.$life_location.'&case_id='.$case_id.'&type=shopping_mall&keyword='.$life_keyword[4].'&radius='.$life_range[4].'&zoom='.$life_zoom[4].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'樂\')">
              <img src="../../img/svg/'.$img_dir.'/shop.svg" alt=""><p style="color:'.$txt_color.';">樂</p>
             </a>
            </div>
-          </div>
 
-            
-          
-          <div id="more_life_div" class="row no-gutters">
-          
-          <div id="gm_school_btn" style="background-color: '.$color_arr[4].';" class="col-4">
+           <div id="gm_school_btn" style="background-color: '.$color_arr[4].';" class="col-4">
              <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=park&keyword='.$life_keyword[5].'&radius='.$life_range[5].'&zoom='.$life_zoom[5].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'公園\')">
                <img src="../../img/svg/'.$img_dir.'/park.svg" alt=""><p style="color:'.$txt_color.';">公園</p>
              </a>
@@ -394,15 +392,10 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
               <img src="../../img/svg/'.$img_dir.'/gas-station.svg" alt=""><p style="color:'.$txt_color.';">加油站</p>
             </a>
           </div>
-          
-          <div id="gm_fun_btn" style="background-color: '.$color_arr[0].';" class="col-4">
-            <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=pharmacy&keyword='.$life_keyword[11].'&radius='.$life_range[11].'&zoom='.$life_zoom[11].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'藥局\')">
-             <img src="../../img/svg/'.$img_dir.'/pharmacy.svg" alt=""><p style="color:'.$txt_color.';">藥局</p>
-            </a>
-           </div>
+       
+
           </div>
 
-          <a id="life_more" href="javascript:;"><i style="color:'.$txt_color.';" class="fa fa-chevron-down"></i></a>
 
         </div>
       </div>
@@ -428,7 +421,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
                <img src="../../img/svg/'.$img_dir.'/school.svg" alt=""><p style="color:'.$txt_color.';">育</p>
           </a>
 
-         <a style="background-color:'.$pc_a_back[5].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=shopping_mall&keyword='.$life_keyword[4].'&radius='.$life_range[4].'&zoom='.$life_zoom[4].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'樂\')">
+         <a style="background-color:'.$pc_a_back[5].'; border: 1px solid '.$txt_color.';" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_fun.php?place_loc='.$life_location.'&case_id='.$case_id.'&type=shopping_mall&keyword='.$life_keyword[4].'&radius='.$life_range[4].'&zoom='.$life_zoom[4].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'樂\')">
              <img src="../../img/svg/'.$img_dir.'/shop.svg" alt=""><p style="color:'.$txt_color.';">樂</p>
           </a>
 

@@ -534,12 +534,12 @@ if($_POST){
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="col-sm-2 control-label" for="line_show">是否顯示分割線</label>
               <div class="col-sm-10">
-                <input style="width: 20px; height: 20px;" id="line_show" name="line_show" type="checkbox" value="1" <?php echo $check=!isset($row['line_show']) || $row['line_show']==1 ? 'checked' : ''; ?>  />
+                <input style="width: 20px; height: 20px;" id="line_show" name="line_show" type="checkbox" value="1" <?php //echo $check=!isset($row['line_show']) || $row['line_show']==1 ? 'checked' : ''; ?>  />
               </div>
-            </div>
+            </div> -->
 
 
             <div class="form-group">

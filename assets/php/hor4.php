@@ -218,7 +218,7 @@
         <span style="background-image: url(../../img/svg/mapTool/school.svg); background-size: 60%; background-color: rgba(0,0,0,0);"></span><br>育
        </a>
 
-       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=shopping_mall&keyword=<?php echo $life_keyword[4];?>&radius=<?php echo $life_range[4];?>&zoom=<?php echo $life_zoom[4];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '樂')">
+       <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_fun.php?place_loc=<?php echo $life_location;?>&case_id=<?php echo $case_id;?>&type=shopping_mall&keyword=<?php echo $life_keyword[4];?>&radius=<?php echo $life_range[4];?>&zoom=<?php echo $life_zoom[4];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '樂')">
         <span style="background-image: url(../../img/svg/mapTool/shop.svg); background-size: 60%; background-color: rgba(0,0,0,0);"></span><br>樂
        </a>
 
