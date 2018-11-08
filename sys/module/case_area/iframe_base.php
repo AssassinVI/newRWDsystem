@@ -139,6 +139,7 @@ if($_POST){
        'base_img'=>$base_img,
        'base_img_ph'=>$base_img_ph,
        'back_img'=>$back_img,
+       'img_txt'=>$_POST['img_txt'],
        'txt_fadein'=>$txt_fadein,
        'img_fadein'=>$img_fadein,
        'ImgWord_type'=>$_POST['ImgWord_type'],
@@ -263,6 +264,7 @@ if($_POST){
        'aTitle'=>$_POST['aTitle'],
        'Title_two'=>$_POST['Title_two'],
        'content'=>$_POST['content'],
+       'img_txt'=>$_POST['img_txt'],
        'txt_fadein'=>$txt_fadein,
        'img_fadein'=>$img_fadein,
        'ImgWord_type'=>$_POST['ImgWord_type'],
@@ -399,6 +401,15 @@ if($_POST){
 
                 </ul>
                 </div>
+            </div>
+
+
+            <div class="form-group">
+              <label class="col-sm-1 control-label" for="play_speed">圖說</label>
+              <div class="col-sm-11">
+                <input type="text" name="img_txt" class="form-control" value="<?php echo $row['img_txt'];?>">
+                <span>使用","分割</span>
+              </div>
             </div>
 
 

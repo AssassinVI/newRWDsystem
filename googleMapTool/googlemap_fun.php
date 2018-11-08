@@ -1,14 +1,27 @@
-
-
 <?php 
- 
+  //--------------------- 手機判斷 -------------------
+function check_mobile(){
+    $regex_match="/(nokia|iphone|android|motorola|^mot\-|softbank|foma|docomo|kddi|up\.browser|up\.link|";
+    $regex_match.="htc|dopod|blazer|netfront|helio|hosin|huawei|novarra|CoolPad|webos|techfaith|palmsource|";
+    $regex_match.="blackberry|alcatel|amoi|ktouch|nexian|samsung|^sam\-|s[cg]h|^lge|ericsson|philips|sagem|wellcom|bunjalloo|maui|";
+    $regex_match.="symbian|smartphone|midp|wap|phone|windows ce|iemobile|^spice|^bird|^zte\-|longcos|pantech|gionee|^sie\-|portalmmm|";   
+    $regex_match.="jig\s browser|hiptop|^ucweb|^benq|haier|^lct|opera\s*mobi|opera\*mini|320x320|240x320|176x220";
+    $regex_match.=")/i";
+    return preg_match($regex_match, strtolower($_SERVER['HTTP_USER_AGENT']));
+}
 
  if ($_GET) {
    $place_loc=$_GET['place_loc'];
    $keyword=$_GET['keyword'];
    $type=$_GET['type'];
    $radius=$_GET['radius'];
-   $zoom=$_GET['zoom'];
+
+   if (check_mobile()) {
+     $zoom=(int)$_GET['zoom']-2;
+   }
+   else{
+    $zoom=$_GET['zoom'];
+   }
  }
 
 
@@ -23,8 +36,8 @@
   <link rel="stylesheet" type="text/css" href="../assets/js/plugins/fancybox/jquery.fancybox.min.css">
 	<style type="text/css">
     body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; height: 750px;}
-    #map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px;}
-    #detial{ width: 98%; margin: auto; }
+    #map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px; display: none;}
+    #detial{ width: 98%; margin: auto; margin-top: 4rem;}
     #title{ text-align: center; background-color: #373737; padding: 10px 0px; font-size: 20px; color: #fff; position: fixed; top: 0px; width: 100%; z-index: 1000;  box-shadow: 0px 2px 10px rgba(0,0,0,0.67);}
 
     .del_div{ width: 98%;  display: inline-block; text-align: center; margin: 0px 0px 0px 10px;     background-color: #ffffff; color: #483c37; text-decoration: none; }
@@ -68,14 +81,14 @@
 }
 
 @media only screen and (max-width:420px){
-   #map{ height: 350px; display: none;}
+   #map{ height: 400px; }
    #title{ padding:0px; font-size: 16px; line-height: 2.9em; }
    #detial{ margin-top: 45px; }
    
    .del_div{ text-align: left; margin-top: 0px;}
    .del_div h1{ display: inline-block; vertical-align: top; font-size: 45px; font-weight: 300; margin: 20px 0px;margin-left: 15px; width: 18%;}
-   .del_div div{ display: inline-block; width: 70%; margin-left: 20px; margin-bottom: 15px; }
-   .del_div h3{ font-size: 25px; margin: 10px 0px; font-weight: 300;}
+   .del_div div{ display: inline-block; width: 100%;text-align: center;  }
+   .del_div h3{ font-size: 20px; margin: 10px 0px; font-weight: 300;}
    .del_div p{ margin: 5px 0px; font-size: 14px; }
    .map_a_div h1 p{ margin:0px; display: block;}
 
@@ -123,7 +136,9 @@ var latLng='<?php echo $place_loc?>';
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
-    zoom: <?php echo $zoom;?>
+    zoom: <?php echo $zoom;?>,
+    streetViewControl: false,
+    mapTypeControl:false
   });
 
   infowindow = new google.maps.InfoWindow();
@@ -134,7 +149,7 @@ var latLng='<?php echo $place_loc?>';
     icon:'https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=home|ffeb3b',
   });
 
-    google.maps.event.addListener(cen_mark, 'click', function() {
+    google.maps.event.addListener(cen_mark, 'mouseover', function() {
     infowindow.setContent('<?php echo $_GET['case_name'];?>');
     infowindow.open(map, this);
   });
@@ -165,7 +180,7 @@ $.ajax({
                window.clearInterval(timeout);
           }
           num++;
-       },400);
+       },600);
 
 
     // =========================== 地點搜尋 ==================================
@@ -176,7 +191,7 @@ $.ajax({
         keyword:'<?php echo $keyword?>',
         type: ['<?php echo $type;?>'] //百貨商店    
       }, callback);
-     },fun_loc.length*500);
+     },fun_loc.length*700);
     
   }
 });
@@ -255,32 +270,36 @@ function createMarker(place) {
 
   //infowindow.open(map, marker);
 
-  marker.addListener('click', function() {
+  marker.addListener('mouseover', function() {
     infowindow.open(map, marker);
+  });
+
+  marker.addListener('mouseout', function() {
+    infowindow.close();
   });
   
   // ====================== 詳細方塊 ============================= 
   service.getDetails({placeId: place.place_id}, function (det,status){
     if ((status === google.maps.places.PlacesServiceStatus.OK)){
 
-       var name=place.name.length>=10 ? place.name.substr(0,9)+'...' : place.name;
+       var name=place.name.length>=10 ? place.name : place.name;
        var adds=det.formatted_address.length>=30 ? det.formatted_address.substr(0,29)+'...' : det.formatted_address;
        
        var del_txt= '<div class="life_item_div">';
        del_txt=del_txt+'<div class="map_a_div"> <a href="googlemap_place_one.php?placeId='+place.place_id+'&place_loc=<?php echo $place_loc;?>&type=<?php echo $type;?>" class="del_div rippleria">';
        //-- 評價 --
-       var rating_txt= place.rating==undefined ? '<h1><p>評價</p>-</h1>': '<h1><p>評價</p>'+place.rating+'</h1>';
-       del_txt=del_txt+rating_txt;
+       // var rating_txt= place.rating==undefined ? '<h1><p>評價</p>-</h1>': '<h1><p>評價</p>'+place.rating+'</h1>';
+       // del_txt=del_txt+rating_txt;
        del_txt=del_txt+'<div>';
        del_txt=del_txt+'<h3>'+name+'</h3>';
-       del_txt=del_txt+'<p class="no_ptxt">'+adds+'</p>';
+       // del_txt=del_txt+'<p class="no_ptxt">'+adds+'</p>';
        //-- 電話 --
-       var phone_txt=det.formatted_phone_number!=undefined ? '<p class="no_ptxt">'+det.formatted_phone_number+'</p>' : '<p class="no_ptxt">　</p>';
-       del_txt=del_txt+phone_txt;
+       // var phone_txt=det.formatted_phone_number!=undefined ? '<p class="no_ptxt">'+det.formatted_phone_number+'</p>' : '<p class="no_ptxt">　</p>';
+       // del_txt=del_txt+phone_txt;
        del_txt=del_txt+'</div>';
        del_txt=del_txt+'</a>';
        del_txt=del_txt+'<div class="footer_tool_div">';
-       del_txt=del_txt+'<a href="tel:'+det.formatted_phone_number+'" class="place_btn" ><img src="img/phone.svg"> 電話</a>';
+       // del_txt=del_txt+'<a href="tel:'+det.formatted_phone_number+'" class="place_btn" ><img src="img/phone.svg"> 電話</a>';
        del_txt=del_txt+'<a target="_blank" href="'+place_url+'"><img src="img/navigation.svg"> 導航</a>';
        del_txt=del_txt+'</div>';
        del_txt=del_txt+'</div>';

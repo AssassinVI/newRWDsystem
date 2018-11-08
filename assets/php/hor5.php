@@ -153,7 +153,7 @@
    <div class="bottom_tool">
     
    	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', '撥打手機', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/gold/new_phone.png); background-size: 90%; background-color: rgba(0,0,0,0);"></span><br>TEL
+   	 	<span style="background-image: url(../../img/svg/gold/phone.gif); background-size: 90%; background-color: rgba(0,0,0,0);"></span><br>TEL
    	 </a>
    	 <a target="_blank" href="<?php echo $line_txt;?>" onclick="ga('send', 'event', '加LINE或Line分享', 'click', 'tool_bar')">
    	 	<span style="background-image: url(../../img/svg/gold/new_line.png); background-size: 99%; background-color: rgba(0,0,0,0);"></span><br>LINE
@@ -161,9 +161,14 @@
    	 <a target="_blank" href="<?php echo $fb_txt;?>" onclick="ga('send', 'event', 'fb分享', 'click', 'tool_bar')">
    	 	<span style="background-image: url(../../img/svg/gold/new_fb.png);  background-size: 60%; background-color: rgba(0,0,0,0);"></span><br>FB
    	 </a>
+
+     <?php if(!empty($li_row['Tb_index'])){ ?>
+
    	 <a id="life_btn<?php echo $life_type;?>" href="javascript:;">
    	 	<span style="background-image: url(../../img/svg/gold/new_live.png); background-size: 100%; background-color: rgba(0,0,0,0);"></span><br>Life
    	 </a>
+
+     <?php }?>
    	<!--  <a target="_blank" href="https://www.google.com/maps/dir//<?php //echo $map_txt;?>/@<?php //echo $map_txt;?>,17z?hl=zh-TW" onclick="ga('send', 'event', 'map_btn', 'click', 'tool_bar')">
    	 	<span style="background-image: url(../../img/svg/new); background-size: 99%;"></span><br>地圖
    	 </a> -->

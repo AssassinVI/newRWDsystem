@@ -1,12 +1,29 @@
 <?php 
- 
+ //--------------------- 手機判斷 -------------------
+function check_mobile(){
+    $regex_match="/(nokia|iphone|android|motorola|^mot\-|softbank|foma|docomo|kddi|up\.browser|up\.link|";
+    $regex_match.="htc|dopod|blazer|netfront|helio|hosin|huawei|novarra|CoolPad|webos|techfaith|palmsource|";
+    $regex_match.="blackberry|alcatel|amoi|ktouch|nexian|samsung|^sam\-|s[cg]h|^lge|ericsson|philips|sagem|wellcom|bunjalloo|maui|";
+    $regex_match.="symbian|smartphone|midp|wap|phone|windows ce|iemobile|^spice|^bird|^zte\-|longcos|pantech|gionee|^sie\-|portalmmm|";   
+    $regex_match.="jig\s browser|hiptop|^ucweb|^benq|haier|^lct|opera\s*mobi|opera\*mini|320x320|240x320|176x220";
+    $regex_match.=")/i";
+    return preg_match($regex_match, strtolower($_SERVER['HTTP_USER_AGENT']));
+}
+
 
  if ($_GET) {
    $place_loc=$_GET['place_loc'];
    $keyword=$_GET['keyword'];
    $type=$_GET['type'];
    $radius=$_GET['radius'];
-   $zoom=$_GET['zoom'];
+
+   if (check_mobile()) {
+     $zoom=(int)$_GET['zoom']-2;
+   }
+   else{
+    $zoom=$_GET['zoom'];
+   }
+   
 
 
     switch ($type) {
@@ -61,8 +78,8 @@
   <link rel="stylesheet" type="text/css" href="../assets/js/plugins/fancybox/jquery.fancybox.min.css">
 	<style type="text/css">
     body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; height: 750px;}
-		#map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px;}
-    #detial{ width: 98%; margin: auto; }
+		#map{ width: 100%;height: 700px; margin-top: 45px; margin-bottom: 20px; display: none;}
+    #detial{ width: 98%; margin: auto; margin-top: 4rem;}
     #title{ text-align: center; background-color: #373737; padding: 10px 0px; font-size: 20px; color: #fff; position: fixed; top: 0px; width: 100%; z-index: 1000;  box-shadow: 0px 2px 10px rgba(0,0,0,0.67);}
 
 		.del_div{ width: 98%;  display: inline-block; text-align: center; margin: 0px 0px 0px 10px;     background-color: #ffffff; color: #483c37; text-decoration: none; }
@@ -106,14 +123,14 @@
 }
 
 @media only screen and (max-width:420px){
-   #map{ height: 350px; display: none;}
+   #map{ height: 400px; }
    #title{ padding:0px; font-size: 16px; line-height: 2.9em; }
    #detial{ margin-top: 45px; }
    
    .del_div{ text-align: left; margin-top: 0px;}
    .del_div h1{ display: inline-block; vertical-align: top; font-size: 45px; font-weight: 300; margin: 20px 0px;margin-left: 15px; width: 18%;}
-   .del_div div{ display: inline-block; width: 70%; margin-left: 20px; margin-bottom: 15px; }
-   .del_div h3{ font-size: 25px; margin: 10px 0px; font-weight: 300;}
+   .del_div div{ display: inline-block; width: 100%;text-align: center;  }
+   .del_div h3{ font-size: 20px; margin: 10px 0px; font-weight: 300;}
    .del_div p{ margin: 5px 0px; font-size: 14px; }
    .map_a_div h1 p{ margin:0px; display: block;}
 
@@ -134,13 +151,12 @@
 
 <div id="detial"></div>
 
-
+<input type="hidden" id="all_location" value="">
 <!-- <a id="back_btn" href="javascript:history.back()"><img src="img/back1.svg"> 返回</a> -->
 
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmcZ9YTd68k4QYur5nowITqcI_kGZO5Ks&libraries=places"></script>
-
 <script type="text/javascript" src="../assets/js/plugins/fancybox/jquery.fancybox.min.js"></script>
 
 
@@ -157,7 +173,9 @@ var latLng='<?php echo $place_loc?>';
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
-    zoom: <?php echo $zoom;?>
+    zoom: <?php echo $zoom;?>,
+    streetViewControl: false,
+    mapTypeControl:false
   });
 
   infowindow = new google.maps.InfoWindow();
@@ -168,7 +186,7 @@ var latLng='<?php echo $place_loc?>';
     icon:'https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=home|ffeb3b',
   });
 
-    google.maps.event.addListener(cen_mark, 'click', function() {
+    google.maps.event.addListener(cen_mark, 'mouseover', function() {
     infowindow.setContent('<?php echo $_GET['case_name'];?>');
     infowindow.open(map, this);
   });
@@ -182,6 +200,9 @@ var service = new google.maps.places.PlacesService(map); //地方資訊庫
     keyword:'<?php echo $keyword?>',
     type: ['<?php echo $type;?>'] //百貨商店    
   }, callback);
+
+  
+
 
 var num=0;
 // =========================== 建立marker ==================================
@@ -218,6 +239,7 @@ function createMarker(place) {
   });
 	
   var placeLoc = place.geometry.location;
+  $('#all_location').val($('#all_location').val()+placeLoc+'||');
   // =================== 導航網址 =========================
   var place_url='https://www.google.com/maps/dir/'+latLng[0]+','+latLng[1]+'/'+placeLoc+'/@'+placeLoc+',17z?hl=zh-TW'; 
   var marker = new google.maps.Marker({
@@ -226,8 +248,12 @@ function createMarker(place) {
     position: placeLoc
   });
 
-  marker.addListener('click', function() {
+  marker.addListener('mouseover', function() {
     infowindow.open(map, marker);
+  });
+
+  marker.addListener('mouseout', function() {
+    infowindow.close();
   });
    
 
@@ -237,7 +263,7 @@ service.getDetails({placeId: place.place_id}, function (det,status) {
     // ====================== 詳細方塊 ============================= 
 
     if (place.name.length>=10) {
-      var name=place.name.substr(0,9)+'...';
+      var name=place.name;
     }else{
       var name=place.name;
     }
@@ -262,12 +288,12 @@ service.getDetails({placeId: place.place_id}, function (det,status) {
     del_txt=del_txt+'<div class="map_a_div"> <a href="googlemap_place_one.php?placeId='+place.place_id+'&place_loc=<?php echo $place_loc;?>&type=<?php echo $type;?>" class="del_div rippleria">';
 
     //--評價--
-    if (place.rating==undefined) {
-      del_txt=del_txt+'<h1><p>評價</p>-</h1>';
-    }else{
+    // if (place.rating==undefined) {
+    //   del_txt=del_txt+'<h1><p>評價</p>-</h1>';
+    // }else{
 
-      del_txt=del_txt+'<h1><p>評價</p>'+place.rating+'</h1>';
-    }
+    //   del_txt=del_txt+'<h1><p>評價</p>'+place.rating+'</h1>';
+    // }
     
     del_txt=del_txt+'<div>';
 
@@ -281,21 +307,21 @@ service.getDetails({placeId: place.place_id}, function (det,status) {
       ?>
     
 
-    del_txt=del_txt+'<p class="no_ptxt">'+adds+'</p>';
+    // del_txt=del_txt+'<p class="no_ptxt">'+adds+'</p>';
 
-    if (det.formatted_phone_number!=undefined) {
-      del_txt=del_txt+'<p class="no_ptxt">'+det.formatted_phone_number+'</p>';
-    }
-    else{
-      del_txt=del_txt+'<p class="no_ptxt">　</p>';
-    }
+    // if (det.formatted_phone_number!=undefined) {
+    //   del_txt=del_txt+'<p class="no_ptxt">'+det.formatted_phone_number+'</p>';
+    // }
+    // else{
+    //   del_txt=del_txt+'<p class="no_ptxt">　</p>';
+    // }
 
     
     del_txt=del_txt+'</div>';
     del_txt=del_txt+'</a>';
 
     del_txt=del_txt+'<div class="footer_tool_div">';
-    del_txt=del_txt+'<a href="tel:'+det.formatted_phone_number+'" class="place_btn" ><img src="img/phone.svg"> 電話</a>';
+    // del_txt=del_txt+'<a href="tel:'+det.formatted_phone_number+'" class="place_btn" ><img src="img/phone.svg"> 電話</a>';
     del_txt=del_txt+'<a target="_blank" href="'+place_url+'"><img src="img/navigation.svg"> 導航</a>';
     del_txt=del_txt+'</div>';
 

@@ -66,6 +66,16 @@ if ($_POST) {
       	$logo='';
       }
 
+      //===================== 讀取LOGO ========================
+      if (!empty($_FILES['loading_logo']['name'])){
+
+      	 $type=explode('.', $_FILES['loading_logo']['name']);
+      	 $loading_logo=$Tb_index.date('His').'.'.$type[count($type)-1];
+         fire_upload('loading_logo', $loading_logo, $Tb_index);
+      }else{
+      	$loading_logo='';
+      }
+
      //===================== 分享圖片 ========================
       if (!empty($_FILES['aPic']['name'])){
 
@@ -124,6 +134,7 @@ if ($_POST) {
 			         'OnLineOrNot'=>$_POST['OnLineOrNot'],
 			                'aPic'=>$aPic,
 			                'logo'=>$logo,
+			        'loading_logo'=>$loading_logo,
 			        'activity_img'=>$activity_img,
 			       'activity_song'=>$activity_song,
 			           'ad_making'=>$ad_making
@@ -150,6 +161,20 @@ if ($_POST) {
         $logo_param=['logo'=>$logo];
         $logo_where=['Tb_index'=>$Tb_index];
         pdo_update('build_case', $logo_param, $logo_where);
+        
+      }
+
+      //===================== 讀取LOGO ========================
+   	 if (!empty($_FILES['loading_logo']['name'])) {
+
+      	unlink('../../../product_html/'.$Tb_index.'/img/'.$_POST['loading_logo_file']);
+
+      	 $type=explode('/', $_FILES['loading_logo']['type']);
+      	 $loading_logo=$Tb_index.date('His').'.'.$type[1];
+         fire_upload('loading_logo', $loading_logo, $Tb_index);
+        $loading_logo_param=['loading_logo'=>$loading_logo];
+        $loading_logo_where=['Tb_index'=>$Tb_index];
+        pdo_update('build_case', $loading_logo_param, $loading_logo_where);
         
       }
 
@@ -422,6 +447,31 @@ if ($_GET) {
 								  <img id="one_img" src="../../../product_html/<?php echo $row['Tb_index'];?>/img/<?php echo $row['logo'];?>" alt="請上傳代表圖檔">
 								</div>
 								<input type="hidden" name="logo_file" value="<?php echo $row['logo'];?>">
+							</div>
+						<?php }?>		
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="loading_logo">讀取LOGO</label>
+							<div class="col-md-10">
+								<input type="file" name="loading_logo" class="form-control" accept="image/*" id="loading_logo" onchange="file_viewer_load_new(this, '#loading_logo_box')">
+							</div>
+						</div>
+
+						<div class="form-group">
+						   <label class="col-md-2 control-label" ></label>
+						   <div id="loading_logo_box" class="col-md-4">
+								
+						   </div>
+						<?php if(!empty($row['loading_logo'])){?>
+							<div  class="col-md-4">
+							   <div id="loading_logo" class="img_div" >
+							    <p>目前圖檔</p>
+								 <button type="button" class="one_del"> X </button>
+								  <img id="one_img" src="../../../product_html/<?php echo $row['Tb_index'];?>/img/<?php echo $row['loading_logo'];?>" alt="請上傳代表圖檔">
+								</div>
+								<input type="hidden" name="loading_logo_file" value="<?php echo $row['loading_logo'];?>">
 							</div>
 						<?php }?>		
 						</div>

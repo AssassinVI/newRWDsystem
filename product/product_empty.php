@@ -1,6 +1,17 @@
 <?php 
+
+//-- 測試修改料庫 ---
+if (isset($_GET['test_case'])) {
+  require '../../sys/core/inc/config_test_case.php';
+  require '../../sys/core/inc/function_test_case.php';
+}
+
+//-- 一般資料庫 ---
+else{
   require '../../sys/core/inc/config.php';
   require '../../sys/core/inc/function.php';
+}
+  
   
   $URL='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
   $Tb_index=explode('/', $_SERVER['REQUEST_URI']);
@@ -103,7 +114,12 @@ echo $back_color;
    <!-- 讀取畫面 -->
    <div id="nowLoading">
    	<div>
-   		<img src="../../img/loading.gif" alt="">
+      <?php if(!empty($case['loading_logo'])){ ?>
+       <img src="img/<?php echo $case['loading_logo'];?>"> <br>
+      <?php }else{ ?>
+       <img style="display: none;" src=""> <br>
+      <?php }?>
+   		<img src="../../img/loading2.gif" alt="">
    	</div>
    </div>
 
@@ -150,7 +166,9 @@ echo $back_color;
 
         <?php require '../../assets/php/case_content.php';?>
 
-
+      
+     <!-- 彈出活動圖 -->
+     <input type="hidden" name="popImg" value="<?php echo $case['activity_img'];?>">
      <!-- Footer -->
       <div class="col-md-12">
       	 <div class="footer_div">
@@ -183,7 +201,7 @@ echo $back_color;
           <?php 
 
             $pdo=pdo_conn();
-            $sql=$pdo->prepare("SELECT * FROM case_news WHERE case_id=:case_id ORDER BY OrderBy DESC, Tb_index DESC");
+            $sql=$pdo->prepare("SELECT * FROM case_news WHERE case_id=:case_id ORDER BY OrderBy DESC, StartDate DESC, Tb_index DESC");
             $sql->execute(['case_id'=>$case_id]);
             
             while ($news_row=$sql->fetch(PDO::FETCH_ASSOC)) {

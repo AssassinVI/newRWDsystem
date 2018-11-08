@@ -1,5 +1,12 @@
 <?php 
 
+/*-- product_empty.php 提供 (判斷建案是否啟用) --*/
+if ($case['OnLineOrNot']=='0') {
+  location_up('../../product/404.html','');
+  exit();
+}
+
+
 for ($i=0; $i < $fun_block_id_num; $i++) { 
 	
 	 $fun_type=substr($fun_block_id[$i]['fun_id'], 0,2);
@@ -27,26 +34,32 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
    $img_sort=$base_row['ImgWord_type']%2==1 ? 'order-lg-1':'order-lg-2';
    //-- 排序(手機) --
    $img_ph_sort=$base_row['ImgWord_ph_type']==1 ? 'order-1':'order-2';
+
+   //-- 圖說 --
+   $img_name=explode(',', $base_row['img_txt']);
    
     $img_txt='';
    //----------------- 手機圖片 --------------
     if (wp_is_mobile() && !empty($base_row['base_img_ph'])) {
       for ($j=0; $j <count($base_img_ph)-1 ; $j++) { 
        
+       $img=urlencode(aes_encrypt(date('Ymd'), '../../../product_html/'.$case_id.'/img/'.$base_img_ph[$j].'||768||80'));
 
         if ($base_row['zoomin_img']=='1') {
           $img_txt.= '
            <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
-             <a href="img/'.$base_img_ph[$j].'" data-fancybox>
+             <a href="img/'.$base_img_ph[$j].'" data-fancybox data-caption="'.$img_name[$j].'">
                <img src="img/'.$base_img_ph[$j].'" alt="">
                <i class="fa fa-search-plus zoomin_img"></i>
+               <span class="img_name">'.$img_name[$j].'</span>
              </a>
             </div>';
         }
         else{
          $img_txt.= '
            <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
-              <img src="img/'.$base_img_ph[$j].'" alt="">
+              <img src="../../sys/core/inc/small_img.php?aes='.$img.'" alt="">
+              <span class="img_name">'.$img_name[$j].'</span>
             </div>';
         }
      }
@@ -54,20 +67,24 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
      //----------------- 電腦圖片 --------------
     else{
       for ($j=0; $j <count($base_img)-1 ; $j++) { 
+
+        $img=urlencode(aes_encrypt(date('Ymd'), '../../../product_html/'.$case_id.'/img/'.$base_img[$j].'||1920||80'));
        
         if ($base_row['zoomin_img']=='1') {
           $img_txt.= '
            <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
-             <a href="img/'.$base_img[$j].'" data-fancybox>
+             <a href="img/'.$base_img[$j].'" data-fancybox data-caption="'.$img_name[$j].'">
                <img src="img/'.$base_img[$j].'" alt="">
                <i class="fa fa-search-plus zoomin_img"></i>
+               <span class="img_name">'.$img_name[$j].'</span>
              </a>
             </div>';
         }
         else{
          $img_txt.= '
            <div class="col-lg-'.$imgWord_col.' '.$img_fadein.' '.$img_sort.' '.$img_ph_sort.'">
-              <img src="img/'.$base_img[$j].'" alt="">
+              <img src="../../sys/core/inc/small_img.php?aes='.$img.'" alt="">
+              <span class="img_name">'.$img_name[$j].'</span>
             </div>';
         }
         
@@ -149,14 +166,23 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
 
               $img_txt_txt=empty($show_row['img_txt']) ? '': explode(',', $show_row['img_txt']);
 
+
              if (wp_is_mobile() && !empty($show_row['show_img_ph'])){
                for ($j=0; $j < $show_img_ph_num; $j++) { 
-                echo '<div class="swiper-slide"><img src="img/'.$show_img_ph[$j].'" alt=""><span>'.$img_txt_txt[$j].'</span></div>';
+
+                $img=urlencode(aes_encrypt(date('Ymd'), '../../../product_html/'.$case_id.'/img/'.$show_img_ph[$j].'||768||80'));
+
+                $img_txt_hmtl=empty($img_txt_txt[$j]) ? '': '<span>'.$img_txt_txt[$j].'</span>';
+                echo '<div class="swiper-slide" img-file="'.$show_img_ph[$j].'"><img src="../../sys/core/inc/small_img.php?aes='.$img.'" alt="">'.$img_txt_hmtl.'</div>';
                } 
              }
              else{
                for ($j=0; $j < $show_img_num; $j++) { 
-                echo '<div class="swiper-slide"><img src="img/'.$show_img[$j].'" alt=""><span>'.$img_txt_txt[$j].'</span></div>';
+
+                $img=urlencode(aes_encrypt(date('Ymd'), '../../../product_html/'.$case_id.'/img/'.$show_img[$j].'||1920||80'));
+
+                $img_txt_hmtl=empty($img_txt_txt[$j]) ? '': '<span>'.$img_txt_txt[$j].'</span>';
+                echo '<div class="swiper-slide" img-file="'.$show_img[$j].'"><img src="../../sys/core/inc/small_img.php?aes='.$img.'" alt="">'.$img_txt_hmtl.'</div>';
                } 
              }
              
@@ -165,6 +191,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
               <div class="swiper-button-prev"><i class="fa fa-angle-left"></i></div>
               <div class="swiper-button-next"><i class="fa fa-angle-right"></i></div>
           </div>
+           <div class="swiper-pagination'.$i.'"></div>
         </div>';
         
         //-- 內容 --
@@ -202,26 +229,63 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
         }
         else{ $effect=''; }
 
+    //-- 小圖切換 --
+    if ($show_row['small_img']==1) {
 
-     echo '
-		<script type="text/javascript">
-	       $(window).on("load", function(event) {
-		
-	         var myswiper = new Swiper("#'.$fun_block_id[$i]['fun_id'].' .swiper-container", {
-	             speed: 1500,
-	             '.$play_speed.'
-	             '.$effect.'
-	             loop: true,
+      echo '
+    <script type="text/javascript">
+         $(window).on("load", function(event) {
+    
+           var myswiper'.$i.' = new Swiper("#'.$fun_block_id[$i]['fun_id'].' .swiper-container", {
+               speed: 1500,
+               '.$play_speed.'
+               '.$effect.'
+               loop: true,
 
-	             // 如果需要前进后退按钮
-         	    navigation: {
-         	      nextEl: ".swiper-button-next",
-         	      prevEl: ".swiper-button-prev",
-         	    }
-	         });
-	
-	        });
+                // 如果需要前进后退按钮
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              },
+
+               pagination: {
+                 el: \'.swiper-pagination'.$i.'\',
+                 clickable :true,
+                 renderBullet: function (index, className){
+                                  
+                   var slider_img=$(\'#'.$fun_block_id[$i]['fun_id'].' .swiper-container .swiper-slide:nth-child(\'+(index+2)+\')\').attr(\'img-file\');
+             
+                    return \'<div class="\' + className + \'" style="background: url(img/\'+slider_img+\') center; background-size: cover;"></div>\';
+                   }
+               }
+           });
+          });
         </script>';
+      
+    }
+    else{
+      echo '
+    <script type="text/javascript">
+         $(window).on("load", function(event) {
+    
+           var myswiper = new Swiper("#'.$fun_block_id[$i]['fun_id'].' .swiper-container", {
+               speed: 1500,
+               '.$play_speed.'
+               '.$effect.'
+               loop: true,
+
+               // 如果需要前进后退按钮
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }
+           });
+  
+          });
+        </script>';
+    }
+
+     
       
 	}
     
@@ -236,7 +300,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
        	    $you_adds=explode('v=', $youtube_row['you_adds']);
          	echo '
        	       <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 video-container youtube_tb">
-       	        <iframe width="560" height="315" src="https://www.youtube.com/embed/'.$you_adds[1].'?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+       	        <iframe width="560" height="315" src="https://www.youtube.com/embed/'.$you_adds[1].'?rel=0&showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
        	      </div>';
        }
        else{
@@ -267,7 +331,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
           
        for ($j=0; $j <$img_file_num ; $j++) { 
          $img_word=!empty($img_wall_row['img_word'])? explode(',', $img_wall_row['img_word']):'';
-       	 echo '<div class="grid-item '.$img_item_arr[$j].' " style="background-image: url(img/'.$img_file[$j].');"><a href="img/'.$img_file[$j].'" data-fancybox="groups" data-caption="'.$img_word[$j].'" ><span>'.$img_word[$j].'</span></a></div>';
+       	 echo '<div class="grid-item '.$img_item_arr[$j].' " style="background-image: url(img/'.$img_file[$j].');"><a href="img/'.$img_file[$j].'" data-fancybox="groups'.$fun_block_id[$i]['fun_id'].'" data-caption="'.$img_word[$j].'" ><span>'.$img_word[$j].'</span></a></div>';
        } 
 
      echo'</div>
@@ -280,7 +344,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
      $li_row=pdo_select("SELECT * FROM life_tb WHERE Tb_index=:Tb_index AND OnLineOrNot='1'", ['Tb_index'=>$fun_block_id[$i]['fun_id']]);
      
      //-- 判斷生活是否啟用 --
-     $is_life=true;
+     if (empty($li_row['Tb_index'])) { continue; }
 
      $life_location=empty($li_row['location']) ? $map_txt:$li_row['location'];
      
@@ -372,7 +436,7 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
                <img src="../../img/svg/'.$img_dir.'/bus.svg" alt=""><p style="color:'.$txt_color.';">公車站</p>
              </a>
           </div>
-          <div id="gm_hos_btn" style="background-color: '.$color_arr[2].';" class="col-4">
+          <!--<div id="gm_hos_btn" style="background-color: '.$color_arr[2].';" class="col-4">
             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=cafe&keyword='.$life_keyword[7].'&radius='.$life_range[7].'&zoom='.$life_zoom[7].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'咖啡店\')">
               <img src="../../img/svg/'.$img_dir.'/cafe.svg" alt=""><p style="color:'.$txt_color.';">咖啡店</p>
             </a>
@@ -381,17 +445,17 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
              <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=bank&keyword='.$life_keyword[8].'&radius='.$life_range[8].'&zoom='.$life_zoom[8].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'銀行\')">
                <img src="../../img/svg/'.$img_dir.'/bank.svg" alt=""><p style="color:'.$txt_color.';">銀行</p>
              </a>
-          </div>
+          </div>-->
           <div id="gm_work_btn" style="background-color: '.$color_arr[4].';" class="col-4">
              <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=convenience_store&keyword='.$life_keyword[9].'&radius='.$life_range[9].'&zoom='.$life_zoom[9].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'商店\')">
                <img src="../../img/svg/'.$img_dir.'/store.svg" alt=""><p style="color:'.$txt_color.';">商店</p>
              </a>
           </div>
-          <div id="gm_food_btn" style="background-color: '.$color_arr[5].';" class="col-4">
+          <!--<div id="gm_food_btn" style="background-color: '.$color_arr[5].';" class="col-4">
             <a data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc='.$life_location.'&type=gas_station&keyword='.$life_keyword[10].'&radius='.$life_range[10].'&zoom='.$life_zoom[10].'&case_name='.$case['aTitle'].'" href="javascript:;" onclick="ga(\'send\', \'event\', \'食醫住行\', \'click\', \'加油站\')">
               <img src="../../img/svg/'.$img_dir.'/gas-station.svg" alt=""><p style="color:'.$txt_color.';">加油站</p>
             </a>
-          </div>
+          </div>-->
        
 
           </div>
@@ -443,16 +507,25 @@ for ($i=0; $i < $fun_block_id_num; $i++) {
        echo '
        <div id="'.$fun_block_id[$i]['fun_id'].'" class="col-md-12 googleMap_div">';
 
-      if (!empty($gm_row['aTitle'])) {
-      	echo '<h1>'.$gm_row['aTitle'].'</h1>';
+      // if (!empty($gm_row['aTitle'])) {
+      // 	echo '<h1>'.$gm_row['aTitle'].'</h1>';
+      //  }
+       if (!empty($gm_row['embed_url'])) {
+         echo '<div class="embed_map">
+                <iframe src="'.$gm_row['embed_url'].'" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+              </div>';
+       }
+       else{
+         echo' 
+           <div class="map" location="'.$gm_row['location'].'" atitle="'.$gm_row['aTitle'].'" loc_txt="'.$gm_row['loc_txt'].'"></div>';
        }
 
-      echo' 
-        <div class="map" location="'.$gm_row['location'].'" loc_txt="'.$gm_row['loc_txt'].'"></div>
-        <a target="_blank" class="map_placeholder" href="https://www.google.com/maps/dir//'.$gm_row['location'].'/@ '.$gm_row['location'].',17z/?hl=zh-TW" onclick="ga(\'send\', \'event\', \'google 導航\', \'click\', \'tool_bar\')">
-          <img src="../../img/svg/gps.svg" alt=""> 導航
-        </a>
-      </div>';
+       echo ' <a target="_blank" class="map_placeholder" href="https://www.google.com/maps/dir//'.$gm_row['location'].'/@ '.$gm_row['location'].',17z/?hl=zh-TW" onclick="ga(\'send\', \'event\', \'google 導航\', \'click\', \'tool_bar\')">
+             <img src="../../img/svg/gps.svg" alt=""> 導航
+           </a>
+         </div>';
+
+      
        
 	}
 

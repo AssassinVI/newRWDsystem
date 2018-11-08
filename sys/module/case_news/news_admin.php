@@ -25,7 +25,7 @@ if ($_GET) {
    $case_name=pdo_select("SELECT aTitle FROM build_case WHERE Tb_index=:Tb_index", ['Tb_index'=>$_GET['case_id']]);
    
    $pdo=pdo_conn();
-   $sql=$pdo->prepare("SELECT * FROM case_news WHERE case_id=:case_id ORDER BY OrderBy DESC");
+   $sql=$pdo->prepare("SELECT * FROM case_news WHERE case_id=:case_id ORDER BY OrderBy DESC, StartDate DESC, Tb_index DESC");
    $sql->execute(['case_id'=>$_GET['case_id']]);
 }
 

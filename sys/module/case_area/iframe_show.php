@@ -92,7 +92,8 @@ if($_POST){
     else{
       $show_img_ph='';
     }
-
+    
+    $small_img=empty($_POST['small_img'])? 0:1;
     $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0 : 1;
 
     //---- 更新關聯資料表 -----
@@ -103,6 +104,7 @@ if($_POST){
        'case_id'=>$_GET['Tb_index'],
        'play_speed'=>$_POST['play_speed'],
        'effect'=>$_POST['effect'],
+       'small_img'=>$small_img,
        'show_img'=>$show_img,
        'show_img_ph'=>$show_img_ph,
        'ImgWord_type'=>$_POST['ImgWord_type'],
@@ -188,11 +190,12 @@ if($_POST){
       }
     //-------------- 手機圖檔修改-END ------------------
 
-
+      $small_img=empty($_POST['small_img'])? 0:1;
       $OnLineOrNot=empty($_POST['OnLineOrNot'])? 0:1;
       $param=[
        'play_speed'=>$_POST['play_speed'],
        'effect'=>$_POST['effect'],
+       'small_img'=>$small_img,
        'ImgWord_type'=>$_POST['ImgWord_type'],
        'ImgWord_ph_type'=>$_POST['ImgWord_ph_type'],
        'aTXT'=>$_POST['aTXT'],
@@ -248,6 +251,13 @@ if($_POST){
                   <option value="fade">淡入淡出</option>
                   <option value="coverflow">3D切換</option>
                 </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="small_img">小圖切換</label>
+              <div class="col-sm-6">
+                <input type="checkbox" name="small_img" <?php echo $check=$row['small_img']==1 ? 'checked' : ''; ?> >
               </div>
             </div>
 

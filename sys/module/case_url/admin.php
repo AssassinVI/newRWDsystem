@@ -94,7 +94,7 @@ if ($_GET) {
 
 							if($_SESSION['admin_per']=='admin' || in_array($row['Tb_index'], $_SESSION['group_case'])){
 
-                              $OnLineOrNot=$row['OnLineOrNot']=='1' ? '啟用' : '停用';
+                              $OnLineOrNot=$row['OnLineOrNot']=='1' ? '<span class="label">啟用</span>' : '<span class="label label-danger">停用</span>';
 
                               switch ($row['version']) {
                               	case '1':
@@ -183,7 +183,7 @@ if ($_GET) {
 	 			   var txt='';
 	 		   	  $.each(data, function() {
 
-	 		   	  	var OnLineOrNot=this['OnLineOrNot']=='1' ? '啟用' : '停用';
+	 		   	  	var OnLineOrNot=this['OnLineOrNot']=='1' ? '<span class="label">啟用</span>' : '<span class="label label-danger">停用</span>';
 
 	 		   	  	switch(this['version']){
 	 		   	  		case '1':

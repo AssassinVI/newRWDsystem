@@ -12,6 +12,8 @@
       .wrapper-content{  padding: 0px 10px 40px; }
       .p-w-md{ padding: 0px; }
       .flot-chart{ height: 250px; }
+      .flot-chart-content{ width: 95%; }
+      .c3 svg{ width: 350px; }
       .ibox-content{ padding: 20px 0; text-align: center;}
     }
 </style>

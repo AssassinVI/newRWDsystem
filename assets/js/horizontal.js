@@ -5,9 +5,7 @@ $(document).ready(function() {
   //目前畫面Div (預設 #case_di)
   var pcph_Div=$(window).width()>768 ? 'html,body' :'#case_div';
   var nowDiv=$(window).width()>768 ? 'html,body' :'#case_div';;
-  //基本圖文-動態文字圖片
-  wow = new WOW({ mobile: false } );
-                    wow.init();
+  
   
 
 
@@ -374,6 +372,8 @@ $(document).ready(function() {
         //--------- 初始Google地圖 -----------
         if ($('.map').length>0) {
 
+          var aTitle=$('.map').attr('atitle')=='' ? document.title : $('.map').attr('atitle');
+
         	$.fn.tinyMapConfigure({
         	'key': 'AIzaSyBmcZ9YTd68k4QYur5nowITqcI_kGZO5Ks'
         	});
@@ -381,9 +381,11 @@ $(document).ready(function() {
         	$('.map').tinyMap({
             'center': $('.map').attr('location'),
             'zoom': 14,
+            'streetViewControl': false,
+            'mapTypeControl': false,
             'marker': [{
                 'addr': $('.map').attr('location'),
-                'text': '<p style="font-size: 1.4rem;">'+document.title+'<br>'+$('.map').attr('loc_txt')+'</p>',
+                'text': '<p style="font-size: 1.4rem;">'+aTitle+'<br>'+$('.map').attr('loc_txt')+'</p>',
                 
             }],
             'event': {
@@ -545,12 +547,17 @@ $(document).ready(function() {
          $('.landscape_div').css('display', 'none');
        }
     });
+
              
 });
 
 
 // ===== 網站加載完成後 =====
 $(window).on('load', function(event) {
+
+	//基本圖文-動態文字圖片
+	wow = new WOW({ mobile: false } );
+	                  wow.init();
   
    TweenMax.to( '#nowLoading', 0.5, { opacity:0, 'z-index':-1});
     
@@ -569,6 +576,15 @@ $(window).on('load', function(event) {
         		all_show();
         	}
         }, 3000);
+    }
+
+
+    //-------- 彈出活動圖 ---------
+    if ($('[name="popImg"]').length>0 && $('[name="popImg"]').val()!='') {
+      $.fancybox.open({
+        src: 'img/'+$('[name="popImg"]').val(),
+        type: 'image'
+      });
     }
        
         
@@ -591,6 +607,8 @@ function all_show() {
 
 	TweenMax.to('.navbar', 0.5, {top:0});
 	TweenMax.to('.bottom_tool', 0.5, {bottom:0});
+	TweenMax.to('#case_div', 0.5, {'padding-top':'40px'});
+	
 }
   
 

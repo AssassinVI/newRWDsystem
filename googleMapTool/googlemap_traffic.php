@@ -21,8 +21,8 @@
 	<style type="text/css">
     body{ font-family: Microsoft JhengHei; background: url("img/place_back.png"); margin: 0px; height: 850px;}
     h3 { margin:0; }
-		#map{ width: 100%;height: 700px; margin-top: 45px;}
-    #detial{ width: 98%; margin: auto; }
+		#map{ width: 100%;height: 700px; margin-top: 45px; display: none;}
+    #detial{ width: 98%; margin: auto; margin-top: 4rem;}
     #title{ text-align: center; background-color: #373737; padding: 10px 0px; font-size: 20px; color: #fff; position: fixed; top: 0px; width: 100%; z-index: 1000;  box-shadow: 0px 2px 10px rgba(0,0,0,0.67);}
 
 		.del_div{ width: 98%;  display: inline-block; text-align: center; margin: 0px 0px 0px 10px;     background-color: #ffffff; color: #483c37; text-decoration: none; }
@@ -125,7 +125,9 @@ var latLng='<?php echo $place_loc?>';
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
-    zoom: <?php echo $zoom;?>
+    zoom: <?php echo $zoom;?>,
+    streetViewControl: false,
+    mapTypeControl:false
   });
 
   infowindow = new google.maps.InfoWindow();
@@ -136,7 +138,7 @@ var latLng='<?php echo $place_loc?>';
     icon:'https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=home|ffeb3b',
   });
 
-    google.maps.event.addListener(cen_mark, 'click', function() {
+    google.maps.event.addListener(cen_mark, 'mouseover', function() {
     infowindow.setContent('<?php echo $_GET['case_name'];?>');
     infowindow.open(map, this);
   });
@@ -217,8 +219,12 @@ function createMarker(place, name, case_loc,location) {
 
   infowindow.open(map, marker);
 
-  marker.addListener('click', function() {
+  marker.addListener('mouseover', function() {
     infowindow.open(map, marker);
+  });
+
+  marker.addListener('mouseout', function() {
+    infowindow.close();
   });
   
   $detail='<div class="life_item_div">'+

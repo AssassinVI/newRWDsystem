@@ -268,7 +268,9 @@ var latLng='<?php echo $_GET['place_loc'];?>';
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
-    zoom: 14
+    zoom: 14,
+    streetViewControl: false,
+    mapTypeControl:false
   });
 
   infowindow = new google.maps.InfoWindow();

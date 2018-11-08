@@ -10,7 +10,7 @@
    <div class="bottom_tool">
     
    	 <a href="tel:<?php echo $case['phone'];?>" onclick="ga('send', 'event', '撥打手機', 'click', 'tool_bar')">
-   	 	<span style="background-image: url(../../img/svg/007-phone-receiver.svg); background-size: 64%; background-color: #FFC107;"></span><br>電話
+   	 	<span style="background-image: url(../../img/svg/phone.gif); background-size: 64%; background-color: #FFC107;"></span><br>電話
    	 </a>
    	 <a target="_blank" href="<?php echo $line_txt;?>" onclick="ga('send', 'event', '加LINE或Line分享', 'click', 'tool_bar')">
    	 	<span style="background-image: url(../../img/svg/006-line.svg); background-size: 75%; background-color: #52CB34;"></span><br>LINE
@@ -19,7 +19,7 @@
    	 	<span style="background-image: url(../../img/svg/facebook-logo.svg); background-color: #576ba8; background-size: 92%;"></span><br>FB
    	 </a>
 
-     <?php if(!empty($is_life)){ ?>
+     <?php if(!empty($li_row['Tb_index'])){ ?>
 
       <a id="life_btn<?php echo $life_type;?>" href="javascript:;">
        <span style="background-image: url(../../img/svg/004-smiling-emoticon-square-face.svg); background-size: 55%; background-color: #FFC107;"></span><br>生活
@@ -59,7 +59,7 @@
      </div>
      
 
-    <?php if(!empty($is_life)){ ?>
+    <?php if(!empty($li_row['Tb_index'])){ ?>
      <!-- 食醫住行 -->
      <div class="life_tool_div">
        <a class="more_tool_btn" data-fancybox data-type="iframe" data-src="../../googleMapTool/googlemap_place.php?place_loc=<?php echo $life_location;?>&type=food&keyword=<?php echo $life_keyword[0];?>&radius=<?php echo $life_range[0];?>&zoom=<?php echo $life_zoom[0];?>&case_name=<?php echo $case['aTitle'] ;?>" href="javascript:;" onclick="ga('send', 'event', '食醫住行', 'click', '食')">
